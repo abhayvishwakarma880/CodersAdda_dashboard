@@ -27,8 +27,8 @@ export const Clock = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <span className="font-bold">{formatTime(time)}</span>
-      <span className="text-sm opacity-70">{formatDate(time)}</span>
+      <span className="text-sm text-[10px] md:text-base lg:text-base font-bold">{formatTime(time)}</span>
+      <span className="text-sm text-[10px] md:text-base lg:text-base opacity-70">{formatDate(time)}</span>
     </div>
   )
 }

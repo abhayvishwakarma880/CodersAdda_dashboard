@@ -18,7 +18,7 @@ const App = () => {
   return (
     <ThemeProvider>
       <DataProvider>
-        <div>
+        <>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />}>
@@ -34,7 +34,7 @@ const App = () => {
               <Route path="courses/view/:id" element={<ViewCourse />} />
             </Route>
           </Routes>
-        </div>
+        </>
       </DataProvider>
     </ThemeProvider>
   );

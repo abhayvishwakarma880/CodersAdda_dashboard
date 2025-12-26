@@ -1,4 +1,4 @@
-import { Plus, X, Edit2, Trash2, Check, Search, Layers, ChevronRight, Hash, ChartBarStacked, School } from 'lucide-react';
+import { Plus, X, Edit2, Trash2, Check, Search, Layers, ChevronRight, Hash, ChartBarStacked, School, BookOpen } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { useState, useEffect } from 'react';
@@ -74,8 +74,8 @@ function Category() {
   return (
     <div className="p-2 md:p-6 transition-all duration-300 min-h-screen" style={{ backgroundColor: colors.background }}>
       {/* Reorganized Header Section */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10">
-        <div className="relative">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10 sticky top-0 z-30 pb-4" style={{ backgroundColor: colors.background }}>
+        <div className="relative hidden md:block">
           <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-8 rounded-full" style={{ backgroundColor: colors.primary }}></div>
           <h1 className="text-2xl md:text-3xl font-semibold flex items-center gap-3" style={{ color: colors.text }}>
             Explore Categories
@@ -85,19 +85,19 @@ function Category() {
           </p>
         </div>
         
-        <div className="flex flex-col sm:flex-row items-center gap-4 w-full lg:w-auto">
+        <div className="flex flex-row items-center gap-3 w-full lg:w-auto">
           {/* Modern Search Bar Integrated */}
-          <div className="relative flex-1 sm:w-64 md:w-80 group">
+          <div className="relative flex-1 group">
             <Search 
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors duration-300"
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 transition-colors duration-300"
               style={{ color: colors.textSecondary }}
             />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search categories..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl outline-none border transition-all text-xs font-medium backdrop-blur-sm"
+              placeholder="Search..."
+              className="w-full pl-3 pr-3 py-2 rounded outline-none border transition-all text-xs font-medium backdrop-blur-sm"
               style={{ 
                 backgroundColor: colors.sidebar || colors.background, 
                 borderColor: colors.accent + '15',
@@ -108,61 +108,50 @@ function Category() {
             />
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl border border-dashed h-[42px]" style={{ borderColor: colors.accent + '30' }}>
-                <span className="text-[9px] font-bold uppercase tracking-widest opacity-40" style={{ color: colors.textSecondary }}>Active:</span>
-                <span className="text-sm font-bold" style={{ color: colors.primary }}>{categories.length}</span>
-            </div>
-
-            <button
-              onClick={handleOpenModal}
-              className="flex-1 sm:flex-none px-6 py-2.5 cursor-pointer rounded-xl font-semibold transition-all shadow-md hover:shadow-primary/20 active:scale-95 flex items-center justify-center gap-2"
-              style={{ backgroundColor: colors.primary, color: colors.background }}
-            >
-              <Plus size={18} />
-              <span className="text-sm">New Category</span>
-            </button>
-          </div>
+          <button
+            onClick={handleOpenModal}
+            className="flex-none px-4 py-2 cursor-pointer rounded-xl font-semibold transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2"
+            style={{ backgroundColor: colors.primary, color: colors.background }}
+          >
+            <Plus size={16} />
+            <span className="text-xs">New</span>
+          </button>
         </div>
       </div>
 
       {/* Premium Category Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredCategories.map((category) => (
           <div
             key={category.id}
-            className="group relative h-48 rounded-[2rem] p-6 border transition-all duration-500 hover:translate-y-[-8px] cursor-default flex flex-col overflow-hidden shadow-sm hover:shadow-xl"
+            className="group relative rounded-2xl p-5 border transition-all duration-300 hover:shadow-md cursor-default flex flex-col overflow-hidden"
             style={{ 
               backgroundColor: colors.sidebar || colors.background,
-              borderColor: colors.accent + '20'
+              borderColor: colors.accent + '15'
             }}
           >
-            {/* Simple Background transition */}
-            <div className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-300"
-                 style={{ backgroundColor: colors.primary }}></div>
-            
             {editingId === category.id ? (
               <div className="relative z-10 flex flex-col h-full justify-between">
                 <input
                   type="text"
                   value={editingName}
                   onChange={(e) => setEditingName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl outline-none border-2 text-sm font-semibold mb-4"
+                  className="w-full px-3 py-2 rounded-xl outline-none border text-sm font-semibold mb-3"
                   style={{ backgroundColor: colors.background, color: colors.text, borderColor: colors.primary }}
                   autoFocus
                 />
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleEditSave(category.id)}
-                    className="flex-1 py-3 cursor-pointer rounded-xl font-bold text-xs transition-all active:scale-95 flex items-center justify-center gap-2 shadow-md"
+                    className="flex-1 py-2 cursor-pointer rounded-xl font-bold text-[10px] uppercase transition-all active:scale-95 flex items-center justify-center gap-2"
                     style={{ backgroundColor: colors.primary, color: colors.background }}
                   >
-                    <Check size={16} /> Update
+                    <Check size={14} /> Update
                   </button>
                   <button
                     onClick={handleEditCancel}
-                    className="flex-1 py-3 cursor-pointer rounded-xl font-bold text-xs transition-all border opacity-60 hover:opacity-100"
-                    style={{ backgroundColor: 'transparent', color: colors.text, borderColor: colors.accent + '40' }}
+                    className="flex-1 py-2 cursor-pointer rounded-xl font-bold text-[10px] uppercase transition-all border opacity-60 hover:opacity-100"
+                    style={{ backgroundColor: 'transparent', color: colors.text, borderColor: colors.accent + '20' }}
                   >
                     Discard
                   </button>
@@ -170,48 +159,43 @@ function Category() {
               </div>
             ) : (
               <div className="relative z-10 flex flex-col h-full">
-                <div className="flex items-center justify-between mb-auto">
-                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center transition-all duration-300"
-                         style={{ backgroundColor: colors.primary + '10', color: colors.primary, borderColor: colors.primary + '20' }}>
-                        <School size={20} />
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300"
+                         style={{ backgroundColor: colors.primary + '10', color: colors.primary }}>
+                        <BookOpen size={20} />
                     </div>
-                </div>
-
-                <div className="mb-4">
-                    <h3 className="text-xl font-bold line-clamp-1 transition-colors duration-300 group-hover:text-primary" style={{ color: colors.text }}>
-                        {category.name}
-                    </h3>
-                    <div className="flex items-center gap-1.5 opacity-40 mt-1">
-                        <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Collection</span>
+                    <div>
+                        <h3 className="text-base font-bold line-clamp-1 transition-colors duration-300" style={{ color: colors.text }}>
+                            {category.name}
+                        </h3>
+                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40" style={{ color: colors.textSecondary }}>Collection</p>
                     </div>
                 </div>
                 
-                <div className="flex items-center gap-2 mt-auto">
+                <div className="flex items-center gap-2 mt-4 pt-4 border-t" style={{ borderColor: colors.accent + '05' }}>
                   <button
                     onClick={(e) => { e.stopPropagation(); handleEditStart(category); }}
-                    className="flex-1 py-2.5 cursor-pointer rounded-xl font-bold text-[10px] uppercase tracking-widest transition-all flex items-center justify-center gap-2 border hover:shadow-md"
+                    className="flex-1 py-2 cursor-pointer rounded-lg font-bold text-[9px] uppercase tracking-widest transition-all flex items-center justify-center gap-2"
                     style={{ 
                         color: colors.primary, 
-                        borderColor: colors.primary + '30',
                         backgroundColor: colors.primary + '05'
                     }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '1A'}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '15'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary + '05'}
                   >
-                    <Edit2 size={12} /> Modify
+                    <Edit2 size={12} /> Edit
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); handleDeleteCategory(category.id); }}
-                    className="p-2.5 cursor-pointer rounded-xl transition-all border flex items-center justify-center hover:shadow-md"
+                    className="p-2 cursor-pointer rounded-lg transition-all flex items-center justify-center"
                     style={{ 
                         color: '#ef4444', 
-                        borderColor: '#ef444420',
                         backgroundColor: '#ef444405' 
                     }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444415'}
+                    onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444410'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = '#ef444405'}
                   >
-                    <Trash2 size={16} />
+                    <Trash2 size={14} />
                   </button>
                 </div>
               </div>

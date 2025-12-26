@@ -3,6 +3,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
 import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, LogOut, ChartBarStacked } from 'lucide-react'
 import { Clock } from './Clock'
+import logo from '../assets/logo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
@@ -68,13 +69,13 @@ const Dashboard = () => {
   ]
 
   return (
-    <div className='flex h-screen relative' style={{ backgroundColor: colors.background }}>
+    <div className='flex h-screen relative overflow-hidden' style={{ backgroundColor: colors.background }}>
       {/* Sidebar */}
       <div className={`fixed top-0 left-0 h-full z-40 transition-all duration-700 ease-out border-r md:relative md:z-auto flex flex-col ${
-        sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full w-64 md:translate-x-0 md:w-16'
+        sidebarOpen ? 'translate-x-0 w-64 ' : '-translate-x-full w-64 md:translate-x-0 md:w-16'
       }`} 
            style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '30' }}>
-        <div className='p-4'>
+        <div className='p-4 border-b' style={{borderColor: colors.accent + '30'}}>
           <h2 className={`font-bold text-xl transition-all duration-700 ease-out ${
             sidebarOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
           }`} 
@@ -86,13 +87,18 @@ const Dashboard = () => {
                            (link.path === '/dashboard' && (location.pathname === '/dashboard' || location.pathname === '/dashboard/home'))
             return (
               <NavLink key={index} to={link.path} 
-                 className={`flex items-center px-4 py-3 mx-2 rounded-lg mb-2 transition-all duration-200 ${
-                   isActive ? 'ring-2' : ''
+                 onClick={() => {
+                   if (window.innerWidth < 768) {
+                     setSidebarOpen(false)
+                   }
+                 }}
+                 className={`flex items-center px-4 py-2 mx-2 rounded-lg mb-2 transition-all duration-200 ${
+                   isActive ? 'ring-1 text-xl font-semibold' : ''
                  }`}
                  style={{ 
                    color: isActive ? colors.primary : colors.text,
-                   backgroundColor: isActive ? colors.primary + '20' : 'transparent',
-                   ringColor: isActive ? colors.primary : 'transparent'
+                   backgroundColor: isActive ? 'colors.primary' + '20' : 'transparent',
+                   ringColor: isActive ? "colors.primary" : 'transparent'
                  }}
                  onMouseEnter={(e) => {
                    if (!isActive) {
@@ -140,7 +146,7 @@ const Dashboard = () => {
       )}
 
       {/* Main Content */}
-      <div className='flex-1 flex flex-col md:ml-0'>
+      <div className='flex-1 flex flex-col min-w-0'>
         {/* Header */}
         <header className='h-16 border-b flex items-center px-4 md:px-6 relative'
                 style={{ backgroundColor: colors.background, borderColor: colors.accent + '30' }}>
@@ -166,13 +172,13 @@ const Dashboard = () => {
             </button>
             <div className='flex flex-col'>
               <h1 className='text-sm md:text-xl font-semibold' style={{ color: colors.text }}>Welcome Back</h1>
-              <span className='text-xs md:text-sm' style={{ color: colors.textSecondary }}>Abhay Vishwakarma</span>
+              <span className='text-xs md:text-sm' style={{ color: colors.textSecondary }}>DigiCoders</span>
             </div>
           </div>
           
           {/* Center Time & Date */}
           <div className='hidden md:flex flex-col items-center flex-1 justify-center'>
-            <div className='text-sm md:text-xl font-bold' style={{ color: colors.primary }}>
+            <div className=' font-bold' style={{ color: colors.primary }}>
               <Clock />
             </div>
             {/* <div className='text-xs md:text-sm' style={{ color: colors.textSecondary }}>
@@ -200,15 +206,16 @@ const Dashboard = () => {
             </button>
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
-              <span className='text-white font-semibold text-sm'><img src="/public/logo.png" alt="logo" className='rounded-full' /></span>
+              <span className='text-white font-semibold text-sm'><img src={logo} alt="logo" className='rounded-full' /></span>
             </div>
           </div>
         </header>
 
-        {/* Content Area */}
-        <main className='flex-1 p-4 md:p-6 overflow-auto' style={{ backgroundColor: colors.background }}>
-          <Outlet />
-        </main>
+        <div className='h-full w-full p-4 md:p-6 overflow-auto' style={{ backgroundColor: colors.background }}>
+          <div className="max-w-full">
+            <Outlet />
+          </div>
+        </div>
       </div>
 
       {/* Settings Modal */}
