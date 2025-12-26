@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Star, Users, Clock, Play, Lock, ChevronDown, BookOpen, Edit, Monitor, Award, CheckCircle, IndianRupee } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Play, Lock, ChevronDown, CheckCircle, Monitor, Star, Users, Clock, Plus, Eye, FileText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function ViewCourse() {
   const { colors } = useTheme();
-  const { courses } = useData();
+  const { courses, updateCourse } = useData();
   const navigate = useNavigate();
   const { id } = useParams();
   
@@ -16,13 +18,11 @@ function ViewCourse() {
   useEffect(() => {
     const found = courses.find(c => c.id === id);
     if (found) {
-      setCourse({
-        ...found,
-        priceType: found.priceType || 'Free',
-        price: found.price || ''
-      });
+      setCourse(found);
       if (found.curriculum?.length > 0) {
-        setOpenSections({ [found.curriculum[0].id]: true });
+        const initialOpen = {};
+        found.curriculum.forEach(s => initialOpen[s.id] = true);
+        setOpenSections(initialOpen);
       }
     } else {
       navigate('/dashboard/courses');
@@ -35,184 +35,242 @@ function ViewCourse() {
     setOpenSections(prev => ({ ...prev, [sectionId]: !prev[sectionId] }));
   };
 
-  const headerStyle = { color: colors.text, borderBottom: `1px solid ${colors.accent}20` };
-  const cardStyle = { backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' };
+  const handleAddTopic = () => {
+    Swal.fire({
+      title: 'Add New Topic',
+      input: 'text',
+      inputPlaceholder: 'Topic Name (e.g. Getting Started)',
+      showCancelButton: true,
+      confirmButtonText: 'Create',
+      confirmButtonColor: colors.primary,
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const newTopic = {
+          id: Date.now().toString(),
+          title: result.value,
+          lessons: []
+        };
+        const updatedCurriculum = [...(course.curriculum || []), newTopic];
+        updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+        toast.success("Topic added successfully");
+        setOpenSections(prev => ({ ...prev, [newTopic.id]: true }));
+      }
+    });
+  };
+
+  const handleDeleteTopic = (sectionId) => {
+    Swal.fire({
+      title: 'Delete Topic?',
+      text: "All lectures under this topic will be removed.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedCurriculum = course.curriculum.filter(s => s.id !== sectionId);
+        updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+        toast.success("Topic removed");
+      }
+    });
+  };
+
+  const handleDeleteLecture = (sectionId, lessonId) => {
+    Swal.fire({
+      title: 'Remove Lecture?',
+      text: "This lesson will be permanently removed.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ef4444',
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedCurriculum = course.curriculum.map(section => {
+          if (section.id === sectionId) {
+            return {
+              ...section,
+              lessons: section.lessons.filter(l => l.id !== lessonId)
+            };
+          }
+          return section;
+        });
+        updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+        toast.success("Lecture removed");
+      }
+    });
+  };
 
   return (
-    <div className="max-w-6xl mx-auto pb-20 p-2 md:p-6 transition-all duration-300">
-      {/* Simple Professional Header */}
-      <div className="flex items-center justify-between mb-8 pb-4" style={headerStyle}>
+    <div className="w-full min-h-full flex flex-col">
+      {/* Top Banner */}
+      <div className="flex items-center justify-between p-4 border-b sticky top-0 z-10" style={{ backgroundColor: colors.background, borderColor: colors.accent + '20' }}>
         <div className="flex items-center gap-4">
-          <button 
-            onClick={() => navigate('/dashboard/courses')}
-            className="p-2 rounded-lg transition-all cursor-pointer"
-            style={{ color: colors.textSecondary }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = colors.accent + '15'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-          >
-            <ArrowLeft size={20} />
+          <button onClick={() => navigate('/dashboard/courses')} className="p-2 rounded hover:bg-black/5 transition-all">
+             <ArrowLeft size={18} style={{ color: colors.text }} />
           </button>
-          <div className="flex flex-col">
-            <h2 className="text-xl font-semibold" style={{ color: colors.text }}>Course Preview</h2>
-            <p className="text-xs font-medium" style={{ color: colors.textSecondary }}>Checking: {course.title}</p>
+          <div>
+            <h1 className="text-base font-bold" style={{ color: colors.text }}>{course.title}</h1>
+            <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">{course.category} • {course.technology}</p>
           </div>
         </div>
         <button 
-          onClick={() => navigate(`/dashboard/courses/edit/${course.id}`)}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-all active:scale-95 shadow-sm"
-          style={{ backgroundColor: colors.primary, color: colors.background }}
+            onClick={() => navigate(`/dashboard/courses/edit/${course.id}`)}
+            className="px-4 cursor-pointer py-2 rounded font-bold text-[10px] uppercase tracking-wider border transition-all active:scale-95"
+            style={{ borderColor: colors.accent + '30', color: colors.text }}
         >
-          <Edit size={16} /> Edit Content
+            Edit Course
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8 space-y-8">
-          {/* Main Info Card */}
-          <div className="rounded-2xl border overflow-hidden shadow-sm" style={cardStyle}>
-             <div className="h-64 sm:h-80 relative bg-gray-100">
-                {course.image ? (
-                  <img src={course.image} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center opacity-10">
-                    <Monitor size={80} />
-                  </div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6">
-                   <div className="flex flex-wrap items-center gap-2 mb-3">
-                      <span className="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-md text-white border border-white/20">
-                        {course.category}
-                      </span>
-                      {course.priceType === 'Free' ? (
-                        <span className="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-green-500 text-white flex items-center gap-1 shadow-sm">
-                           <CheckCircle size={12} /> Free
-                        </span>
-                      ) : (
-                        <span className="px-3 py-1 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-white flex items-center gap-1 shadow-sm">
-                           <Lock size={12} /> {course.price ? `₹${course.price}` : 'Premium'}
-                        </span>
-                      )}
-                   </div>
-                   <h1 className="text-2xl sm:text-4xl font-bold text-white mb-4 leading-tight">{course.title}</h1>
-                   <div className="flex flex-wrap items-center gap-6 text-white/90 font-medium text-xs">
-                      <div className="flex items-center gap-1.5"><Star className="w-4 h-4 text-yellow-400 fill-current" /> <span>{course.rating}</span></div>
-                      <div className="flex items-center gap-1.5"><Users className="w-4 h-4" /> <span>{course.studentsCount} Students</span></div>
-                      <div className="flex items-center gap-1.5"><Clock className="w-4 h-4" /> <span>{course.duration}</span></div>
-                   </div>
+      <div className="flex-1 overflow-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 h-full">
+          
+          <div className="lg:col-span-8 p-4 md:p-6 space-y-8 border-r" style={{ borderColor: colors.accent + '10' }}>
+            
+            <div className="flex flex-col md:flex-row gap-6 items-start pb-6 border-b" style={{ borderColor: colors.accent + '05' }}>
+                <div className="w-48 h-32 rounded overflow-hidden border flex-shrink-0" style={{ borderColor: colors.accent + '15' }}>
+                    {course.image ? (
+                        <img src={course.image} className="w-full h-full object-cover" alt="" />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center opacity-10">
+                            <Monitor size={32} />
+                        </div>
+                    )}
                 </div>
-             </div>
-             
-             <div className="p-6 md:p-8 space-y-8">
-                <section>
-                   <h3 className="text-lg font-semibold mb-3" style={{ color: colors.text }}>About this course</h3>
-                   <p className="text-sm leading-relaxed font-medium opacity-70" style={{ color: colors.textSecondary }}>{course.about}</p>
-                </section>
+                <div className="flex-1 space-y-2">
+                    <div className="flex gap-2">
+                         <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-primary/10" style={{ color: colors.primary }}>{course.priceType}</span>
+                         <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-gray-100">{course.duration}</span>
+                    </div>
+                    <h2 className="text-lg font-bold" style={{ color: colors.text }}>{course.title}</h2>
+                    <p className="text-xs font-medium opacity-60 leading-relaxed max-w-2xl">{course.about}</p>
+                </div>
+            </div>
 
-                <section>
-                   <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text }}>What you'll learn</h3>
-                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {course.whatYouWillLearn?.map((item, i) => (
-                         <div key={i} className="flex gap-3 p-4 rounded-xl border transition-all" style={{ borderColor: colors.accent + '15' }}>
-                            <CheckCircle size={16} className="shrink-0 mt-0.5" style={{ color: colors.primary }} />
-                            <span className="text-xs font-medium opacity-70" style={{ color: colors.text }}>{item}</span>
-                         </div>
-                      ))}
-                   </div>
-                </section>
-             </div>
+            <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-sm font-bold uppercase tracking-wider" style={{ color: colors.text }}>Course Curriculum</h3>
+                    <button 
+                        onClick={handleAddTopic}
+                        className="flex cursor-pointer items-center gap-1.5 px-3 py-1.5 rounded font-bold text-[10px] uppercase tracking-wider transition-all active:scale-95 text-white"
+                        style={{ backgroundColor: colors.primary }}
+                    >
+                        <Plus size={14} /> Add Topic
+                    </button>
+                </div>
+
+                <div className="space-y-3">
+                    {course.curriculum?.map((section, sIdx) => (
+                        <div key={section.id} className="rounded border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '15' }}>
+                            <div className="p-3 flex items-center justify-between border-b" style={{ backgroundColor: colors.accent + '05', borderColor: colors.accent + '05' }}>
+                                <div className="flex items-center gap-3">
+                                    <span className="text-[10px] font-black opacity-30">#{sIdx + 1}</span>
+                                    <span className="font-bold text-xs" style={{ color: colors.text }}>{section.title}</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <button 
+                                        onClick={() => navigate(`/dashboard/courses/view/${course.id}/add-lecture?sectionId=${section.id}`)}
+                                        className="px-2 cursor-pointer py-1 rounded text-[9px] font-bold bg-primary/10 flex items-center gap-1"
+                                        style={{ color: colors.primary }}
+                                    >
+                                        <Plus size={12} /> Add Lecture
+                                    </button>
+                                    <button onClick={() => handleDeleteTopic(section.id)} className="p-1 text-red-500 cursor-pointer hover:bg-red-50 rounded">
+                                        <Trash2 size={14} />
+                                    </button>
+                                    <button onClick={() => toggleSection(section.id)} className="p-1 cursor-pointer opacity-40">
+                                        <ChevronDown size={16} className={`transition-transform ${openSections[section.id] ? 'rotate-180' : ''}`} />
+                                    </button>
+                                </div>
+                            </div>
+
+                            {openSections[section.id] && (
+                                <div className="divide-y" style={{ borderColor: colors.accent + '05' }}>
+                                    {section.lessons.length > 0 ? section.lessons.map((lesson) => (
+                                        <div key={lesson.id} className="flex items-center justify-between p-3 transition-all hover:bg-black/[0.01]">
+                                            <div className="flex items-center gap-3 min-w-0">
+                                                <div className="w-6 h-6 rounded flex items-center justify-center bg-black/[0.03] border shadow-sm shrink-0" style={{ borderColor: colors.accent + '10' }}>
+                                                    {lesson.lectureSrNo ? (
+                                                        <span className="text-[10px] font-black" style={{ color: colors.primary }}>{lesson.lectureSrNo}</span>
+                                                    ) : (
+                                                        <div className="opacity-30">
+                                                            {lesson.isLocked ? <Lock size={12} /> : <Play size={12} />}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="min-w-0">
+                                                    <h5 className="text-[11px] font-extrabold truncate" style={{ color: colors.text }}>{lesson.title}</h5>
+                                                    <div className="flex items-center gap-2 opacity-40">
+                                                        <div className="flex items-center gap-1">
+                                                            <Clock size={8} />
+                                                            <span className="text-[9px] font-bold">{lesson.duration || '--:--'}</span>
+                                                        </div>
+                                                        {lesson.pdfUrl && (
+                                                            <div className="flex items-center gap-1 text-red-500">
+                                                                <FileText size={8} />
+                                                                <span className="text-[8px] font-black uppercase">PDF</span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-1 flex-shrink-0">
+                                                <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/${lesson.id}`)} className="p-1.5 cursor-pointer text-primary">
+                                                    <Eye size={14} />
+                                                </button>
+                                                <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/edit/${lesson.id}`)} className="p-1.5 cursor-pointer text-blue-500">
+                                                    <Edit size={14} />
+                                                </button>
+                                                <button onClick={() => handleDeleteLecture(section.id, lesson.id)} className="p-1.5 cursor-pointer text-red-500">
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <div className="p-4 text-center opacity-20 text-[9px] font-bold italic uppercase tracking-wider">Empty Topic</div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    ))}
+                </div>
+            </div>
           </div>
 
-          {/* Curriculum */}
-          <section>
-             <h3 className="text-lg font-semibold mb-4 px-2" style={{ color: colors.text }}>Course Curriculum</h3>
-             <div className="space-y-3">
-                {course.curriculum?.map((section, idx) => {
-                   const isOpen = openSections[section.id];
-                   return (
-                      <div key={section.id} className="rounded-xl border overflow-hidden transition-all duration-200" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                         <button 
-                            onClick={() => toggleSection(section.id)}
-                            className="w-full p-4 flex items-center justify-between transition-all"
-                            style={{ backgroundColor: colors.accent + '05' }}
-                         >
-                            <div className="flex items-center gap-4">
-                               <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center text-[10px] md:text-xs font-bold shrink-0" style={{ backgroundColor: colors.primary + '15', color: colors.primary }}>
-                                 {idx + 1}
-                               </div>
-                               <div className="text-left min-w-0">
-                                  <h4 className="font-semibold text-xs md:text-sm truncate pr-2" style={{ color: colors.text }}>{section.title}</h4>
-                                  <span style={{ color: colors.text }} className="text-[9px] md:text-[10px] font-medium opacity-50 uppercase tracking-wider">{section.lessons.length} Units</span>
-                               </div>
+          {/* Right Sidebar Info */}
+          <div className="lg:col-span-4 p-8 space-y-8 bg-black/[0.01]">
+                <div className="space-y-4">
+                    <h3 className="text-xs font-black uppercase tracking-[2px] opacity-40">Learning Outcomes</h3>
+                    <div className="space-y-3">
+                        {course.whatYouWillLearn?.map((item, i) => (
+                            <div key={i} className="flex gap-3 p-3 rounded border bg-white dark:bg-black/20" style={{ borderColor: colors.accent + '10' }}>
+                                <CheckCircle size={14} className="text-green-500 shrink-0 mt-0.5" />
+                                <span className="text-xs font-semibold opacity-70" style={{ color: colors.text }}>{item}</span>
                             </div>
-                            <ChevronDown size={18} className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} style={{ color: colors.primary }} />
-                         </button>
-                         
-                         <div className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                            <div className="p-2 border-t" style={{ borderColor: colors.accent + '10' }}>
-                               {section.lessons.map((lesson) => (
-                                  <div key={lesson.id} className="flex items-center justify-between p-3 rounded-lg hover:bg-opacity-5 transition-all" 
-                                       style={{ backgroundColor: colors.background }}
-                                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = colors.accent + '05'}
-                                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = colors.background}>
-                                     <div className="flex items-center gap-4">
-                                         <div className={`p-2 rounded-lg shrink-0 ${lesson.isLocked ? 'opacity-30' : 'bg-opacity-10'}`} style={{ backgroundColor: !lesson.isLocked ? colors.primary + '15' : 'transparent', color: !lesson.isLocked ? colors.primary : colors.textSecondary }}>
-                                            {lesson.isLocked ? <Lock size={12} /> : <Play size={12} />}
-                                         </div>
-                                         <div className="min-w-0">
-                                            <span className="font-medium text-[11px] md:text-xs block truncate pr-2" style={{ color: colors.text }}>{lesson.title}</span>
-                                            <span style={{ color: colors.text }} className="text-[9px] md:text-[10px] font-medium opacity-40">{lesson.duration || '00:00'}</span>
-                                         </div>
-                                     </div>
-                                  </div>
-                               ))}
-                            </div>
-                         </div>
-                      </div>
-                   );
-                })}
-             </div>
-          </section>
-        </div>
-
-        {/* Sidebar */}
-        <div className="lg:col-span-4">
-           <div className="p-6 rounded-2xl border sticky top-24 shadow-sm" style={cardStyle}>
-              <h3 className="text-sm font-semibold mb-6 flex items-center gap-2" style={{ color: colors.text }}>
-                <Monitor size={16} /> Course Preview
-              </h3>
-              
-              <div className="space-y-6">
-                 <div>
-                    <span style={{ color: colors.text }} className="text-[10px] font-bold uppercase opacity-40 tracking-wider block mb-1">Pricing</span>
-                    <div className="flex items-baseline gap-1">
-                       {course.priceType === 'Free' ? (
-                          <span className="text-3xl font-bold text-green-500">Free</span>
-                       ) : (
-                          <>
-                             <IndianRupee size={24} style={{ color: colors.text }} />
-                             <span className="text-3xl font-bold" style={{ color: colors.text }}>{course.price || '0'}</span>
-                          </>
-                       )}
+                        ))}
                     </div>
-                 </div>
+                </div>
 
-                 <div className="pt-6 border-t space-y-3" style={{ borderColor: colors.accent + '10' }}>
-                    <div className="flex justify-between items-center text-xs">
-                       <span style={{ color: colors.primary }} className="font-medium opacity-40">Technology</span>
-                       <span className="font-semibold uppercase tracking-wider px-2 py-0.5 rounded" style={{ backgroundColor: colors.primary + '15', color: colors.primary }}>{course.technology}</span>
+                <div className="p-6 rounded border space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '15' }}>
+                    <div className="space-y-1">
+                        <p className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Enrollment Fee</p>
+                        <p className="text-3xl font-black" style={{ color: colors.text }}>
+                            {course.priceType === 'Free' ? 'FREE' : `₹${course.price}`}
+                        </p>
                     </div>
-                    <div className="flex justify-between items-center text-xs">
-                       <span style={{ color: colors.primary }} className="font-medium opacity-40">Access</span>
-                       <span className="font-semibold" style={{ color: colors.text }}>Lifetime</span>
-                    </div>
-                 </div>
+                    {/* <div className="space-y-3 pt-4 border-t" style={{ borderColor: colors.accent + '10' }}>
+                        <div className="flex items-center justify-between text-xs font-bold">
+                            <span className="opacity-40">Level</span>
+                            <span style={{ color: colors.primary }}>Intermediate</span>
+                        </div>
+                        <div className="flex items-center justify-between text-xs font-bold">
+                            <span className="opacity-40">Language</span>
+                            <span style={{ color: colors.text }}>Hindi / English</span>
+                        </div>
+                    </div> */}
+                </div>
+          </div>
 
-                 {/* <button className="w-full py-4 rounded-xl font-semibold text-sm transition-all shadow-md active:scale-95" 
-                         style={{ backgroundColor: colors.primary, color: colors.background }}>
-                    Enrol Now
-                 </button> */}
-              </div>
-           </div>
         </div>
       </div>
     </div>

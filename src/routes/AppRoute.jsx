@@ -1,31 +1,41 @@
-// import Dashboard from "../dashboard/Dashboard";
-// import Login from "../Login";
-// import Home from "../pages/Home";
-// import Category from "../pages/Category";
-// import Courses from "../pages/Courses";
-// import AddCourse from "../pages/AddCourse";
-// import EditCourse from "../pages/EditCourse";
-// import ViewCourse from "../pages/ViewCourse";
-// import Users from "../pages/Users";
-// import EditUser from "../pages/EditUser";
-// import ViewUser from "../pages/ViewUser";
+import Category from "../pages/Category";
+import Courses from "../pages/Courses";
+import AddCourse from "../pages/AddCourse";
+import EditCourse from "../pages/EditCourse";
+import ViewCourse from "../pages/ViewCourse";
+import Users from "../pages/Users";
+import EditUser from "../pages/EditUser";
+import ViewUser from "../pages/ViewUser";
+import EBooks from "../pages/EBooks";
+import AddEBook from "../pages/AddEBook";
+import EditEBook from "../pages/EditEBook";
+import ViewEBook from "../pages/ViewEBook";
+import Jobs from "../pages/Jobs";
+import AddJob from "../pages/AddJob";
+import EditJob from "../pages/EditJob";
+import ViewJob from "../pages/ViewJob";
+import AddLecture from "../pages/AddLecture";
+import ViewLecture from "../pages/ViewLecture";
+import EditLecture from "../pages/EditLecture";
 
-// export const AppRoute = [
-//   {path:'/',component:Login},
-//   {
-//     path:'/dashboard',
-//     component:Dashboard,
-//     children: [
-//       {path:'',component:Home},
-//       {path:'home',component:Home},
-//       {path:'category',component:Category},
-//       {path:'courses',component:Courses},
-//       {path:'courses/add',component:AddCourse},
-//       {path:'courses/edit/:id',component:EditCourse},
-//       {path:'courses/view/:id',component:ViewCourse},
-//       {path:'users',component:Users},
-//       {path:'users/edit/:id',component:EditUser},
-//       {path:'users/view/:id',component:ViewUser},
-//     ]
-//   },
-// ]
+export const AppRoute = [
+  {path:'category',component:Category},
+  {path:'courses',component:Courses},
+  {path:'courses/add',component:AddCourse},
+  {path:'courses/edit/:id',component:EditCourse},
+  {path:'courses/view/:id',component:ViewCourse},
+  {path:'courses/view/:id/add-lecture',component:AddLecture},
+  {path:'courses/view/:id/lecture/:lectureId',component:ViewLecture},
+  {path:'courses/view/:id/lecture/edit/:lectureId',component:EditLecture},
+  {path:'users',component:Users},
+  {path:'users/edit/:id',component:EditUser},
+  {path:'users/view/:id',component:ViewUser},
+  {path:'ebooks',component:EBooks},
+  {path:'ebooks/add',component:AddEBook},
+  {path:'ebooks/edit/:id',component:EditEBook},
+  {path:'ebooks/view/:id',component:ViewEBook},
+  {path:'jobs',component:Jobs},
+  {path:'jobs/add',component:AddJob},
+  {path:'jobs/edit/:id',component:EditJob},
+  {path:'jobs/view/:id',component:ViewJob},
+]

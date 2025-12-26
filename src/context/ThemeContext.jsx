@@ -11,9 +11,9 @@ export const useTheme = () => {
 }
 
 export const ThemeProvider = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [isDarkMode, setIsDarkMode] = useState(false)
   const [currentTheme, setCurrentTheme] = useState(() => {
-    return localStorage.getItem('currentTheme') || 'neon'
+    return localStorage.getItem('currentTheme') || 'mono'
   })
 
   useEffect(() => {

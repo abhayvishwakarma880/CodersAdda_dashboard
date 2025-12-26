@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, LogOut, ChartBarStacked } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
+import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
@@ -59,6 +60,8 @@ const Dashboard = () => {
     { name: 'Users', icon: Users, path: '/dashboard/users' },
     { name: 'Category', icon: ChartBarStacked, path: '/dashboard/category' },
     { name: 'Courses', icon: FileText, path: '/dashboard/courses' },
+    { name: 'E-Books', icon: Book, path: '/dashboard/ebooks' },
+    { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
   ]
 
   const themeOptions = [
@@ -75,11 +78,16 @@ const Dashboard = () => {
         sidebarOpen ? 'translate-x-0 w-64 ' : '-translate-x-full w-64 md:translate-x-0 md:w-16'
       }`} 
            style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '30' }}>
-        <div className='p-4 border-b' style={{borderColor: colors.accent + '30'}}>
-          <h2 className={`font-bold text-xl transition-all duration-700 ease-out ${
-            sidebarOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-          }`} 
-              style={{ color: colors.primary }}>Dashboard</h2>
+        <div className='p-4 flex items-center justify-center border-b h-15' style={{borderColor: colors.accent + '30'}}>
+          {sidebarOpen ? (
+            <div className="transition-all duration-500 ease-out flex items-center justify-center w-full">
+               <img src={mainLogo} className="max-w-[140px] h-auto object-contain" alt="CodersAdda" />
+            </div>
+          ) : (
+             <div className="w-10  h-10 flex items-center justify-center transition-all duration-500 overflow-hidden">
+               <img src={logo} className="w-full h-full object-contain scale-[1]" alt="CA" />
+             </div>
+          )}
         </div>
         <nav className='mt-8 flex-1'>
           {navLinks.map((link, index) => {
@@ -93,7 +101,7 @@ const Dashboard = () => {
                    }
                  }}
                  className={`flex items-center px-4 py-2 mx-2 rounded-lg mb-2 transition-all duration-200 ${
-                   isActive ? 'ring-1 text-xl font-semibold' : ''
+                   isActive ? 'ring-1 text-xl' : ''
                  }`}
                  style={{ 
                    color: isActive ? colors.primary : colors.text,
@@ -197,13 +205,13 @@ const Dashboard = () => {
           </div>
           
           <div className='flex items-center space-x-2 md:space-x-4 flex-1 justify-end'>
-            <button onClick={() => setSettingsOpen(true)}
+            {/* <button onClick={() => setSettingsOpen(true)}
                     className='p-2 cursor-pointer rounded-lg transition-colors'
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
               <Settings className='w-5 h-5 md:w-6 md:h-6' />
-            </button>
+            </button> */}
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
               <span className='text-white font-semibold text-sm'><img src={logo} alt="logo" className='rounded-full' /></span>
@@ -212,7 +220,7 @@ const Dashboard = () => {
         </header>
 
         <div className='h-full w-full p-4 md:p-6 overflow-auto' style={{ backgroundColor: colors.background }}>
-          <div className="max-w-full">
+          <div className="max-w-full h-full flex flex-col">
             <Outlet />
           </div>
         </div>

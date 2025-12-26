@@ -4,6 +4,8 @@ import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { ArrowLeft, Mail, Phone, User, Camera, Save, X } from 'lucide-react';
 
+import { toast } from 'react-toastify';
+
 function EditUser() {
   const { colors } = useTheme();
   const { users, updateUser } = useData();
@@ -27,7 +29,7 @@ function EditUser() {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) { // 2MB limit for localStorage safety
-        alert("File size too large. Please select an image under 2MB.");
+        toast.error("File size too large. Please select an image under 2MB.");
         return;
       }
       const reader = new FileReader();
@@ -41,6 +43,7 @@ function EditUser() {
   const handleSubmit = (e) => {
     e.preventDefault();
     updateUser(id, formData);
+    toast.success('User identity updated successfully!');
     navigate('/dashboard/users');
   };
 

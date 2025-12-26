@@ -4,6 +4,9 @@ import { Plus, Search, BookOpen, Clock, Users, Star, Trash2, Edit2, Eye, LayoutG
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
+
 function Courses() {
   const { colors } = useTheme();
   const { courses, categories, deleteCourse } = useData();
@@ -13,6 +16,23 @@ function Courses() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('list');
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This will permanently remove the course and its curriculum.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete course!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCourse(id);
+        toast.success('Course deleted successfully!');
+      }
+    });
+  };
 
   const handleViewChange = (mode) => {
     if (mode === viewMode) return;
@@ -33,9 +53,9 @@ function Courses() {
   const cardStyle = { backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '30' };
 
   return (
-    <div className="p-2 md:p-6 transition-all duration-300" style={{ backgroundColor: colors.background }}>
+    <div className="h-full w-full flex flex-col overflow-hidden" style={{ backgroundColor: colors.background }}>
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+      <div className="flex-shrink-0 p-2 md:p-6 mb-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-4" style={{ backgroundColor: colors.background }}>
         <div className="min-w-0">
           <h1 className="text-xl md:text-2xl font-bold truncate" style={{ color: colors.text }}>Course Management</h1>
           <p className="text-xs md:text-sm font-medium opacity-60 truncate" style={{ color: colors.textSecondary }}>Design and organize your learning content.</p>
@@ -70,7 +90,7 @@ function Courses() {
       </div>
 
       {/* Search & Filter */}
-      <div className="flex flex-col sm:flex-row gap-4 mb-8 sticky top-0 z-30 pb-4" style={{ backgroundColor: colors.background }}>
+      <div className="flex-shrink-0 px-2 md:px-6 flex flex-col sm:flex-row gap-4 mb-6 sticky top-0 z-30 pb-4" style={{ backgroundColor: colors.background }}>
         <div className="flex-1 relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" size={16} style={{ color: colors.text }} />
           <input 
@@ -104,7 +124,7 @@ function Courses() {
       </div>
 
       {/* Grid/List Container */}
-      <div className={`transition-all duration-300 ${isAnimating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
+      <div className={`flex-1 overflow-auto p-2 md:px-6 pb-6 transition-all duration-300 ${isAnimating ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredCourses.map(course => (
@@ -113,7 +133,7 @@ function Courses() {
                 className="rounded border overflow-hidden shadow-sm transition-all duration-300 hover:shadow-md flex flex-col"
                 style={cardStyle}
               >
-                <div className="relative h-44 overflow-hidden bg-gray-100 group">
+                <div onClick={() => navigate(`/dashboard/courses/view/${course.id}`)} className="relative cursor-pointer h-44 overflow-hidden bg-gray-100 group">
                   {course.image ? (
                     <img src={course.image} alt={course.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   ) : (
@@ -158,7 +178,7 @@ function Courses() {
                        <button onClick={() => navigate(`/dashboard/courses/edit/${course.id}`)} className="p-2 cursor-pointer rounded transition-all" style={{ color: colors.primary }} onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '15'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
                           <Edit2 size={18} />
                        </button>
-                       <button onClick={() => deleteCourse(course.id)} className="p-2 cursor-pointer rounded transition-all" style={{ color: '#ef4444' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444415'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+                       <button onClick={() => handleDelete(course.id)} className="p-2 cursor-pointer rounded transition-all" style={{ color: '#ef4444' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444415'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
                           <Trash2 size={18} />
                        </button>
                     </div>
@@ -186,7 +206,7 @@ function Courses() {
                       {course.priceType === 'Free' ? 'Free' : `Premium ₹${course.price || ''}`}
                     </span>
                   </div>
-                  <h3 className="font-semibold text-base truncate" style={{ color: colors.text }}>{course.title}</h3>
+                  <h3 onClick={() => navigate(`/dashboard/courses/view/${course.id}`)} className="font-semibold cursor-pointer text-base truncate" style={{ color: colors.text }}>{course.title}</h3>
                   <p className="text-xs font-medium opacity-60" style={{ color: colors.textSecondary }}>{course.instructor}</p>
                 </div>
                 <div className="hidden md:flex items-center gap-6 text-[11px] font-semibold opacity-40 uppercase tracking-widest mr-4" style={{ color: colors.textSecondary }}>
@@ -200,7 +220,7 @@ function Courses() {
                   <button onClick={() => navigate(`/dashboard/courses/edit/${course.id}`)} className="p-2.5 cursor-pointer rounded text-primary transition-all" style={{ color: colors.primary }} onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '15'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
                     <Edit2 size={20} />
                   </button>
-                  <button onClick={() => deleteCourse(course.id)} className="p-2.5 cursor-pointer rounded text-red-500 transition-all" style={{ color: '#ef4444' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444415'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
+                  <button onClick={() => handleDelete(course.id)} className="p-2.5 cursor-pointer rounded text-red-500 transition-all" style={{ color: '#ef4444' }} onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444415'} onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
                     <Trash2 size={20} />
                   </button>
                 </div>

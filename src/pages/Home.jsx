@@ -1,13 +1,14 @@
 import React from 'react'
 import { useTheme } from '../context/ThemeContext'
+import { NavLink } from 'react-router-dom'
 
 const Home = () => {
   const { colors } = useTheme()
 
   const stats = [
     { title: 'Total Users', value: '2,543', icon: '', change: '+12%' },
-    { title: 'Revenue', value: '$45,231', icon: '', change: '+8%' },
-    { title: 'Orders', value: '1,234', icon: '', change: '+23%' },
+    { title: 'Revenue', value: '$4,678', icon: '', change: '+8%' },
+    { title: 'Courses', value: '999', icon: '', change: '+23%' },
     { title: 'Growth', value: '89%', icon: '', change: '+5%' }
   ]
 
@@ -16,10 +17,10 @@ const Home = () => {
       {/* Greeting Section */}
       <div className='mb-8'>
         <h1 className='text-3xl font-bold mb-2' style={{ color: colors.text }}>
-          Good Morning! 👋
+          Good Morning!
         </h1>
         <p className='text-lg' style={{ color: colors.textSecondary }}>
-          Welcome back to your dashboard. Here's what's happening today.
+          Welcome back to <span className='font-semibold'>CodersAdda</span> Here's what's happening today.
         </p>
       </div>
 
@@ -63,20 +64,20 @@ const Home = () => {
             Quick Actions
           </h3>
           <div className='space-y-3'>
-            <button className='w-full flex items-center p-3 rounded-lg transition-colors'
+            <NavLink to="/dashboard/courses/add" className='w-full flex items-center p-3 rounded-lg transition-colors'
                     style={{ backgroundColor: colors.primary + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary + '10'}>
               <span className='mr-3'>➕</span>
-              Add New User
-            </button>
-            <button className='w-full flex items-center p-3 rounded-lg transition-colors'
+              Add New Courses
+            </NavLink>
+            <NavLink to="/dashboard/ebooks/add" className='w-full flex items-center p-3 rounded-lg transition-colors'
                     style={{ backgroundColor: colors.accent + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.accent + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.accent + '10'}>
               <span className='mr-3'>📊</span>
-              Generate Report
-            </button>
+              Add E-Books
+            </NavLink>
             <button className='w-full flex items-center p-3 rounded-lg transition-colors'
                     style={{ backgroundColor: colors.warning + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.warning + '20'}

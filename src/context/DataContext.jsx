@@ -35,6 +35,50 @@ export const DataProvider = ({ children }) => {
     ];
   });
 
+  const [ebookCategories, setEbookCategories] = useState(() => {
+    const saved = localStorage.getItem('dashboard_ebook_categories');
+    if (saved) return JSON.parse(saved);
+    return [
+      { id: 'ec1', name: 'Programming' },
+      { id: 'ec2', name: 'Design' },
+      { id: 'ec3', name: 'Science' }
+    ];
+  });
+
+  const [ebooks, setEbooks] = useState(() => {
+    const saved = localStorage.getItem('dashboard_ebooks');
+    if (saved) return JSON.parse(saved);
+    return [
+      { id: 'eb1', title: 'Flutter Complete Guide', author: 'Dr. Angela Yu', category: 'Programming', priceType: 'Free', price: '', fileSize: '2.4 MB', downloadUrl: 'https://example.com/flutter.pdf' },
+      { id: 'eb2', title: 'JavaScript Basics', author: 'Kyle Simpson', category: 'Programming', priceType: 'Free', price: '', fileSize: '1.8 MB', downloadUrl: 'https://example.com/js.pdf' },
+      { id: 'eb3', title: 'UI/UX Design Principles', author: 'Steve Krug', category: 'Design', priceType: 'Paid', price: '499', fileSize: '3.2 MB', downloadUrl: 'https://example.com/design.pdf' }
+    ];
+  });
+
+  const [jobs, setJobs] = useState(() => {
+    const saved = localStorage.getItem('dashboard_jobs');
+    if (saved) return JSON.parse(saved);
+    return [
+      { 
+        id: '1', 
+        title: 'Senior Flutter Developer', 
+        category: 'Senior Developer', 
+        location: 'Lucknow', 
+        workType: 'Work From Home', 
+        experience: '3-5 Years', 
+        salary: '12-18 LPA', 
+        openings: '5', 
+        skills: 'Flutter, Dart, Firebase, REST API', 
+        companyName: 'TechVeda Solutions', 
+        companyEmail: 'hr@techveda.com', 
+        companyMobile: '+91 9651429000', 
+        companyWebsite: 'https://techveda.com', 
+        description: 'We are looking for an expert Flutter developer...',
+        createdAt: new Date().toISOString()
+      }
+    ];
+  });
+
   useEffect(() => {
     localStorage.setItem('dashboard_categories', JSON.stringify(categories));
   }, [categories]);
@@ -46,6 +90,18 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('dashboard_users', JSON.stringify(users));
   }, [users]);
+
+  useEffect(() => {
+    localStorage.setItem('dashboard_ebook_categories', JSON.stringify(ebookCategories));
+  }, [ebookCategories]);
+
+  useEffect(() => {
+    localStorage.setItem('dashboard_ebooks', JSON.stringify(ebooks));
+  }, [ebooks]);
+
+  useEffect(() => {
+    localStorage.setItem('dashboard_jobs', JSON.stringify(jobs));
+  }, [jobs]);
 
   const addCategory = (name) => {
     const newCategory = {
@@ -62,7 +118,6 @@ export const DataProvider = ({ children }) => {
 
   const deleteCategory = (id) => {
     setCategories(prev => prev.filter(cat => cat.id !== id));
-    // Implementation note: We might want to handle what happens to courses in this category
   };
 
   const addCourse = (courseData) => {
@@ -100,6 +155,59 @@ export const DataProvider = ({ children }) => {
     setUsers(prev => prev.filter(user => user.id !== id));
   };
 
+  const addEbookCategory = (name) => {
+    const newCategory = {
+      id: Date.now().toString(),
+      name: name.trim(),
+    };
+    setEbookCategories(prev => [...prev, newCategory]);
+    return newCategory;
+  };
+
+  const updateEbookCategory = (id, name) => {
+    setEbookCategories(prev => prev.map(cat => cat.id === id ? { ...cat, name: name.trim() } : cat));
+  };
+
+  const deleteEbookCategory = (id) => {
+    setEbookCategories(prev => prev.filter(cat => cat.id !== id));
+  };
+
+  const addEbook = (ebookData) => {
+    const newEbook = {
+      ...ebookData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+    };
+    setEbooks(prev => [...prev, newEbook]);
+    return newEbook;
+  };
+
+  const updateEbook = (id, ebookData) => {
+    setEbooks(prev => prev.map(ebook => ebook.id === id ? { ...ebook, ...ebookData } : ebook));
+  };
+
+  const deleteEbook = (id) => {
+    setEbooks(prev => prev.filter(ebook => ebook.id !== id));
+  };
+
+  const addJob = (jobData) => {
+    const newJob = {
+      ...jobData,
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString(),
+    };
+    setJobs(prev => [...prev, newJob]);
+    return newJob;
+  };
+
+  const updateJob = (id, jobData) => {
+    setJobs(prev => prev.map(job => job.id === id ? { ...job, ...jobData } : job));
+  };
+
+  const deleteJob = (id) => {
+    setJobs(prev => prev.filter(job => job.id !== id));
+  };
+
   return (
     <DataContext.Provider value={{
       categories,
@@ -113,7 +221,19 @@ export const DataProvider = ({ children }) => {
       users,
       addUser,
       updateUser,
-      deleteUser
+      deleteUser,
+      ebookCategories,
+      addEbookCategory,
+      updateEbookCategory,
+      deleteEbookCategory,
+      ebooks,
+      addEbook,
+      updateEbook,
+      deleteEbook,
+      jobs,
+      addJob,
+      updateJob,
+      deleteJob
     }}>
       {children}
     </DataContext.Provider>

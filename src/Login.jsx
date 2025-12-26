@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '' })
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(formData)
+    navigate('/dashboard')
   }
 
   return (

@@ -2,6 +2,8 @@ import { Plus, X, Edit2, Trash2, Check, Search, Layers, ChevronRight, Hash, Char
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function Category() {
   const { colors } = useTheme();
@@ -28,21 +30,39 @@ function Category() {
 
   const handleCloseModal = () => {
     setShowModalContent(false);
-    setTimeout(() => setIsModalOpen(false), 300);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setCategoryName('');
+    }, 300);
   };
 
   // Add Category
   const handleAddCategory = () => {
     if (categoryName.trim()) {
       addCategory(categoryName);
-      setCategoryName('');
+      toast.success('Category added successfully!');
       handleCloseModal();
+    } else {
+      toast.error('Please enter a category name');
     }
   };
 
   // Delete Category
   const handleDeleteCategory = (id) => {
-    deleteCategory(id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteCategory(id);
+        toast.success('Category deleted successfully!');
+      }
+    });
   };
 
   // Start Editing
@@ -55,8 +75,11 @@ function Category() {
   const handleEditSave = (id) => {
     if (editingName.trim()) {
       updateCategory(id, editingName);
+      toast.success('Category updated successfully!');
       setEditingId(null);
       setEditingName('');
+    } else {
+      toast.error('Category name cannot be empty');
     }
   };
 
@@ -72,9 +95,9 @@ function Category() {
   );
 
   return (
-    <div className="p-2 md:p-6 transition-all duration-300 min-h-screen" style={{ backgroundColor: colors.background }}>
+    <div className="h-full w-full flex flex-col overflow-hidden" style={{ backgroundColor: colors.background }}>
       {/* Reorganized Header Section */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 mb-10 sticky top-0 z-30 pb-4" style={{ backgroundColor: colors.background }}>
+      <div className="flex-shrink-0 mb-6 sticky top-0 z-30 pb-4 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6" style={{ backgroundColor: colors.background }}>
         <div className="relative hidden md:block">
           <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-1 h-8 rounded-full" style={{ backgroundColor: colors.primary }}></div>
           <h1 className="text-2xl md:text-3xl font-semibold flex items-center gap-3" style={{ color: colors.text }}>
@@ -97,7 +120,7 @@ function Category() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="w-full pl-3 pr-3 py-2 rounded outline-none border transition-all text-xs font-medium backdrop-blur-sm"
+              className="w-full pl-9 pr-3 py-2 rounded outline-none border transition-all text-xs font-medium backdrop-blur-sm"
               style={{ 
                 backgroundColor: colors.sidebar || colors.background, 
                 borderColor: colors.accent + '15',
@@ -110,7 +133,7 @@ function Category() {
 
           <button
             onClick={handleOpenModal}
-            className="flex-none px-4 py-2 cursor-pointer rounded-xl font-semibold transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2"
+            className="flex-none px-4 py-2 cursor-pointer rounded font-semibold transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2"
             style={{ backgroundColor: colors.primary, color: colors.background }}
           >
             <Plus size={16} />
@@ -119,89 +142,84 @@ function Category() {
         </div>
       </div>
 
-      {/* Premium Category Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {filteredCategories.map((category) => (
-          <div
-            key={category.id}
-            className="group relative rounded-2xl p-5 border transition-all duration-300 hover:shadow-md cursor-default flex flex-col overflow-hidden"
-            style={{ 
-              backgroundColor: colors.sidebar || colors.background,
-              borderColor: colors.accent + '15'
-            }}
-          >
-            {editingId === category.id ? (
-              <div className="relative z-10 flex flex-col h-full justify-between">
-                <input
-                  type="text"
-                  value={editingName}
-                  onChange={(e) => setEditingName(e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl outline-none border text-sm font-semibold mb-3"
-                  style={{ backgroundColor: colors.background, color: colors.text, borderColor: colors.primary }}
-                  autoFocus
-                />
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleEditSave(category.id)}
-                    className="flex-1 py-2 cursor-pointer rounded-xl font-bold text-[10px] uppercase transition-all active:scale-95 flex items-center justify-center gap-2"
-                    style={{ backgroundColor: colors.primary, color: colors.background }}
-                  >
-                    <Check size={14} /> Update
-                  </button>
-                  <button
-                    onClick={handleEditCancel}
-                    className="flex-1 py-2 cursor-pointer rounded-xl font-bold text-[10px] uppercase transition-all border opacity-60 hover:opacity-100"
-                    style={{ backgroundColor: 'transparent', color: colors.text, borderColor: colors.accent + '20' }}
-                  >
-                    Discard
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <div className="relative z-10 flex flex-col h-full">
-                <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300"
-                         style={{ backgroundColor: colors.primary + '10', color: colors.primary }}>
-                        <BookOpen size={20} />
+      {/* Category Table */}
+      <div className="flex-1 min-h-0 flex flex-col rounded border shadow-sm w-full overflow-hidden" style={{ borderColor: colors.accent + '15', backgroundColor: colors.sidebar || colors.background }}>
+        <div className="flex-1 overflow-auto scrollbar-thin scrollbar-thumb-rounded-full" style={{ scrollbarColor: `${colors.accent}40 transparent` }}>
+          <table className="w-full text-left border-collapse table-auto">
+            <thead className="sticky top-0 z-30" style={{ backgroundColor: colors.sidebar || colors.background }}>
+              <tr style={{ borderBottom: `2px solid ${colors.accent}15`, backgroundColor: colors.sidebar || colors.background }}>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-16 text-center whitespace-nowrap" style={{ color: colors.textSecondary }}>Sr.</th>
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap" style={{ color: colors.textSecondary }}>Category Name</th>
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-right whitespace-nowrap" style={{ color: colors.textSecondary }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y" style={{ divideColor: colors.accent + '08' }}>
+              {filteredCategories.map((category, index) => (
+                <tr key={category.id} className="hover:bg-opacity-10 transition-colors" style={{ color: colors.text }}>
+                  <td className="px-4 py-4 text-xs font-bold opacity-30 text-center whitespace-nowrap">
+                    {index + 1}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {editingId === category.id ? (
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="text"
+                          value={editingName}
+                          onChange={(e) => setEditingName(e.target.value)}
+                          className="px-3 py-1.5 rounded border outline-none text-sm font-semibold w-full max-w-xs"
+                          style={{ backgroundColor: colors.background, color: colors.text, borderColor: colors.primary }}
+                          autoFocus
+                          onKeyPress={(e) => e.key === 'Enter' && handleEditSave(category.id)}
+                        />
+                        <button
+                          onClick={() => handleEditSave(category.id)}
+                          className="p-1.5 rounded-lg text-green-500 hover:bg-green-500/10 transition-all cursor-pointer"
+                        >
+                          <Check size={18} />
+                        </button>
+                        <button
+                          onClick={handleEditCancel}
+                          className="p-1.5 rounded-lg text-red-500 hover:bg-red-500/10 transition-all cursor-pointer"
+                        >
+                          <X size={18} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-3">
+                        <div className="p-2 rounded-lg" style={{ backgroundColor: colors.primary + '10', color: colors.primary }}>
+                          <BookOpen size={16} />
+                        </div>
+                        <span className="text-sm font-bold">{category.name}</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-right whitespace-nowrap">
+                    <div className="flex items-center justify-end gap-2">
+                      {editingId !== category.id && (
+                        <>
+                          <button 
+                            onClick={() => handleEditStart(category)}
+                            className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
+                            style={{ color: colors.primary, backgroundColor: colors.primary + '10' }}
+                          >
+                            <Edit2 size={16} />
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteCategory(category.id)}
+                            className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
+                            style={{ color: '#ef4444', backgroundColor: '#ef444415' }}
+                          >
+                            <Trash2 size={16} />
+                          </button>
+                        </>
+                      )}
                     </div>
-                    <div>
-                        <h3 className="text-base font-bold line-clamp-1 transition-colors duration-300" style={{ color: colors.text }}>
-                            {category.name}
-                        </h3>
-                        <p className="text-[10px] font-bold uppercase tracking-widest opacity-40" style={{ color: colors.textSecondary }}>Collection</p>
-                    </div>
-                </div>
-                
-                <div className="flex items-center gap-2 mt-4 pt-4 border-t" style={{ borderColor: colors.accent + '05' }}>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleEditStart(category); }}
-                    className="flex-1 py-2 cursor-pointer rounded-lg font-bold text-[9px] uppercase tracking-widest transition-all flex items-center justify-center gap-2"
-                    style={{ 
-                        color: colors.primary, 
-                        backgroundColor: colors.primary + '05'
-                    }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '15'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary + '05'}
-                  >
-                    <Edit2 size={12} /> Edit
-                  </button>
-                  <button
-                    onClick={(e) => { e.stopPropagation(); handleDeleteCategory(category.id); }}
-                    className="p-2 cursor-pointer rounded-lg transition-all flex items-center justify-center"
-                    style={{ 
-                        color: '#ef4444', 
-                        backgroundColor: '#ef444405' 
-                    }}
-                    onMouseEnter={(e) => e.target.style.backgroundColor = '#ef444410'}
-                    onMouseLeave={(e) => e.target.style.backgroundColor = '#ef444405'}
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Enhanced Empty States */}
@@ -240,7 +258,7 @@ function Category() {
           />
           
           <div 
-            className={`relative rounded-[2.5rem] p-10 w-full max-w-lg border shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] transition-all duration-500 transform ${showModalContent ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-90'}`}
+            className={`relative rounded p-10 w-full max-w-lg border shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] transition-all duration-500 transform ${showModalContent ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-12 opacity-0 scale-90'}`}
             style={{ 
               backgroundColor: colors.sidebar || colors.background,
               borderColor: colors.accent + '30'
@@ -248,7 +266,7 @@ function Category() {
           >
             <div className="flex justify-between items-center mb-10">
               <div>
-                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Create New Entity</h2>
+                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Create New Category</h2>
                 <div className="w-12 h-1.5 rounded-full mt-2" style={{ backgroundColor: colors.primary }}></div>
               </div>
               <button
@@ -262,15 +280,15 @@ function Category() {
 
             <div className="space-y-8">
               <div>
-                <label className="block text-[10px] font-bold uppercase tracking-[3px] mb-3 opacity-50" style={{ color: colors.textSecondary }}>
+                {/* <label className="block text-[10px] font-bold uppercase tracking-[3px] mb-3 opacity-50" style={{ color: colors.textSecondary }}>
                     Taxonomy Identity
-                </label>
+                </label> */}
                 <input
                   type="text"
                   value={categoryName}
                   onChange={(e) => setCategoryName(e.target.value)}
-                  placeholder="e.g. Artificial Intelligence"
-                  className="w-full px-6 py-4 rounded-2xl outline-none border-2 transition-all font-bold text-lg shadow-inner"
+                  placeholder="e.g. Python"
+                  className="w-full px-6 py-4 rounded outline-none border-2 transition-all font-bold text-lg shadow-inner"
                   style={{ 
                       backgroundColor: colors.background, 
                       color: colors.text, 
@@ -286,17 +304,17 @@ function Category() {
               <div className="flex gap-4 pt-6 border-t" style={{ borderColor: colors.accent + '10' }}>
                 <button
                   onClick={handleAddCategory}
-                  className="flex-1 py-4 cursor-pointer rounded-2xl font-bold uppercase tracking-widest text-sm transition-all shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center justify-center gap-3"
+                  className="flex-1 py-4 cursor-pointer rounded font-bold uppercase tracking-widest text-sm transition-all shadow-xl hover:shadow-primary/30 active:scale-95 flex items-center justify-center gap-3"
                   style={{ backgroundColor: colors.primary, color: colors.background }}
                 >
-                  Confirm Entry
+                  Confirm
                 </button>
                 <button
                   onClick={handleCloseModal}
-                  className="px-8 py-4 cursor-pointer rounded-2xl font-bold uppercase tracking-widest text-[10px] transition-all border hover:bg-white/5 opacity-60"
+                  className="px-8 py-4 cursor-pointer rounded font-bold uppercase tracking-widest text-[10px] transition-all border hover:bg-white/5 opacity-60"
                   style={{ backgroundColor: 'transparent', color: colors.text, borderColor: colors.accent + '30' }}
                 >
-                  Abort
+                  Cancel
                 </button>
               </div>
             </div>

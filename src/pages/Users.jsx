@@ -3,6 +3,8 @@ import { Search, Eye, Edit2, Trash2, ChevronLeft, ChevronRight, UserPlus, Users 
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 function Users() {
   const { colors } = useTheme();
@@ -11,6 +13,24 @@ function Users() {
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 7; // Increased items per page for better use of space
+
+  // Delete handler
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this identity!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: colors.primary,
+      cancelButtonColor: '#ef4444',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(id);
+        toast.success('User identity deleted successfully!');
+      }
+    });
+  };
 
   // Filtered users
   const filteredUsers = useMemo(() => {
@@ -121,7 +141,7 @@ function Users() {
                         <Edit2 size={16} />
                       </button>
                       <button 
-                        onClick={() => { if(window.confirm('Delete this identity?')) deleteUser(user.id); }}
+                        onClick={() => handleDelete(user.id)}
                         className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
                         style={{ color: '#ef4444', backgroundColor: '#ef444415' }}
                       >
