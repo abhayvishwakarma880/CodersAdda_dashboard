@@ -17,6 +17,9 @@ import ViewJob from "../pages/ViewJob";
 import AddLecture from "../pages/AddLecture";
 import ViewLecture from "../pages/ViewLecture";
 import EditLecture from "../pages/EditLecture";
+import Subscriptions from "../pages/Subscriptions";
+import AddSubscription from "../pages/AddSubscription";
+import ViewSubscription from "../pages/ViewSubscription";
 
 export const AppRoute = [
   {path:'category',component:Category},
@@ -38,4 +41,8 @@ export const AppRoute = [
   {path:'jobs/add',component:AddJob},
   {path:'jobs/edit/:id',component:EditJob},
   {path:'jobs/view/:id',component:ViewJob},
+  {path:'subscriptions',component:Subscriptions},
+  {path:'subscriptions/add',component:AddSubscription},
+  {path:'subscriptions/edit/:id',component:AddSubscription},
+  {path:'subscriptions/view/:id',component:ViewSubscription},
 ]

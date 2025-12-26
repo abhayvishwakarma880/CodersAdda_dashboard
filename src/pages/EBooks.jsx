@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function EBooks() {
   const { colors } = useTheme();
@@ -32,6 +33,7 @@ function EBooks() {
   const [newCatName, setNewCatName] = useState('');
   const [editingCatId, setEditingCatId] = useState(null);
   const [editingCatName, setEditingCatName] = useState('');
+  const [newCatStatus, setNewCatStatus] = useState('Active');
 
   // Filtering
   const filteredCategories = ebookCategories.filter(cat => 
@@ -47,9 +49,10 @@ function EBooks() {
   // Category Actions
   const handleAddCategory = () => {
     if (newCatName.trim()) {
-      addEbookCategory(newCatName);
+      addEbookCategory({ name: newCatName, status: newCatStatus });
       toast.success('Category added successfully!');
       setNewCatName('');
+      setNewCatStatus('Active');
       setIsCatModalOpen(false);
     } else {
       toast.error('Please enter a category name');
@@ -105,6 +108,18 @@ function EBooks() {
     });
   };
 
+  const toggleCatStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateEbookCategory(id, { status: newStatus });
+    toast.info(`Category ${newStatus}`);
+  };
+
+  const toggleEbookStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateEbook(id, { status: newStatus });
+    toast.info(`E-Book ${newStatus}`);
+  };
+
   return (
     <div className="h-full w-full flex flex-col overflow-hidden" style={{ backgroundColor: colors.background }}>
       {/* Header Section */}
@@ -114,7 +129,7 @@ function EBooks() {
           <p className="text-xs opacity-50 font-medium" style={{ color: colors.textSecondary }}>Manage your digital library and resources</p>
         </div>
 
-        <div className="flex items-center gap-2 p-1 rounded-lg border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+        <div className="flex items-center gap-2 p-1 rounded border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
           <button 
             onClick={() => handleTabChange('categories')}
             className={`px-4 py-2 rounded font-bold text-[10px] uppercase tracking-widest transition-all cursor-pointer ${activeTab === 'categories' ? 'shadow-sm' : 'opacity-50'}`}
@@ -184,6 +199,7 @@ function EBooks() {
                 <tr style={{ borderBottom: `2px solid ${colors.accent}15`, backgroundColor: colors.sidebar || colors.background }}>
                   <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-16 text-center" style={{ color: colors.textSecondary }}>Sr.</th>
                   <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Category Name</th>
+                  <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-center" style={{ color: colors.textSecondary }}>Status</th>
                   <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-right" style={{ color: colors.textSecondary }}>Actions</th>
                 </tr>
               </thead>
@@ -214,6 +230,14 @@ function EBooks() {
                           <span className="text-sm font-bold">{cat.name}</span>
                         </div>
                       )}
+                    </td>
+                    <td className="px-6 py-4">
+                        <div className="flex justify-center items-center gap-2">
+                            <Toggle active={cat.status === 'Active'} onClick={() => toggleCatStatus(cat.id, cat.status)} />
+                            <span className={`text-[9px] font-black uppercase tracking-wider ${cat.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                                {cat.status || 'Active'}
+                            </span>
+                        </div>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -288,13 +312,12 @@ function EBooks() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      {book.priceType === 'Free' ? (
-                        <span className="px-2 py-1 rounded bg-green-500/10 text-green-500 text-[10px] font-bold uppercase tracking-widest">Free</span>
-                      ) : (
-                        <span className="px-2 py-1 rounded bg-amber-500/10 text-amber-500 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 w-fit border border-amber-500/20">
-                          <Lock size={10} /> ₹{book.price || '0'}
-                        </span>
-                      )}
+                        <div className="flex items-center gap-2">
+                            <Toggle active={book.status === 'Active'} onClick={() => toggleEbookStatus(book.id, book.status)} />
+                            <span className={`text-[9px] font-black uppercase tracking-wider ${book.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                                {book.status || 'Active'}
+                            </span>
+                        </div>
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
@@ -341,7 +364,7 @@ function EBooks() {
       {isCatModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsCatModalOpen(false)} />
-          <div className="relative w-full max-w-md rounded-xl p-8 shadow-2xl border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+          <div className="relative w-full max-w-md rounded p-8 shadow-2xl border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold" style={{ color: colors.text }}>Create E-Book Category</h2>
               <button onClick={() => setIsCatModalOpen(false)} className="p-2 rounded-lg hover:bg-black/10 transition-all cursor-pointer" style={{ color: colors.text }}><X size={20} /></button>
@@ -360,6 +383,29 @@ function EBooks() {
                   onBlur={(e) => e.target.style.borderColor = colors.accent + '20'}
                   autoFocus
                 />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest opacity-50" style={{ color: colors.text }}>Initial Status</label>
+                <div className="flex gap-4">
+                    {['Active', 'Disabled'].map(stat => (
+                        <button 
+                            key={stat}
+                            type="button"
+                            onClick={() => setNewCatStatus(stat)}
+                            className={`flex-1 py-2.5 rounded border text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                                newCatStatus === stat 
+                                ? 'bg-primary text-white border-primary' 
+                                : 'bg-transparent opacity-40 border-accent/20'
+                            }`}
+                            style={{ 
+                                backgroundColor: newCatStatus === stat ? colors.primary : 'transparent',
+                                borderColor: newCatStatus === stat ? colors.primary : colors.accent + '20'
+                            }}
+                        >
+                            {stat}
+                        </button>
+                    ))}
+                </div>
               </div>
               <div className="flex gap-3 pt-4">
                 <button 

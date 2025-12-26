@@ -35,7 +35,7 @@ function ViewJob() {
   );
 
   return (
-    <div className="max-w-4xl mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
+    <div className="w-full mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
       {/* Header */}
       <div className="flex items-center gap-4 mb-8">
         <button 

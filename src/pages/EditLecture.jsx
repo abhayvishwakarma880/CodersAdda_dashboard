@@ -43,7 +43,8 @@ function EditLecture() {
             pdfFileName: foundLecture.pdfFileName || '',
             pdfUrl: foundLecture.pdfUrl || '',
             isLocked: foundLecture.isLocked || false,
-            lectureSrNo: foundLecture.lectureSrNo || ''
+            lectureSrNo: foundLecture.lectureSrNo || '',
+            status: foundLecture.status || 'Active'
         });
       } else {
         navigate(`/dashboard/courses/view/${id}`);
@@ -138,7 +139,8 @@ function EditLecture() {
                   pdfFileName: formData.pdfFileName,
                   pdfUrl: formData.pdfUrl,
                   isLocked: formData.isLocked,
-                  lectureSrNo: formData.lectureSrNo
+                  lectureSrNo: formData.lectureSrNo,
+                  status: formData.status
               }]
           };
       }
@@ -153,7 +155,7 @@ function EditLecture() {
   const labelStyle = { color: colors.textSecondary, fontSize: '12px', fontWeight: '600', marginBottom: '8px', display: 'block' };
 
   return (
-    <div className="max-w-4xl mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
+    <div className="w-full mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
       <div className="flex items-center gap-4 mb-8">
         <button 
           onClick={() => navigate(-1)}
@@ -243,32 +245,53 @@ function EditLecture() {
                  />
               </div>
 
-              <div className="space-y-1">
-                 <label style={labelStyle}>Privacy Setting</label>
-                 <div className="flex gap-4">
-                     <button 
-                        type="button" onClick={() => setFormData({...formData, isLocked: false})}
-                        className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
-                        style={{ 
-                            backgroundColor: !formData.isLocked ? colors.primary : 'transparent', 
-                            color: !formData.isLocked ? colors.background : colors.text,
-                            borderColor: !formData.isLocked ? colors.primary : colors.accent + '20'
-                        }}
-                     >
-                        Free Preview
-                     </button>
-                     <button 
-                         type="button" onClick={() => setFormData({...formData, isLocked: true})}
-                         className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
-                         style={{ 
-                            backgroundColor: formData.isLocked ? colors.primary : 'transparent', 
-                            color: formData.isLocked ? colors.background : colors.text,
-                            borderColor: formData.isLocked ? colors.primary : colors.accent + '20'
-                        }}
-                     >
-                        Locked
-                     </button>
-                 </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1">
+                    <label style={labelStyle}>Privacy Setting</label>
+                    <div className="flex gap-4">
+                        <button 
+                            type="button" onClick={() => setFormData({...formData, isLocked: false})}
+                            className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                            style={{ 
+                                backgroundColor: !formData.isLocked ? colors.primary : 'transparent', 
+                                color: !formData.isLocked ? colors.background : colors.text,
+                                borderColor: !formData.isLocked ? colors.primary : colors.accent + '20'
+                            }}
+                        >
+                            Free 
+                        </button>
+                        <button 
+                            type="button" onClick={() => setFormData({...formData, isLocked: true})}
+                            className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                            style={{ 
+                                backgroundColor: formData.isLocked ? colors.primary : 'transparent', 
+                                color: formData.isLocked ? colors.background : colors.text,
+                                borderColor: formData.isLocked ? colors.primary : colors.accent + '20'
+                            }}
+                        >
+                            Locked
+                        </button>
+                    </div>
+                </div>
+                <div className="space-y-1">
+                    <label style={labelStyle}>Lecture Status</label>
+                    <div className="flex gap-4">
+                        {['Active', 'Disabled'].map(stat => (
+                            <button 
+                                key={stat}
+                                type="button" onClick={() => setFormData({...formData, status: stat})}
+                                className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                                style={{ 
+                                    backgroundColor: formData.status === stat ? colors.primary : 'transparent', 
+                                    color: formData.status === stat ? colors.background : colors.text,
+                                    borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                                }}
+                            >
+                                {stat}
+                            </button>
+                        ))}
+                    </div>
+                </div>
               </div>
             </div>
             <div className="space-y-3 pt-6 shrink-0">
@@ -366,8 +389,6 @@ function EditLecture() {
                     </div>
                 </div>
             </div>
-
-            
         </div>
       </form>
     </div>

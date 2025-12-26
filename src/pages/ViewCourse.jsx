@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function ViewCourse() {
   const { colors } = useTheme();
@@ -100,12 +101,27 @@ function ViewCourse() {
     });
   };
 
+  const toggleLectureStatus = (sectionId, lessonId, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    const updatedCurriculum = course.curriculum.map(section => {
+      if (section.id === sectionId) {
+        return {
+          ...section,
+          lessons: section.lessons.map(l => l.id === lessonId ? { ...l, status: newStatus } : l)
+        };
+      }
+      return section;
+    });
+    updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+    toast.info(`Lecture ${newStatus}`);
+  };
+
   return (
     <div className="w-full min-h-full flex flex-col">
       {/* Top Banner */}
       <div className="flex items-center justify-between p-4 border-b sticky top-0 z-10" style={{ backgroundColor: colors.background, borderColor: colors.accent + '20' }}>
         <div className="flex items-center gap-4">
-          <button onClick={() => navigate('/dashboard/courses')} className="p-2 rounded hover:bg-black/5 transition-all">
+          <button onClick={() => navigate('/dashboard/courses')} className="p-2 rounded hover:bg-black/5 transition-all cursor-pointer">
              <ArrowLeft size={18} style={{ color: colors.text }} />
           </button>
           <div>
@@ -214,16 +230,24 @@ function ViewCourse() {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center gap-1 flex-shrink-0">
-                                                <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/${lesson.id}`)} className="p-1.5 cursor-pointer text-primary">
-                                                    <Eye size={14} />
-                                                </button>
-                                                <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/edit/${lesson.id}`)} className="p-1.5 cursor-pointer text-blue-500">
-                                                    <Edit size={14} />
-                                                </button>
-                                                <button onClick={() => handleDeleteLecture(section.id, lesson.id)} className="p-1.5 cursor-pointer text-red-500">
-                                                    <Trash2 size={14} />
-                                                </button>
+                                            <div className="flex items-center gap-6">
+                                                <div className="flex items-center gap-2">
+                                                    <Toggle active={lesson.status === 'Active'} onClick={() => toggleLectureStatus(section.id, lesson.id, lesson.status)} />
+                                                    <span className={`text-[8px] font-black uppercase tracking-wider ${lesson.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                                                        {lesson.status || 'Active'}
+                                                    </span>
+                                                </div>
+                                                <div className="flex items-center gap-1 flex-shrink-0">
+                                                    <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/${lesson.id}`)} className="p-1.5 cursor-pointer text-primary transition-all hover:bg-primary/10 rounded">
+                                                        <Eye size={14} />
+                                                    </button>
+                                                    <button onClick={() => navigate(`/dashboard/courses/view/${course.id}/lecture/edit/${lesson.id}`)} className="p-1.5 cursor-pointer text-blue-500 transition-all hover:bg-blue-500/10 rounded">
+                                                        <Edit size={14} />
+                                                    </button>
+                                                    <button onClick={() => handleDeleteLecture(section.id, lesson.id)} className="p-1.5 cursor-pointer text-red-500 transition-all hover:bg-red-500/10 rounded">
+                                                        <Trash2 size={14} />
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     )) : (
@@ -237,7 +261,6 @@ function ViewCourse() {
             </div>
           </div>
 
-          {/* Right Sidebar Info */}
           <div className="lg:col-span-4 p-8 space-y-8 bg-black/[0.01]">
                 <div className="space-y-4">
                     <h3 className="text-xs font-black uppercase tracking-[2px] opacity-40">Learning Outcomes</h3>
@@ -258,16 +281,6 @@ function ViewCourse() {
                             {course.priceType === 'Free' ? 'FREE' : `₹${course.price}`}
                         </p>
                     </div>
-                    {/* <div className="space-y-3 pt-4 border-t" style={{ borderColor: colors.accent + '10' }}>
-                        <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="opacity-40">Level</span>
-                            <span style={{ color: colors.primary }}>Intermediate</span>
-                        </div>
-                        <div className="flex items-center justify-between text-xs font-bold">
-                            <span className="opacity-40">Language</span>
-                            <span style={{ color: colors.text }}>Hindi / English</span>
-                        </div>
-                    </div> */}
                 </div>
           </div>
 

@@ -177,6 +177,26 @@ function EditEBook() {
                   <p className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Size: {formData.fileSize}</p>
                 )}
               </div>
+
+              <div className="space-y-2">
+                <label style={labelStyle}>E-Book Status</label>
+                <div className="flex gap-4">
+                  {['Active', 'Disabled'].map(stat => (
+                    <button 
+                      key={stat} type="button"
+                      onClick={() => setFormData({...formData, status: stat})}
+                      className={`flex-1 py-3 rounded font-bold text-[10px] uppercase tracking-widest transition-all cursor-pointer border ${formData.status === stat ? '' : 'opacity-40'}`}
+                      style={{ 
+                        backgroundColor: formData.status === stat ? colors.primary : 'transparent',
+                        color: formData.status === stat ? colors.background : colors.text,
+                        borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                      }}
+                    >
+                      {stat}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

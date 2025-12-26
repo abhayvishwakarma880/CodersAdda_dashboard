@@ -23,7 +23,8 @@ function AddJob() {
     companyEmail: '',
     companyMobile: '',
     companyWebsite: '',
-    description: ''
+    description: '',
+    status: 'Active'
   };
   
   const [formData, setFormData] = useState(initialFormState);
@@ -220,9 +221,28 @@ function AddJob() {
         {/* Sidebar Actions */}
         <div className="space-y-6">
           <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-            <h3 className="text-sm font-bold mb-4" style={{ color: colors.text }}>Publish Options</h3>
-            <p className="text-xs opacity-60 mb-6 italic" style={{ color: colors.textSecondary }}>Job will be listed immediately upon publishing.</p>
-            
+            <h3 className="text-sm font-bold mb-4" style={{ color: colors.text }}>Job Status</h3>
+            <div className="flex gap-4 mb-6">
+                {['Active', 'Disabled'].map(stat => (
+                    <button 
+                        key={stat}
+                        type="button"
+                        onClick={() => setFormData({...formData, status: stat})}
+                        className={`flex-1 py-2 rounded border text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                            formData.status === stat 
+                            ? 'bg-primary text-white border-primary' 
+                            : 'bg-transparent opacity-40 border-accent/20'
+                        }`}
+                        style={{ 
+                            backgroundColor: formData.status === stat ? colors.primary : 'transparent',
+                            borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                        }}
+                    >
+                        {stat}
+                    </button>
+                ))}
+            </div>
+
             <button 
               type="submit"
               className="w-full py-3 rounded-md font-bold transition-all shadow-md text-sm uppercase tracking-wider active:scale-[0.98] cursor-pointer mb-3"

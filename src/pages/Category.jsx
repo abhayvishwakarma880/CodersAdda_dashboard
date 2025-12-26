@@ -4,6 +4,7 @@ import { useData } from '../context/DataContext';
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function Category() {
   const { colors } = useTheme();
@@ -89,6 +90,12 @@ function Category() {
     setEditingName('');
   };
 
+  const toggleStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateCategory(id, { status: newStatus });
+    toast.info(`Category ${newStatus}`);
+  };
+
   // Filter categories based on search query
   const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -150,6 +157,7 @@ function Category() {
               <tr style={{ borderBottom: `2px solid ${colors.accent}15`, backgroundColor: colors.sidebar || colors.background }}>
                 <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-16 text-center whitespace-nowrap" style={{ color: colors.textSecondary }}>Sr.</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap" style={{ color: colors.textSecondary }}>Category Name</th>
+                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-center whitespace-nowrap" style={{ color: colors.textSecondary }}>Status</th>
                 <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-right whitespace-nowrap" style={{ color: colors.textSecondary }}>Actions</th>
               </tr>
             </thead>
@@ -192,6 +200,14 @@ function Category() {
                         <span className="text-sm font-bold">{category.name}</span>
                       </div>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex justify-center items-center gap-2">
+                        <Toggle active={category.status === 'Active'} onClick={() => toggleStatus(category.id, category.status)} />
+                        <span className={`text-[9px] font-black uppercase tracking-wider ${category.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                            {category.status || 'Active'}
+                        </span>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-right whitespace-nowrap">
                     <div className="flex items-center justify-end gap-2">

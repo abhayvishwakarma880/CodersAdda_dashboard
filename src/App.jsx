@@ -4,16 +4,8 @@ import { DataProvider } from "./context/DataContext";
 import Dashboard from "./dashboard/Dashboard";
 import Home from "./pages/Home";
 import Login from "./Login";
-import Category from "./pages/Category";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Courses from "./pages/Courses";
-import AddCourse from "./pages/AddCourse";
-import EditCourse from "./pages/EditCourse";
-import ViewCourse from "./pages/ViewCourse";
-import Users from "./pages/Users";
-import ViewUser from "./pages/ViewUser";
-import EditUser from "./pages/EditUser";
 import { AppRoute } from "./routes/AppRoute";
 
 const App = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import mainLogo from '../assets/mainLogo.png'
@@ -62,6 +62,7 @@ const Dashboard = () => {
     { name: 'Courses', icon: FileText, path: '/dashboard/courses' },
     { name: 'E-Books', icon: Book, path: '/dashboard/ebooks' },
     { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
+    { name: 'Subscription', icon: CreditCard, path: '/dashboard/subscriptions' },
   ]
 
   const themeOptions = [
@@ -156,8 +157,8 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className='flex-1 flex flex-col min-w-0'>
         {/* Header */}
-        <header className='h-16 border-b flex items-center px-4 md:px-6 relative'
-                style={{ backgroundColor: colors.background, borderColor: colors.accent + '30' }}>
+        <header className='h-17 border-b flex items-center px-4 md:px-6 relative'
+                style={{ backgroundColor: colors.sidebar, borderColor: colors.accent + '30' }}>
           <div className='flex items-center space-x-2 md:space-x-4 flex-1'>
             <button onClick={(e) => {
                       

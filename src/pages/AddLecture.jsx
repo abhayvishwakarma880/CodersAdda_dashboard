@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Video, Save, X, Plus, Info, Layout, Play, Clock, Hash, Monitor, FileText } from 'lucide-react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { ArrowLeft, Save, X, Video, Image as ImageIcon, Monitor, FileText, Clock, Layout, Hash, Lock, Play, Check } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
@@ -8,44 +8,43 @@ import { toast } from 'react-toastify';
 function AddLecture() {
   const { colors } = useTheme();
   const { courses, updateCourse } = useData();
-  const { id } = useParams(); // courseId
   const navigate = useNavigate();
-  const videoInputRef = useRef(null);
+  const { id } = useParams();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const sectionIdFromUrl = queryParams.get('sectionId');
   
   const [course, setCourse] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
+    sectionId: sectionIdFromUrl || '',
     description: '',
     duration: '',
-    sectionId: '',
     videoFileName: '',
     videoUrl: '',
     thumbnailUrl: '',
     pdfFileName: '',
     pdfUrl: '',
     isLocked: false,
-    lectureSrNo: ''
+    lectureSrNo: '',
+    status: 'Active'
   });
 
   const thumbnailInputRef = useRef(null);
+  const videoInputRef = useRef(null);
   const pdfInputRef = useRef(null);
 
   useEffect(() => {
     const found = courses.find(c => c.id === id);
     if (found) {
       setCourse(found);
-      const queryParams = new URLSearchParams(window.location.search);
-      const preSelectedSectionId = queryParams.get('sectionId');
-      
-      if (preSelectedSectionId) {
-        setFormData(prev => ({ ...prev, sectionId: preSelectedSectionId }));
-      } else if (found.curriculum?.length > 0) {
+      if (!formData.sectionId && found.curriculum?.length > 0) {
         setFormData(prev => ({ ...prev, sectionId: found.curriculum[0].id }));
       }
     } else {
       navigate('/dashboard/courses');
     }
-  }, [id, courses, navigate]);
+  }, [id, courses, navigate, formData.sectionId]);
 
   if (!course) return null;
 
@@ -95,10 +94,6 @@ function AddLecture() {
   const handlePdfChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.type !== 'application/pdf') {
-        toast.error("Please upload a PDF file");
-        return;
-      }
       setFormData({
         ...formData,
         pdfFileName: file.name,
@@ -111,7 +106,7 @@ function AddLecture() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.title || !formData.sectionId) {
-      toast.warning("Title and Module selection are required");
+      toast.warning("Please fill required fields");
       return;
     }
 
@@ -123,17 +118,18 @@ function AddLecture() {
       videoFileName: formData.videoFileName,
       videoUrl: formData.videoUrl,
       thumbnailUrl: formData.thumbnailUrl,
-      pdfFileName: formData.pdfFileName,
       pdfUrl: formData.pdfUrl,
+      pdfFileName: formData.pdfFileName,
       isLocked: formData.isLocked,
-      lectureSrNo: formData.lectureSrNo
+      lectureSrNo: formData.lectureSrNo,
+      status: formData.status
     };
 
     const updatedCurriculum = course.curriculum.map(section => {
       if (section.id === formData.sectionId) {
         return {
           ...section,
-          lessons: [...section.lessons, newLesson]
+          lessons: [...(section.lessons || []), newLesson]
         };
       }
       return section;
@@ -237,34 +233,56 @@ function AddLecture() {
                  />
               </div>
 
-              <div className="space-y-1">
-                 <label style={labelStyle}>Lecture Privacy</label>
-                 <div className="flex gap-4">
-                     <button 
-                        type="button" onClick={() => setFormData({...formData, isLocked: false})}
-                        className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
-                        style={{ 
-                            backgroundColor: !formData.isLocked ? colors.primary : 'transparent', 
-                            color: !formData.isLocked ? colors.background : colors.text,
-                            borderColor: !formData.isLocked ? colors.primary : colors.accent + '20'
-                        }}
-                     >
-                        Free Preview
-                     </button>
-                     <button 
-                         type="button" onClick={() => setFormData({...formData, isLocked: true})}
-                         className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
-                         style={{ 
-                            backgroundColor: formData.isLocked ? colors.primary : 'transparent', 
-                            color: formData.isLocked ? colors.background : colors.text,
-                            borderColor: formData.isLocked ? colors.primary : colors.accent + '20'
-                        }}
-                     >
-                        Locked (Paid)
-                     </button>
-                 </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-1">
+                    <label style={labelStyle}>Lecture Privacy</label>
+                    <div className="flex gap-4">
+                        <button 
+                            type="button" onClick={() => setFormData({...formData, isLocked: false})}
+                            className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                            style={{ 
+                                backgroundColor: !formData.isLocked ? colors.primary : 'transparent', 
+                                color: !formData.isLocked ? colors.background : colors.text,
+                                borderColor: !formData.isLocked ? colors.primary : colors.accent + '20'
+                            }}
+                        >
+                            Free 
+                        </button>
+                        <button 
+                            type="button" onClick={() => setFormData({...formData, isLocked: true})}
+                            className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                            style={{ 
+                                backgroundColor: formData.isLocked ? colors.primary : 'transparent', 
+                                color: formData.isLocked ? colors.background : colors.text,
+                                borderColor: formData.isLocked ? colors.primary : colors.accent + '20'
+                            }}
+                        >
+                            Locked 
+                        </button>
+                    </div>
+                </div>
+                <div className="space-y-1">
+                    <label style={labelStyle}>Lecture Status</label>
+                    <div className="flex gap-4">
+                        {['Active', 'Disabled'].map(stat => (
+                            <button 
+                                key={stat}
+                                type="button" onClick={() => setFormData({...formData, status: stat})}
+                                className="flex-1 cursor-pointer py-3 rounded border font-bold text-xs uppercase tracking-widest transition-all"
+                                style={{ 
+                                    backgroundColor: formData.status === stat ? colors.primary : 'transparent', 
+                                    color: formData.status === stat ? colors.background : colors.text,
+                                    borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                                }}
+                            >
+                                {stat}
+                            </button>
+                        ))}
+                    </div>
+                </div>
               </div>
             </div>
+
             <div className="space-y-3 pt-6 shrink-0">
                 <button 
                   type="submit"
@@ -360,8 +378,6 @@ function AddLecture() {
                     </div>
                 </div>
             </div>
-
-            
         </div>
       </form>
     </div>

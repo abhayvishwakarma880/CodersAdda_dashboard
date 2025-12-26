@@ -5,10 +5,11 @@ import { useData } from '../context/DataContext';
 import { Plus, Search, Filter, Eye, Edit, Trash2, Briefcase, MapPin, Building2, Calendar } from 'lucide-react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function Jobs() {
   const { colors } = useTheme();
-  const { jobs, deleteJob } = useData();
+  const { jobs, deleteJob, updateJob } = useData();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('All');
@@ -29,6 +30,12 @@ function Jobs() {
         toast.success('Job deleted successfully');
       }
     });
+  };
+
+  const toggleJobStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateJob(id, { status: newStatus });
+    toast.info(`Job ${newStatus}`);
   };
 
   const filteredJobs = jobs.filter(job => {
@@ -132,9 +139,12 @@ function Jobs() {
                     </div>
                   </td>
                   <td className="p-4 py-5">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-green-500/10 text-green-500 border border-green-500/20">
-                      Active
-                    </span>
+                    <div className="flex items-center gap-2">
+                        <Toggle active={job.status === 'Active'} onClick={() => toggleJobStatus(job.id, job.status)} />
+                        <span className={`text-[9px] font-black uppercase tracking-wider ${job.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                            {job.status || 'Active'}
+                        </span>
+                    </div>
                   </td>
                   <td className="p-4 py-5 text-right">
                     <div className="flex items-center justify-end gap-2">

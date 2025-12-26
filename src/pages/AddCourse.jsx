@@ -28,7 +28,8 @@ function AddCourse() {
     priceType: 'Free', 
     price: '',
     whatYouWillLearn: [''],
-    curriculum: []
+    curriculum: [],
+    status: 'Active'
   };
   
   const [formData, setFormData] = useState(initialFormState);
@@ -296,6 +297,31 @@ function AddCourse() {
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Course Status */}
+          <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+            <h3 className="text-sm font-bold mb-4" style={{ color: colors.text }}>Course Status</h3>
+            <div className="flex gap-4">
+                {['Active', 'Disabled'].map(stat => (
+                    <button 
+                        key={stat}
+                        type="button"
+                        onClick={() => setFormData({...formData, status: stat})}
+                        className={`flex-1 py-2.5 rounded border text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
+                            formData.status === stat 
+                            ? 'bg-primary text-white border-primary' 
+                            : 'bg-transparent opacity-40 border-accent/20'
+                        }`}
+                        style={{ 
+                            backgroundColor: formData.status === stat ? colors.primary : 'transparent',
+                            borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                        }}
+                    >
+                        {stat}
+                    </button>
+                ))}
             </div>
           </div>
 

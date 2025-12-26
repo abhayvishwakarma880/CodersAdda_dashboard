@@ -28,7 +28,7 @@ const Home = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
         {stats.map((stat, index) => (
           <div key={index} 
-               className='p-6 rounded-xl border transition-all duration-200 hover:scale-105'
+               className='p-6 rounded-xl border shadow-md transition-all duration-200 hover:scale-105'
                style={{ 
                  backgroundColor: colors.background,
                  borderColor: colors.accent + '30'

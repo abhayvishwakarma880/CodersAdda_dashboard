@@ -6,16 +6,23 @@ import { useData } from '../context/DataContext';
 
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function Courses() {
   const { colors } = useTheme();
-  const { courses, categories, deleteCourse } = useData();
+  const { courses, categories, deleteCourse, updateCourse } = useData();
   const navigate = useNavigate();
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState('list');
   const [isAnimating, setIsAnimating] = useState(false);
+
+  const toggleCourseStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateCourse(id, { status: newStatus });
+    toast.info(`Course ${newStatus}`);
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -142,10 +149,17 @@ function Courses() {
                     </div>
                   )}
                   
-                  {/* Category Tag */}
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md border border-white/20" 
-                       style={{ backgroundColor: colors.primary + 'CC', color: colors.background }}>
-                    {course.category}
+                  <div className="absolute top-3 left-3 flex flex-col gap-2">
+                    <div className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md border border-white/20" 
+                        style={{ backgroundColor: colors.primary + 'CC', color: colors.background }}>
+                        {course.category}
+                    </div>
+                    <div className="flex items-center gap-2 backdrop-blur-md bg-black/20 p-1 px-2 rounded-full border border-white/10 w-fit">
+                        <Toggle active={course.status === 'Active'} onClick={() => toggleCourseStatus(course.id, course.status)} />
+                        <span className={`text-[9px] font-black uppercase tracking-wider ${course.status === 'Active' ? 'text-green-400' : 'text-red-400'}`}>
+                            {course.status || 'Active'}
+                        </span>
+                    </div>
                   </div>
 
                   {/* Price Tag */}
@@ -205,6 +219,13 @@ function Courses() {
                     <span className={`text-[10px] font-bold uppercase tracking-wider ${course.priceType === 'Free' ? 'text-green-500' : 'text-amber-500'}`}>
                       {course.priceType === 'Free' ? 'Free' : `Premium ₹${course.price || ''}`}
                     </span>
+                    <span className="opacity-20">•</span>
+                    <div className="flex items-center gap-2">
+                        <Toggle active={course.status === 'Active'} onClick={() => toggleCourseStatus(course.id, course.status)} />
+                        <span className={`text-[9px] font-black uppercase tracking-wider ${course.status === 'Active' ? 'text-green-500' : 'text-red-500'}`}>
+                            {course.status || 'Active'}
+                        </span>
+                    </div>
                   </div>
                   <h3 onClick={() => navigate(`/dashboard/courses/view/${course.id}`)} className="font-semibold cursor-pointer text-base truncate" style={{ color: colors.text }}>{course.title}</h3>
                   <p className="text-xs font-medium opacity-60" style={{ color: colors.textSecondary }}>{course.instructor}</p>
