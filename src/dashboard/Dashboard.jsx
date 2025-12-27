@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import mainLogo from '../assets/mainLogo.png'
@@ -10,6 +10,7 @@ const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768)
   const [settingsOpen, setSettingsOpen] = useState(false)
+  const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
   const location = useLocation()
   
@@ -58,11 +59,27 @@ const Dashboard = () => {
   const navLinks = [
     { name: 'Dashboard', icon: BarChart3, path: '/dashboard' },
     { name: 'Users', icon: Users, path: '/dashboard/users' },
-    { name: 'Category', icon: ChartBarStacked, path: '/dashboard/category' },
-    { name: 'Courses', icon: FileText, path: '/dashboard/courses' },
-    { name: 'E-Books', icon: Book, path: '/dashboard/ebooks' },
+    { 
+      name: 'Courses', 
+      icon: FileText, 
+      submenu: [
+        { name: 'Category', path: '/dashboard/category' },
+        { name: 'Add Course', path: '/dashboard/courses/add' },
+        { name: 'All Courses', path: '/dashboard/courses' }
+      ]
+    },
+    { 
+      name: 'E-Books', 
+      icon: Book, 
+      submenu: [
+        { name: 'Category', path: '/dashboard/ebooks?tab=categories' },
+        { name: 'PDF Resources', path: '/dashboard/ebooks?tab=pdf' },
+      ]
+    },
     { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
     { name: 'Subscription', icon: CreditCard, path: '/dashboard/subscriptions' },
+    { name: 'Slider', icon: Image, path: '/dashboard/slider' },
+    { name: 'Shorts', icon: Film, path: '/dashboard/shorts' },
   ]
 
   const themeOptions = [
@@ -90,8 +107,106 @@ const Dashboard = () => {
              </div>
           )}
         </div>
-        <nav className='mt-8 flex-1'>
+        <nav className='mt-5 pt-1 flex-1 overflow-y-auto overflow-x-hidden'>
           {navLinks.map((link, index) => {
+            if (link.submenu) {
+              const isOpen = openSubmenu === link.name
+              const isAnySubmenuActive = link.submenu.some(sub => {
+                if (link.name === 'E-Books') {
+                  // For E-Books, check both path and tab param
+                  const tabMatch = sub.path.includes('?tab=')
+                  if (tabMatch) {
+                    const tabValue = sub.path.split('?tab=')[1]
+                    return location.pathname === '/dashboard/ebooks' && location.search.includes(`tab=${tabValue}`)
+                  }
+                  return location.pathname === sub.path
+                }
+                return location.pathname === sub.path
+              })
+              
+              return (
+                <div key={index}>
+                  <button
+                    onClick={() => setOpenSubmenu(isOpen ? null : link.name)}
+                    className={`flex items-center justify-between w-[93%] px-4 py-2 mx-2 rounded-md mb-1 transition-all duration-200 cursor-pointer ${
+                      isAnySubmenuActive ? 'ring-1' : ''
+                    }`}
+                    style={{ 
+                      color: isAnySubmenuActive ? colors.primary : colors.text,
+                      backgroundColor: isAnySubmenuActive ? colors.primary + '20' : 'transparent',
+                      ringColor: isAnySubmenuActive ? colors.primary : 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isAnySubmenuActive) {
+                        e.target.style.backgroundColor = colors.primary + '20'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isAnySubmenuActive) {
+                        e.target.style.backgroundColor = 'transparent'
+                      }
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <link.icon className='w-5 h-5' />
+                      <span className={`ml-3 ${sidebarOpen ? 'block' : 'hidden'}`}>{link.name}</span>
+                    </div>
+                    {sidebarOpen && (
+                      <ChevronDown 
+                        className={`w-4 h-4 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+                      />
+                    )}
+                  </button>
+                  
+                  <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    isOpen && sidebarOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                  }`}>
+                    <div className="ml-8 mr-2 mb-2 space-y-1 pt-1">
+                      {link.submenu.map((sublink, subIndex) => {
+                        let isSubActive = location.pathname === sublink.path
+                        
+                        // Special handling for E-Books with URL params
+                        if (link.name === 'E-Books' && sublink.path.includes('?tab=')) {
+                          const tabValue = sublink.path.split('?tab=')[1]
+                          isSubActive = location.pathname === '/dashboard/ebooks' && location.search.includes(`tab=${tabValue}`)
+                        }
+                        
+                        return (
+                          <NavLink
+                            key={subIndex}
+                            to={sublink.path}
+                            onClick={() => {
+                              if (window.innerWidth < 768) {
+                                setSidebarOpen(false)
+                              }
+                            }}
+                            className="flex items-center px-4 py-2 rounded transition-all duration-200"
+                            style={{
+                              color: isSubActive ? colors.primary : colors.text,
+                              backgroundColor: isSubActive ? colors.primary + '10' : 'transparent',
+                              fontSize: '13px'
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isSubActive) {
+                                e.target.style.backgroundColor = colors.primary + '10'
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isSubActive) {
+                                e.target.style.backgroundColor = 'transparent'
+                              }
+                            }}
+                          >
+                            {sublink.name}
+                          </NavLink>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )
+            }
+            
             const isActive = location.pathname === link.path || 
                            (link.path === '/dashboard' && (location.pathname === '/dashboard' || location.pathname === '/dashboard/home'))
             return (
@@ -101,13 +216,13 @@ const Dashboard = () => {
                      setSidebarOpen(false)
                    }
                  }}
-                 className={`flex items-center px-4 py-2 mx-2 rounded-lg mb-2 transition-all duration-200 ${
-                   isActive ? 'ring-1 text-xl' : ''
+                 className={`flex items-center px-4 py-2 mx-2 rounded-md mb-2 transition-all duration-200 ${
+                   isActive ? 'ring-1' : ''
                  }`}
                  style={{ 
                    color: isActive ? colors.primary : colors.text,
-                   backgroundColor: isActive ? 'colors.primary' + '20' : 'transparent',
-                   ringColor: isActive ? "colors.primary" : 'transparent'
+                   backgroundColor: isActive ? colors.primary + '20' : 'transparent',
+                   ringColor: isActive ? colors.primary : 'transparent'
                  }}
                  onMouseEnter={(e) => {
                    if (!isActive) {
@@ -132,7 +247,7 @@ const Dashboard = () => {
                     // Add logout functionality here
                     console.log('Logout clicked')
                   }}
-                  className='flex cursor-pointer items-center px-4 py-3 w-full rounded-lg transition-all duration-200 font-semibold'
+                  className='flex cursor-pointer items-center px-4 py-3 w-full rounded-md transition-all duration-200 font-semibold'
                   style={{ color: '#DC2626' }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = '#DC262620'

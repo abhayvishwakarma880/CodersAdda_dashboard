@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Save, Trash2, Play, Lock, Info, Layout, Award, User, Plus, DollarSign, Upload, Video, Image as ImageIcon, X } from 'lucide-react';
+import { ArrowLeft, Save, Trash2, Play, Lock, Info, Layout, Award, User, Plus, DollarSign, Upload, Video, Image as ImageIcon, X, Star } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
@@ -24,7 +24,10 @@ function EditCourse() {
         price: course.price || '',
         LectureNumber: course.LectureNumber || '',
         promoVideo: course.promoVideo || '',
-        promoVideoUrl: course.promoVideoUrl || ''
+        promoVideo: course.promoVideo || '',
+        promoVideoUrl: course.promoVideoUrl || '',
+        faqs: course.faqs || [],
+        reviews: course.reviews || []
       });
     } else {
       navigate('/dashboard/courses');
@@ -287,6 +290,135 @@ function EditCourse() {
           </div>
 
           {/* Course Status */}
+          {/* FAQs Section */}
+          <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+              <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Course FAQs</h3>
+                  <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, faqs: [...(prev.faqs || []), { question: '', answer: '' }] }))}
+                      className="text-[10px] font-black uppercase tracking-widest text-blue-500 cursor-pointer hover:underline flex items-center gap-1"
+                  >
+                      <Plus size={12} /> Add FAQ
+                  </button>
+              </div>
+              
+              <div className="space-y-4">
+                  {(formData.faqs || []).map((faq, index) => (
+                      <div key={index} className="flex gap-4 items-start p-4 rounded bg-black/5">
+                          <div className="flex-1 space-y-3">
+                              <input
+                                  type="text"
+                                  value={faq.question}
+                                  onChange={(e) => {
+                                      const newFaqs = [...(formData.faqs || [])];
+                                      newFaqs[index].question = e.target.value;
+                                      setFormData({ ...formData, faqs: newFaqs });
+                                  }}
+                                  placeholder="Question"
+                                  className="w-full bg-transparent border-b border-black/10 outline-none text-sm font-bold"
+                              />
+                              <textarea
+                                  value={faq.answer}
+                                  onChange={(e) => {
+                                      const newFaqs = [...(formData.faqs || [])];
+                                      newFaqs[index].answer = e.target.value;
+                                      setFormData({ ...formData, faqs: newFaqs });
+                                  }}
+                                  placeholder="Answer"
+                                  rows={2}
+                                  className="w-full bg-transparent outline-none text-xs opacity-80 resize-none"
+                              />
+                          </div>
+                          <button
+                              type="button"
+                              onClick={() => {
+                                  const newFaqs = formData.faqs.filter((_, i) => i !== index);
+                                  setFormData({ ...formData, faqs: newFaqs });
+                              }}
+                              className="text-red-500 opacity-50 hover:opacity-100 cursor-pointer"
+                          >
+                              <Trash2 size={14} />
+                          </button>
+                      </div>
+                  ))}
+                  {(!formData.faqs || formData.faqs.length === 0) && <p className="text-xs opacity-40 text-center py-4">No FAQs added yet.</p>}
+              </div>
+          </div>
+
+          {/* Reviews Section */}
+          <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+               <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Course Reviews</h3>
+                  <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, reviews: [...(prev.reviews || []), { user: '', rating: 5, comment: '' }] }))}
+                      className="text-[10px] font-black uppercase tracking-widest text-blue-500 cursor-pointer hover:underline flex items-center gap-1"
+                  >
+                      <Plus size={12} /> Add Review
+                  </button>
+              </div>
+
+              <div className="space-y-4">
+                  {(formData.reviews || []).map((review, index) => (
+                      <div key={index} className="flex gap-4 items-start p-4 rounded bg-black/5">
+                          <div className="flex-1 space-y-3">
+                              <div className="flex gap-4">
+                                  <input
+                                      type="text"
+                                      value={review.user}
+                                      onChange={(e) => {
+                                          const newReviews = [...(formData.reviews || [])];
+                                          newReviews[index].user = e.target.value;
+                                          setFormData({ ...formData, reviews: newReviews });
+                                      }}
+                                      placeholder="Student Name"
+                                      className="flex-1 bg-transparent border-b border-black/10 outline-none text-sm font-bold"
+                                  />
+                                  <div className="flex items-center gap-2">
+                                      <span className="text-xs font-bold opacity-60">Rating:</span>
+                                      <select
+                                          value={review.rating}
+                                          onChange={(e) => {
+                                              const newReviews = [...(formData.reviews || [])];
+                                              newReviews[index].rating = Number(e.target.value);
+                                              setFormData({ ...formData, reviews: newReviews });
+                                          }}
+                                          className="bg-transparent text-sm font-bold outline-none cursor-pointer"
+                                      >
+                                          {[1,2,3,4,5].map(r => <option key={r} value={r}>{r}</option>)}
+                                      </select>
+                                      <Star size={12} fill="currentColor" className="text-yellow-500" />
+                                  </div>
+                              </div>
+                              <textarea
+                                  value={review.comment}
+                                  onChange={(e) => {
+                                      const newReviews = [...(formData.reviews || [])];
+                                      newReviews[index].comment = e.target.value;
+                                      setFormData({ ...formData, reviews: newReviews });
+                                  }}
+                                  placeholder="Review Comment"
+                                  rows={2}
+                                  className="w-full bg-transparent outline-none text-xs opacity-80 resize-none"
+                              />
+                          </div>
+                          <button
+                              type="button"
+                              onClick={() => {
+                                  const newReviews = formData.reviews.filter((_, i) => i !== index);
+                                  setFormData({ ...formData, reviews: newReviews });
+                              }}
+                              className="text-red-500 opacity-50 hover:opacity-100 cursor-pointer"
+                          >
+                              <Trash2 size={14} />
+                          </button>
+                      </div>
+                  ))}
+                  {(!formData.reviews || formData.reviews.length === 0) && <p className="text-xs opacity-40 text-center py-4">No reviews added yet.</p>}
+              </div>
+          </div>
+
           <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
             <h3 className="text-sm font-bold mb-4" style={{ color: colors.text }}>Course Status</h3>
             <div className="flex gap-4">

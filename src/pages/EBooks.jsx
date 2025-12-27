@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Search, Edit2, Trash2, Check, X, FileText, Layers, BookOpen, Download, Lock, Eye, User } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
@@ -15,18 +15,9 @@ function EBooks() {
     ebooks, deleteEbook 
   } = useData();
   const navigate = useNavigate();
-
-  const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem('ebooks_active_tab') || 'categories';
-  });
+  const [searchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'categories';
   const [searchQuery, setSearchQuery] = useState('');
-  
-  // Update localStorage when tab changes
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    localStorage.setItem('ebooks_active_tab', tab);
-    setSearchQuery('');
-  };
   
   // Category specific states
   const [isCatModalOpen, setIsCatModalOpen] = useState(false);
@@ -125,31 +116,10 @@ function EBooks() {
       {/* Header Section */}
       <div className="flex-shrink-0 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl md:text-2xl font-bold" style={{ color: colors.text }}>E-Books Management</h1>
+          <h1 className="text-xl md:text-2xl font-bold" style={{ color: colors.text }}>
+            {activeTab === 'categories' ? 'E-Book Categories' : 'PDF Resources'}
+          </h1>
           <p className="text-xs opacity-50 font-medium" style={{ color: colors.textSecondary }}>Manage your digital library and resources</p>
-        </div>
-
-        <div className="flex items-center gap-2 p-1 rounded border" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <button 
-            onClick={() => handleTabChange('categories')}
-            className={`px-4 py-2 rounded font-bold text-[10px] uppercase tracking-widest transition-all cursor-pointer ${activeTab === 'categories' ? 'shadow-sm' : 'opacity-50'}`}
-            style={{ 
-              backgroundColor: activeTab === 'categories' ? colors.primary : 'transparent',
-              color: activeTab === 'categories' ? colors.background : colors.text
-            }}
-          >
-            Categories
-          </button>
-          <button 
-            onClick={() => handleTabChange('pdf')}
-            className={`px-4 py-2 rounded font-bold text-[10px] uppercase tracking-widest transition-all cursor-pointer ${activeTab === 'pdf' ? 'shadow-sm' : 'opacity-50'}`}
-            style={{ 
-              backgroundColor: activeTab === 'pdf' ? colors.primary : 'transparent',
-              color: activeTab === 'pdf' ? colors.background : colors.text
-            }}
-          >
-            PDF Resources
-          </button>
         </div>
       </div>
 

@@ -44,7 +44,7 @@ function AddJob() {
   const inputStyle = { backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text };
 
   return (
-    <div className="max-w-6xl mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
+    <div className="w-full mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
       <div className="flex items-center gap-4 mb-8">
         <button 
           onClick={() => navigate(-1)}
@@ -56,9 +56,8 @@ function AddJob() {
         <h1 className="text-2xl font-bold" style={{ color: colors.text }}>Post New Job</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
+      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+
           
           {/* Job Info */}
           <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
@@ -216,53 +215,45 @@ function AddJob() {
               </div>
             </div>
           </div>
+
+        {/* Status & Actions */}
+        <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Job Status</h3>
+          <div className="grid grid-cols-2 gap-3 max-w-xs">
+              {['Active', 'Disabled'].map(stat => (
+                  <button 
+                      key={stat}
+                      type="button"
+                      onClick={() => setFormData({...formData, status: stat})}
+                      className="py-2.5 rounded border text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer"
+                      style={{ 
+                          backgroundColor: formData.status === stat ? colors.primary : 'transparent',
+                          color: formData.status === stat ? colors.background : colors.text,
+                          borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
+                      }}
+                  >
+                      {stat}
+                  </button>
+              ))}
+          </div>
         </div>
 
-        {/* Sidebar Actions */}
-        <div className="space-y-6">
-          <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-            <h3 className="text-sm font-bold mb-4" style={{ color: colors.text }}>Job Status</h3>
-            <div className="flex gap-4 mb-6">
-                {['Active', 'Disabled'].map(stat => (
-                    <button 
-                        key={stat}
-                        type="button"
-                        onClick={() => setFormData({...formData, status: stat})}
-                        className={`flex-1 py-2 rounded border text-[10px] font-black uppercase tracking-widest transition-all cursor-pointer ${
-                            formData.status === stat 
-                            ? 'bg-primary text-white border-primary' 
-                            : 'bg-transparent opacity-40 border-accent/20'
-                        }`}
-                        style={{ 
-                            backgroundColor: formData.status === stat ? colors.primary : 'transparent',
-                            borderColor: formData.status === stat ? colors.primary : colors.accent + '20'
-                        }}
-                    >
-                        {stat}
-                    </button>
-                ))}
-            </div>
-
-            <button 
-              type="submit"
-              className="w-full py-3 rounded-md font-bold transition-all shadow-md text-sm uppercase tracking-wider active:scale-[0.98] cursor-pointer mb-3"
-              style={{ backgroundColor: colors.primary, color: colors.background }}
-            >
-              Confirm & Post
-            </button>
-            <button 
-              type="button" onClick={() => navigate('/dashboard/jobs')}
-              className="w-full py-3 rounded-md font-bold transition-all border text-xs uppercase tracking-wider opacity-60 hover:opacity-100 cursor-pointer"
-              style={{ color: colors.text, borderColor: colors.accent + '30' }}
-            >
-              Cancel
-            </button>
-          </div>
-
-          <div className="p-4 rounded-lg border border-dashed text-[11px] font-semibold opacity-50" style={{ borderColor: colors.accent + '30', color: colors.text }}>
-             <Info size={14} className="mb-2" />
-             Ensure all contact information is accurate for candidates to reach out.
-          </div>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+          <button 
+            type="submit"
+            className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all cursor-pointer"
+            style={{ backgroundColor: colors.primary, color: colors.background }}
+          >
+            Confirm & Post
+          </button>
+          <button 
+            type="button" onClick={() => navigate('/dashboard/jobs')}
+            className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest border opacity-60 hover:opacity-100 transition-all cursor-pointer"
+            style={{ color: colors.text, borderColor: colors.accent + '30' }}
+          >
+            Cancel
+          </button>
         </div>
       </form>
     </div>

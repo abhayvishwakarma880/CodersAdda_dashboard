@@ -20,6 +20,12 @@ import EditLecture from "../pages/EditLecture";
 import Subscriptions from "../pages/Subscriptions";
 import AddSubscription from "../pages/AddSubscription";
 import ViewSubscription from "../pages/ViewSubscription";
+import Slider from "../pages/Slider";
+import EditSlider from "../pages/EditSlider";
+import Shorts from "../pages/Shorts";
+import AddShort from "../pages/AddShort";
+import EditShort from "../pages/EditShort";
+import ViewShort from "../pages/ViewShort";
 
 export const AppRoute = [
   {path:'category',component:Category},
@@ -45,4 +51,10 @@ export const AppRoute = [
   {path:'subscriptions/add',component:AddSubscription},
   {path:'subscriptions/edit/:id',component:AddSubscription},
   {path:'subscriptions/view/:id',component:ViewSubscription},
+  {path:'slider',component:Slider},
+  {path:'slider/edit/:id',component:EditSlider},
+  {path:'shorts',component:Shorts},
+  {path:'shorts/add',component:AddShort},
+  {path:'shorts/edit/:id',component:EditShort},
+  {path:'shorts/view/:id',component:ViewShort},
 ]

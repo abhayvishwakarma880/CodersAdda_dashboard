@@ -158,10 +158,10 @@ function AddLecture() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-8 items-stretch">
-        {/* Left Column - Details */}
-        <div className="flex-1 space-y-6">
-          <div className="h-full p-8 rounded border shadow-sm flex flex-col" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+        {/* Lecture Details */}
+        <div className="space-y-6">
+          <div className="p-8 rounded border shadow-sm flex flex-col" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
             <h3 className="text-xs font-black uppercase tracking-widest opacity-40 mb-6">Lecture Details</h3>
             <div className="space-y-6 flex-1">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -283,58 +283,44 @@ function AddLecture() {
               </div>
             </div>
 
-            <div className="space-y-3 pt-6 shrink-0">
-                <button 
-                  type="submit"
-                  className="w-full cursor-pointer py-4 rounded font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3"
-                  style={{ backgroundColor: colors.primary, color: colors.background }}
-                >
-                  <Save size={18} /> Publish Lecture
-                </button>
-                <button 
-                  type="button" onClick={() => navigate(-1)}
-                  className="w-full cursor-pointer py-4 rounded font-black text-xs uppercase tracking-widest border opacity-60 hover:opacity-100 transition-all flex items-center justify-center gap-3"
-                  style={{ borderColor: colors.accent + '30', color: colors.text }}
-                >
-                  <X size={18} /> Discard
-                </button>
-            </div>
           </div>
         </div>
 
-        {/* Right Column - Media */}
-        <div className="w-full md:w-80 space-y-6 flex flex-col">
-            <div className="flex-1 flex flex-col gap-4">
+
+        {/* Media - Video, Thumbnail, PDF */}
+        <div className="p-6 rounded border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-6">Lecture Assets</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Video Upload */}
-                <div className="flex-1 p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
+                <div>
                     <label style={labelStyle}>Lecture Video</label>
                     <div 
                         onClick={() => videoInputRef.current.click()}
-                        className="flex-1 min-h-[120px] rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.videoFileName ? (
                             <div className="text-center p-4">
                                 <Play size={32} className="mx-auto mb-2 text-green-500" />
                                 <p className="text-[9px] font-bold uppercase tracking-wider truncate max-w-[150px]">{formData.videoFileName}</p>
-                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, videoFileName: '', videoUrl: '', duration: ''}); }} className="mt-2 text-[9px] font-black text-red-500">Remove</button>
+                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, videoFileName: '', videoUrl: '', duration: ''}); }} className="mt-2 text-[9px] font-black text-red-500 cursor-pointer">Remove</button>
                             </div>
                         ) : (
-                            <>
-                                <Video size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Select Video</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <Video size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Select Video</p>
+                            </div>
                         )}
                         <input type="file" ref={videoInputRef} onChange={handleVideoChange} accept="video/*" className="hidden" />
                     </div>
                 </div>
 
                 {/* Thumbnail Upload */}
-                <div className="p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
+                <div>
                     <label style={labelStyle}>Thumbnail (Optional)</label>
                     <div 
                         onClick={() => thumbnailInputRef.current.click()}
-                        className="aspect-video rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5 overflow-hidden group"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5 overflow-hidden group"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.thumbnailUrl ? (
@@ -345,39 +331,57 @@ function AddLecture() {
                                 </div>
                             </div>
                         ) : (
-                            <>
-                                <Monitor size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Add Banner</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <Monitor size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Add Banner</p>
+                            </div>
                         )}
                         <input type="file" ref={thumbnailInputRef} onChange={handleThumbnailChange} accept="image/*" className="hidden" />
                     </div>
                 </div>
 
                 {/* PDF Upload */}
-                <div className="p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
+                <div>
                     <label style={labelStyle}>Resources (PDF)</label>
                     <div 
                         onClick={() => pdfInputRef.current.click()}
-                        className="py-6 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.pdfFileName ? (
                             <div className="text-center px-4">
                                 <FileText size={32} className="mx-auto mb-2 text-primary" />
                                 <p className="text-[9px] font-bold uppercase tracking-wider truncate max-w-[150px]">{formData.pdfFileName}</p>
-                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, pdfFileName: '', pdfUrl: ''}); }} className="mt-2 text-[9px] font-black text-red-500">Remove</button>
+                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, pdfFileName: '', pdfUrl: ''}); }} className="mt-2 text-[9px] font-black text-red-500 cursor-pointer">Remove</button>
                             </div>
                         ) : (
-                            <>
-                                <FileText size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Add Notes</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <FileText size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Add Notes</p>
+                            </div>
                         )}
                         <input type="file" ref={pdfInputRef} onChange={handlePdfChange} accept=".pdf" className="hidden" />
                     </div>
                 </div>
             </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <button 
+              type="submit"
+              className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 cursor-pointer"
+              style={{ backgroundColor: colors.primary, color: colors.background }}
+            >
+              <Save size={18} /> Publish Lecture
+            </button>
+            <button 
+              type="button" onClick={() => navigate(-1)}
+              className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest border opacity-60 hover:opacity-100 transition-all flex items-center justify-center gap-3 cursor-pointer"
+              style={{ borderColor: colors.accent + '30', color: colors.text }}
+            >
+              <X size={18} /> Discard
+            </button>
         </div>
       </form>
     </div>
