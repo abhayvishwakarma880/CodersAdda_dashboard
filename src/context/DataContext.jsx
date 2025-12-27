@@ -300,6 +300,7 @@ export const DataProvider = ({ children }) => {
       videoUrl: 'https://www.w3schools.com/html/mov_bbb.mp4', 
       likes: 1250, 
       shares: 45,
+      status: 'Active',
       comments: [
         { id: 'c1', user: 'Rahul Kumar', text: 'Great explanation sir!', time: '2h ago', replies: [] },
         { id: 'c2', user: 'Sneha Singh', text: 'Can you make one on useEffect?', time: '5h ago', replies: [] }
@@ -312,6 +313,7 @@ export const DataProvider = ({ children }) => {
       videoUrl: 'https://www.w3schools.com/html/movie.mp4', 
       likes: 890, 
       shares: 20,
+      status: 'Disabled',
       comments: [
         { id: 'c1', user: 'Dev Guru', text: 'Flexbox is awesome!', time: '1d ago', replies: [] }
       ]
@@ -510,17 +512,110 @@ export const DataProvider = ({ children }) => {
   const [quizzes, setQuizzes] = useState([
     {
        id: '1',
-       title: 'React.js Fundamentals',
-       quizCode: 'REACT-101',
-       description: 'Test your knowledge on React hooks, components and state management.',
-       duration: '20',
+       title: 'React.js Mastery: Hooks & Components',
+       quizCode: 'REACT-ADV-001',
+       description: 'Deep dive into React core concepts including Hooks, Context API, Redux patterns, and Performance optimization techniques.',
+       duration: '45',
+       points: '5',
+       totalQuestions: 20,
+       level: 'Advanced',
+       status: 'Active',
+       questions: [
+           { id: 'q1', question: 'Which hook should be used for data fetching?', options: ['useEffect', 'useMemo', 'useState', 'useRef'], correctOption: 0 },
+           { id: 'q2', question: 'What is the Virtual DOM?', options: ['Direct DOM manipulation', 'A lightweight copy of the DOM', 'A brower plugin', 'None of the above'], correctOption: 1 },
+           { id: 'q3', question: 'How do you prevent re-renders in functional components?', options: ['React.memo', 'shouldComponentUpdate', 'PureComponent', 'All of the above'], correctOption: 0 },
+           { id: 'q4', question: 'What is the purpose of useReducer?', options: ['Managing string state', 'Complex state logic', 'Routing', 'API calls'], correctOption: 1 },
+           { id: 'q5', question: 'Prop drilling can be solved by?', options: ['Context API', 'Redux', 'Zustand', 'All of the above'], correctOption: 3 },
+           { id: 'q6', question: 'What does useRef return?', options: ['A mutable object', 'A function', 'A boolean', 'Undefined'], correctOption: 0 },
+           { id: 'q7', question: 'Key props in lists help React to?', options: ['Style elements', 'Identify changed items', 'Count items', 'None'], correctOption: 1 },
+           { id: 'q8', question: 'useEffect with empty dependency array runs?', options: ['Every render', 'Once on mount', 'On unmount', 'Never'], correctOption: 1 },
+           { id: 'q9', question: 'What is JSX?', options: ['Java XML', 'JavaScript XML', 'JSON XML', 'Java Syntax Extension'], correctOption: 1 },
+           { id: 'q10', question: 'Lazy loading in React is done using?', options: ['React.lazy', 'React.load', 'React.defer', 'React.async'], correctOption: 0 },
+           { id: 'q11', question: 'Higher Order Components are?', options: ['Functions returning components', 'Components returning functions', 'API calls', 'State managers'], correctOption: 0 },
+           { id: 'q12', question: 'Controlled components use?', options: ['State', 'Refs', 'DOM', 'Globals'], correctOption: 0 },
+           { id: 'q13', question: 'Which lifecycle method is replaced by useEffect?', options: ['componentDidMount', 'componentDidUpdate', 'componentWillUnmount', 'All of the above'], correctOption: 3 },
+           { id: 'q14', question: 'What is a Portal in React?', options: ['A way to render children outside parent DOM', 'A data tunnel', 'A routing tool', 'A state tool'], correctOption: 0 },
+           { id: 'q15', question: 'Error Boundaries catch errors in?', options: ['Rendering', 'Event handlers', 'Async code', 'Server side'], correctOption: 0 },
+           { id: 'q16', question: 'Does React use one-way or two-way data binding?', options: ['One-way', 'Two-way', 'Both', 'None'], correctOption: 0 },
+           { id: 'q17', question: 'What is the strict mode?', options: ['Checks for potential problems', 'Minifies code', 'Enforces types', 'Runs faster'], correctOption: 0 },
+           { id: 'q18', question: 'What is hydration?', options: ['Attaching listeners to server HTML', 'Drinking water', 'Loading CSS', 'Fetching data'], correctOption: 0 },
+           { id: 'q19', question: 'useCallback returns?', options: ['Memoized value', 'Memoized function', 'State', 'Ref'], correctOption: 1 },
+           { id: 'q20', question: 'What package is used for routing?', options: ['react-router-dom', 'react-route', 'router-js', 'react-nav'], correctOption: 0 }
+       ],
+       attempts: [
+          { studentId: '2', studentName: 'Riya Singh', date: '2023-12-01', marks: 95, totalMarks: 100, status: 'Pass', answers: [] },
+          { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-02', marks: 40, totalMarks: 100, status: 'Fail', answers: [] },
+          { studentId: '4', studentName: 'Sneha Patel', date: '2023-12-05', marks: 85, totalMarks: 100, status: 'Pass', answers: [] },
+          { studentId: '5', studentName: 'Vikram Mehta', date: '2023-12-06', marks: 30, totalMarks: 100, status: 'Fail', answers: [] },
+          { studentId: '6', studentName: 'Anjali Gupta', date: '2023-12-07', marks: 100, totalMarks: 100, status: 'Pass', answers: [] }
+      ]
+    },
+    {
+       id: '2',
+       title: 'Python for Data Science Basics',
+       quizCode: 'PY-DS-101',
+       description: 'Test your understanding of Python lists, dictionaries, pandas basics and numpy arrays.',
+       duration: '30',
        points: '5',
        totalQuestions: 10,
        level: 'Intermediate',
        status: 'Active',
        questions: [
-           { id: 'q1', question: 'What is the virtual DOM?', options: ['A copy of real DOM', 'A browser API', 'A database', 'None'], correctOption: 0 }
+           { id: 'q1', question: 'Which library is used for data manipulation?', options: ['Pandas', 'Numpy', 'Matplotlib', 'Seaborn'], correctOption: 0 },
+           { id: 'q2', question: 'Mutable data type in Python?', options: ['List', 'Tuple', 'String', 'Int'], correctOption: 0 },
+           { id: 'q3', question: 'Keyword to define a function?', options: ['func', 'def', 'function', 'lambda'], correctOption: 1 },
+           { id: 'q4', question: 'Output of 2 ** 3?', options: ['6', '8', '9', '5'], correctOption: 1 },
+           { id: 'q5', question: 'How to install packages?', options: ['pip install', 'npm install', 'apt-get', 'brew'], correctOption: 0 },
+           { id: 'q6', question: 'Comment character in Python?', options: ['//', '#', '/*', '<!--'], correctOption: 1 },
+           { id: 'q7', question: 'Boolean values are?', options: ['True/False', 'true/false', '1/0', 'Yes/No'], correctOption: 0 },
+           { id: 'q8', question: 'Data structure for unique items?', options: ['List', 'Set', 'Dict', 'Tuple'], correctOption: 1 },
+           { id: 'q9', question: 'String slicing [::-1] does?', options: ['Reverses string', 'Copies string', 'Deletes string', 'Nothing'], correctOption: 0 },
+           { id: 'q10', question: 'File mode "w" stands for?', options: ['Write', 'Read', 'Watch', 'Wait'], correctOption: 0 }
+       ],
+       attempts: [
+           { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-10', marks: 45, totalMarks: 50, status: 'Pass', answers: [] }
        ]
+    },
+    {
+        id: '3',
+        title: 'UI/UX Design Principles',
+        quizCode: 'DES-101',
+        description: 'Covers color theory, typography, spacing, and user research basics.',
+        duration: '20',
+        points: '5',
+        totalQuestions: 8,
+        level: 'Beginner',
+        status: 'Active',
+        questions: Array.from({length: 8}, (_, i) => ({ id: `q${i}`, question: `Design Question ${i+1}`, options: ['A','B','C','D'], correctOption: 0 })),
+        attempts: []
+    },
+    {
+        id: '4',
+        title: 'Data Structures & Algorithms',
+        quizCode: 'DSA-HARD-001',
+        description: 'Linked Lists, Trees, Graphs, Sorting and Search algorithms.',
+        duration: '60',
+        points: '10',
+        totalQuestions: 15,
+        level: 'Hard',
+        status: 'Active',
+        questions: Array.from({length: 15}, (_, i) => ({ id: `q${i}`, question: `DSA Question ${i+1}`, options: ['A','B','C','D'], correctOption: 0 })),
+        attempts: [
+             { studentId: '6', studentName: 'Anjali Gupta', date: '2023-12-15', marks: 140, totalMarks: 150, status: 'Pass', answers: [] }
+        ]
+    },
+    {
+        id: '5',
+        title: 'Node.js & Express Backend',
+        quizCode: 'NODE-BE-202',
+        description: 'Server side programming with Node.js, middleware, routing and database integration.',
+        duration: '40',
+        points: '5',
+        totalQuestions: 12,
+        level: 'Intermediate',
+        status: 'Disabled',
+        questions: Array.from({length: 12}, (_, i) => ({ id: `q${i}`, question: `Node Question ${i+1}`, options: ['A','B','C','D'], correctOption: 0 })),
+        attempts: []
     }
   ]);
 

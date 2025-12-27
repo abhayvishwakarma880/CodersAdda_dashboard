@@ -130,9 +130,8 @@ function Slider() {
 
               <div className="flex gap-2">
                 <button
-                //   onClick={() => navigate(`/dashboard/slider/edit/${slider.id}`)}
-                  onClick={() => toast.info('Edit Slider Title feature pending')} 
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer opacity-50"
+                  onClick={() => navigate(`/dashboard/slider/edit/${slider.id}`)}
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer hover:bg-black/5"
                   style={{ borderColor: colors.accent + '30', color: colors.text }}
                 >
                   <Edit2 size={14} /> Edit

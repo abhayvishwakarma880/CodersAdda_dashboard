@@ -69,7 +69,19 @@ function EditSlider() {
 
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-6">
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Slider Image</h3>
+          <div>
+            <label className="text-xs font-bold uppercase tracking-widest opacity-60 mb-2 block">Slider Title</label>
+            <input 
+              type="text" 
+              value={formData.title} 
+              onChange={(e) => setFormData({...formData, title: e.target.value})}
+              placeholder="Enter slider title"
+              className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold transition-all"
+              style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
+            />
+          </div>
+
+          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 pt-4">Slider Image</h3>
           
           <div
             onClick={() => fileInputRef.current.click()}

@@ -5,10 +5,11 @@ import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import Toggle from '../components/ui/Toggle';
 
 function Shorts() {
   const { colors } = useTheme();
-  const { shorts, deleteShort } = useData();
+  const { shorts, deleteShort, updateShort } = useData();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -32,6 +33,12 @@ function Shorts() {
         toast.success('Short deleted successfully!');
       }
     });
+  };
+
+  const handleToggleStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateShort(id, { status: newStatus });
+    toast.info(`Short ${newStatus}`);
   };
 
   return (
@@ -78,7 +85,7 @@ function Shorts() {
             <div className="relative aspect-[9/16] bg-black/5 flex items-center justify-center overflow-hidden group">
                <video 
                  src={short.videoUrl} 
-                 className="w-full h-full object-cover"
+                 className={`w-full h-full object-cover transition-opacity ${short.status === 'Disabled' ? 'opacity-50 grayscale' : ''}`}
                />
                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/40 transition-all flex items-center justify-center">
                  <Video className="text-white opacity-80" size={48} />
@@ -89,6 +96,13 @@ function Shorts() {
             </div>
 
             <div className="p-4 flex-1 flex flex-col">
+              <div className="flex items-center justify-between mb-3">
+                    <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded ${short.status === 'Active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                        {short.status || 'Active'}
+                    </span>
+                    <Toggle active={short.status === 'Active'} onClick={() => handleToggleStatus(short.id, short.status)} />
+              </div>
+
               <h3 className="text-sm font-bold line-clamp-2 mb-1" style={{ color: colors.text }}>{short.description}</h3>
               <p className="text-xs opacity-60 font-semibold mb-4">{short.instructor}</p>
 
@@ -107,7 +121,8 @@ function Shorts() {
                   <Eye size={14} /> View
                 </button>
                 <button
-                  onClick={() => navigate(`/dashboard/shorts/edit/${short.id}`)}
+                //   onClick={() => navigate(`/dashboard/shorts/edit/${short.id}`)}
+                  onClick={() => toast.info('Edit Short feature pending')}
                   className="p-2 cursor-pointer rounded border text-xs font-bold uppercase tracking-wider transition-all hover:bg-black/5"
                   style={{ borderColor: colors.accent + '30', color: colors.text }}
                 >

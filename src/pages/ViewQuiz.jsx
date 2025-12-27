@@ -123,12 +123,13 @@ function ViewQuiz() {
             </div>
         </div>
         
-        {/* <button
-            onClick={handleExportPDF}
-            className="flex items-center gap-2 px-4 py-2 rounded bg-red-500 text-white font-bold text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all cursor-pointer hover:bg-red-600"
+        <button
+            onClick={() => navigate(`/dashboard/quizzes/report/${id}`)}
+            className="flex items-center gap-2 px-6 py-3 rounded font-bold text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all cursor-pointer text-white"
+            style={{ backgroundColor: colors.primary }}
         >
-            <Download size={16} /> Export Test Paper
-        </button> */}
+            <FileText size={18} /> View Reports
+        </button>
       </div>
 
       <div className="max-w-5xl mx-auto space-y-6">

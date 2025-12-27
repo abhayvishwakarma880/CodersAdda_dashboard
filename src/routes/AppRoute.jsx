@@ -33,6 +33,8 @@ import ViewQuiz from "../pages/ViewQuiz";
 import Referrals from "../pages/Referrals";
 import ViewReferral from "../pages/ViewReferral";
 import EditReferral from "../pages/EditReferral";
+import QuizReport from "../pages/QuizReport";
+import UserQuizResult from "../pages/UserQuizResult";
 
 export const AppRoute = [
   {path:'category',component:Category},
@@ -71,4 +73,6 @@ export const AppRoute = [
   {path:'referrals',component:Referrals},
   {path:'referrals/view/:id',component:ViewReferral},
   {path:'referrals/edit/:id',component:EditReferral},
+  {path:'quizzes/report/:id',component:QuizReport},
+  {path:'quizzes/report/:quizId/result/:studentId',component:UserQuizResult},
 ]
