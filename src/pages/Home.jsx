@@ -28,7 +28,7 @@ const Home = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
         {stats.map((stat, index) => (
           <div key={index} 
-               className='p-6 rounded-xl border shadow-md transition-all duration-200 hover:scale-105'
+               className='p-6 rounded border shadow-md transition-all duration-200 hover:scale-105'
                style={{ 
                  backgroundColor: colors.background,
                  borderColor: colors.accent + '30'
@@ -55,7 +55,7 @@ const Home = () => {
 
       {/* Quick Actions */}
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8'>
-        <div className='p-6 rounded-xl border'
+        <div className='p-6 rounded border'
              style={{ 
                backgroundColor: colors.background,
                borderColor: colors.accent + '30'
@@ -64,21 +64,21 @@ const Home = () => {
             Quick Actions
           </h3>
           <div className='space-y-3'>
-            <NavLink to="/dashboard/courses/add" className='w-full flex items-center p-3 rounded-lg transition-colors'
+            <NavLink to="/dashboard/courses/add" className='w-full flex items-center p-3 rounded transition-colors'
                     style={{ backgroundColor: colors.primary + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.primary + '10'}>
               <span className='mr-3'>➕</span>
               Add New Courses
             </NavLink>
-            <NavLink to="/dashboard/ebooks/add" className='w-full flex items-center p-3 rounded-lg transition-colors'
+            <NavLink to="/dashboard/ebooks/add" className='w-full flex items-center p-3 rounded transition-colors'
                     style={{ backgroundColor: colors.accent + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.accent + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.accent + '10'}>
               <span className='mr-3'>📊</span>
               Add E-Books
             </NavLink>
-            <button className='w-full flex items-center p-3 rounded-lg transition-colors'
+            <button className='w-full flex items-center p-3 rounded transition-colors'
                     style={{ backgroundColor: colors.warning + '10', color: colors.text }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.warning + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = colors.warning + '10'}>
@@ -88,7 +88,7 @@ const Home = () => {
           </div>
         </div>
 
-        <div className='p-6 rounded-xl border'
+        <div className='p-6 rounded border'
              style={{ 
                backgroundColor: colors.background,
                borderColor: colors.accent + '30'

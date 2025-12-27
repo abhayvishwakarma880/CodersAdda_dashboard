@@ -335,6 +335,39 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
+  const [quizzes, setQuizzes] = useState([
+    {
+      id: '1',
+      title: 'React Fundamentals',
+      description: 'Test your basic knowledge of React concepts.',
+      duration: '15',
+      points: 5,
+      totalQuestions: 5,
+      level: 'Beginner',
+      questions: [
+        {
+          id: 'q1',
+          question: 'What is the Virtual DOM?',
+          options: ['A direct copy of the DOM', 'A lightweight copy', 'A heavy XML', 'None'],
+          correctOption: 1
+        }
+      ]
+    }
+  ]);
+
+  const addQuiz = (quizData) => {
+    const newQuiz = { ...quizData, id: Date.now().toString() };
+    setQuizzes([...quizzes, newQuiz]);
+  };
+
+  const updateQuiz = (id, quizData) => {
+    setQuizzes(quizzes.map(q => q.id === id ? { ...q, ...quizData } : q));
+  };
+
+  const deleteQuiz = (id) => {
+    setQuizzes(quizzes.filter(q => q.id !== id));
+  };
+
   return (
     <DataContext.Provider value={{
       categories,
@@ -373,7 +406,11 @@ export const DataProvider = ({ children }) => {
       addShort,
       updateShort,
       deleteShort,
-      replyToComment
+      replyToComment,
+      quizzes,
+      addQuiz,
+      updateQuiz,
+      deleteQuiz
     }}>
       {children}
     </DataContext.Provider>

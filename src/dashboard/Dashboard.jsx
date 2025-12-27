@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import mainLogo from '../assets/mainLogo.png'
@@ -80,6 +80,7 @@ const Dashboard = () => {
     { name: 'Subscription', icon: CreditCard, path: '/dashboard/subscriptions' },
     { name: 'Slider', icon: Image, path: '/dashboard/slider' },
     { name: 'Shorts', icon: Film, path: '/dashboard/shorts' },
+    { name: 'Quizzes', icon: FileQuestion, path: '/dashboard/quizzes' },
   ]
 
   const themeOptions = [
@@ -128,7 +129,7 @@ const Dashboard = () => {
                 <div key={index}>
                   <button
                     onClick={() => setOpenSubmenu(isOpen ? null : link.name)}
-                    className={`flex items-center justify-between w-[93%] px-4 py-2 mx-2 rounded-md mb-1 transition-all duration-200 cursor-pointer ${
+                    className={`flex items-center justify-between w-[93%] px-4 py-2 mx-2 rounded mb-1 transition-all duration-200 cursor-pointer ${
                       isAnySubmenuActive ? 'ring-1' : ''
                     }`}
                     style={{ 
@@ -216,7 +217,7 @@ const Dashboard = () => {
                      setSidebarOpen(false)
                    }
                  }}
-                 className={`flex items-center px-4 py-2 mx-2 rounded-md mb-2 transition-all duration-200 ${
+                 className={`flex items-center px-4 py-2 mx-2 rounded mb-2 transition-all duration-200 ${
                    isActive ? 'ring-1' : ''
                  }`}
                  style={{ 
@@ -247,7 +248,7 @@ const Dashboard = () => {
                     // Add logout functionality here
                     console.log('Logout clicked')
                   }}
-                  className='flex cursor-pointer items-center px-4 py-3 w-full rounded-md transition-all duration-200 font-semibold'
+                  className='flex cursor-pointer items-center px-4 py-3 w-full rounded transition-all duration-200 font-semibold'
                   style={{ color: '#DC2626' }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = '#DC262620'
@@ -279,7 +280,7 @@ const Dashboard = () => {
                       
                       setSidebarOpen(prev => !prev)
                     }}
-                    className='p-2 rounded-lg hover:bg-opacity-20 transition-colors cursor-pointer md:hidden'
+                    className='p-2 rounded hover:bg-opacity-20 transition-colors cursor-pointer md:hidden'
                     style={{ color: colors.primary, zIndex: 10, position: 'relative' }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
@@ -288,7 +289,7 @@ const Dashboard = () => {
             <button onClick={(e) => {
                       setSidebarOpen(prev => !prev)
                     }}
-                    className='p-2 rounded-lg hover:bg-opacity-20 transition-colors cursor-pointer hidden md:block'
+                    className='p-2 rounded hover:bg-opacity-20 transition-colors cursor-pointer hidden md:block'
                     style={{ color: colors.primary, zIndex: 10, position: 'relative' }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>

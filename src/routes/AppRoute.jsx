@@ -26,6 +26,10 @@ import Shorts from "../pages/Shorts";
 import AddShort from "../pages/AddShort";
 import EditShort from "../pages/EditShort";
 import ViewShort from "../pages/ViewShort";
+import Quizzes from "../pages/Quizzes";
+import AddQuiz from "../pages/AddQuiz";
+import EditQuiz from "../pages/EditQuiz";
+import ViewQuiz from "../pages/ViewQuiz";
 
 export const AppRoute = [
   {path:'category',component:Category},
@@ -57,4 +61,8 @@ export const AppRoute = [
   {path:'shorts/add',component:AddShort},
   {path:'shorts/edit/:id',component:EditShort},
   {path:'shorts/view/:id',component:ViewShort},
+  {path:'quizzes',component:Quizzes},
+  {path:'quizzes/add',component:AddQuiz},
+  {path:'quizzes/edit/:id',component:EditQuiz},
+  {path:'quizzes/view/:id',component:ViewQuiz},
 ]
