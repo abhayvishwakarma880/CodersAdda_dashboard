@@ -195,7 +195,7 @@ function EditQuiz() {
                         style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
                      />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
                         <label style={labelStyle}>Duration (Minutes)</label>
                         <input
@@ -230,6 +230,18 @@ function EditQuiz() {
                             className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold"
                             style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
                         />
+                    </div>
+                    <div>
+                        <label style={labelStyle}>Status</label>
+                        <select
+                            value={formData.status || 'Active'}
+                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
+                            className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold cursor-pointer"
+                            style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
+                        >
+                            <option value="Active">Active</option>
+                            <option value="Disable">Disable</option>
+                        </select>
                     </div>
                 </div>
             </div>

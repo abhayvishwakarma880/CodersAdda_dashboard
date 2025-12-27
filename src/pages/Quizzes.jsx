@@ -5,10 +5,11 @@ import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import Swal from 'sweetalert2';
 import { toast } from 'react-toastify';
+import Toggle from '../components/ui/Toggle';
 
 function Quizzes() {
   const { colors } = useTheme();
-  const { quizzes, deleteQuiz } = useData();
+  const { quizzes, deleteQuiz, updateQuiz } = useData();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -16,6 +17,12 @@ function Quizzes() {
     quiz.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     quiz.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const toggleQuizStatus = (id, currentStatus) => {
+    const newStatus = (currentStatus || 'Active') === 'Active' ? 'Disabled' : 'Active';
+    updateQuiz(id, { status: newStatus });
+    toast.info(`Quiz ${newStatus}`);
+  };
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -103,18 +110,19 @@ function Quizzes() {
                       <td className="p-4">
                           <div className="flex flex-col gap-1 text-xs opacity-70">
                               <span className="flex items-center gap-1"><Clock size={12} /> {quiz.duration} mins</span>
-                              <span className="flex items-center gap-1"><Layout size={12} /> {quiz.questions?.length || 0} Questions</span>
                               <span className="flex items-center gap-1"><Award size={12} /> {quiz.points} Pts/Q</span>
+                              <span className="flex items-center gap-1"><Layout size={12} /> {quiz.level}</span>
                           </div>
                       </td>
                       <td className="p-4 text-center">
-                         <span className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest ${
-                             quiz.level === 'Beginner' ? 'bg-green-100 text-green-700' : 
-                             quiz.level === 'Intermediate' ? 'bg-yellow-100 text-yellow-700' : 
-                             'bg-red-100 text-red-700'
-                         }`}>
-                             {quiz.level}
-                         </span>
+                          <div className="flex flex-col items-center gap-1">
+                             <Toggle active={(quiz.status || 'Active') === 'Active'} onClick={() => toggleQuizStatus(quiz.id, quiz.status)} />
+                             <span className={`text-[9px] font-bold uppercase tracking-widest ${
+                                 (quiz.status || 'Active') === 'Active' ? 'text-green-600' : 'text-red-500'
+                             }`}>
+                                 {quiz.status || 'Active'}
+                             </span>
+                          </div>
                       </td>
                       <td className="p-4">
                         <div className="flex items-center justify-end gap-2">
