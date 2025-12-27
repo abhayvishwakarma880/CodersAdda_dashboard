@@ -5,10 +5,11 @@ import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function Slider() {
   const { colors } = useTheme();
-  const { sliders, addSlider, deleteSlider } = useData();
+  const { sliders, addSlider, deleteSlider, updateSlider } = useData();
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
 
@@ -42,10 +43,16 @@ function Slider() {
       return;
     }
     
-    addSlider({ image: selectedImage });
+    addSlider({ image: selectedImage, title: 'New Slider', status: 'Active' });
     toast.success('Slider image added successfully!');
     setSelectedImage(null);
     setIsModalOpen(false);
+  };
+
+  const handleToggleStatus = (id, currentStatus) => {
+    const newStatus = currentStatus === 'Active' ? 'Disabled' : 'Active';
+    updateSlider(id, { status: newStatus });
+    toast.info(`Slider ${newStatus}`);
   };
 
   const handleDelete = (id) => {
@@ -103,18 +110,29 @@ function Slider() {
               <img
                 src={slider.image}
                 alt={slider.title}
-                className="w-full h-full object-cover transition-transform hover:scale-105"
+                className={`w-full h-full object-cover transition-transform hover:scale-105 ${slider.status === 'Disabled' ? 'grayscale opacity-70' : ''}`}
               />
               <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-all flex items-center justify-center">
                 <Eye className="opacity-0 hover:opacity-100 text-white" size={32} />
               </div>
+              <div className="absolute top-2 right-2">
+                 <span className={`text-[9px] font-black uppercase px-2 py-1 rounded ${slider.status === 'Active' ? 'bg-green-500 text-white' : 'bg-gray-500 text-white'}`}>
+                    {slider.status || 'Active'}
+                 </span>
+              </div>
             </div>
             
             <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                 <h3 className="font-bold text-sm truncate pr-2 flex-1" style={{color: colors.text}}>{slider.title || 'Untitled'}</h3>
+                 <Toggle active={slider.status === 'Active'} onClick={() => handleToggleStatus(slider.id, slider.status)} />
+              </div>
+
               <div className="flex gap-2">
                 <button
-                  onClick={() => navigate(`/dashboard/slider/edit/${slider.id}`)}
-                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+                //   onClick={() => navigate(`/dashboard/slider/edit/${slider.id}`)}
+                  onClick={() => toast.info('Edit Slider Title feature pending')} 
+                  className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded border text-xs font-bold uppercase tracking-wider transition-all cursor-pointer opacity-50"
                   style={{ borderColor: colors.accent + '30', color: colors.text }}
                 >
                   <Edit2 size={14} /> Edit

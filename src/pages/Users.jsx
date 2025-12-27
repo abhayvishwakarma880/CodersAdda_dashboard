@@ -1,18 +1,26 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Eye, Edit2, Trash2, ChevronLeft, ChevronRight, UserPlus, Users as UsersIcon } from 'lucide-react';
+import { Search, Eye, Edit2, Trash2, Users as UsersIcon, Github, Linkedin, Globe, Phone, Mail } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
+import Toggle from '../components/ui/Toggle';
 
 function Users() {
   const { colors } = useTheme();
-  const { users, deleteUser } = useData();
+  const { users, deleteUser, updateUser } = useData();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7; // Increased items per page for better use of space
+  const itemsPerPage = 7;
+
+  // Toggle Status
+  const toggleStatus = (id, currentStatus) => {
+      const newStatus = (currentStatus || 'Active') === 'Active' ? 'Disabled' : 'Active';
+      updateUser(id, { status: newStatus });
+      toast.info(`User ${newStatus}`);
+  };
 
   // Delete handler
   const handleDelete = (id) => {
@@ -35,9 +43,9 @@ function Users() {
   // Filtered users
   const filteredUsers = useMemo(() => {
     return users.filter(user => 
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.number.includes(searchTerm)
+      user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.phone?.includes(searchTerm)
     );
   }, [users, searchTerm]);
 
@@ -57,7 +65,7 @@ function Users() {
   return (
     <div className="h-full w-full flex flex-col overflow-hidden" style={{ backgroundColor: colors.background }}>
       {/* Fixed Header Section */}
-      <div className="flex-shrink-0 mb-6 sticky top-0 z-30 pb-4 flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ backgroundColor: colors.background }}>
+      <div className="flex-shrink-0 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
            <div className="p-2 rounded-xl" style={{ backgroundColor: colors.primary + '20', color: colors.primary }}>
               <UsersIcon size={24} />
@@ -70,7 +78,7 @@ function Users() {
            </div>
         </div>
 
-        {/* Search Bar - Position Fixed logic via sticky parent */}
+        {/* Search Bar */}
         <div className="relative group w-full md:max-w-md">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 opacity-40" style={{ color: colors.text }} />
           <input
@@ -91,59 +99,102 @@ function Users() {
       {/* Scrollable Table Area */}
       <div className="flex-1 min-h-0 flex flex-col rounded border shadow-sm w-full overflow-hidden" style={{ borderColor: colors.accent + '15', backgroundColor: colors.sidebar || colors.background }}>
         <div className="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-rounded-full" style={{ scrollbarColor: `${colors.accent}40 transparent` }}>
-          <table className="w-full text-left border-collapse table-auto min-w-[800px]">
+          <table className="w-full text-left border-collapse table-auto min-w-[1000px]">
             <thead className="sticky top-0 z-30" style={{ backgroundColor: colors.sidebar || colors.background }}>
               <tr style={{ borderBottom: `2px solid ${colors.accent}15`, backgroundColor: colors.sidebar || colors.background }}>
-                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-16 text-center whitespace-nowrap" style={{ color: colors.textSecondary }}>Sr.</th>
-                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-20 text-center whitespace-nowrap" style={{ color: colors.textSecondary }}>Profile</th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest whitespace-nowrap" style={{ color: colors.textSecondary }}>Identity Details</th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest w-64 whitespace-nowrap" style={{ color: colors.textSecondary }}>Contact Info</th>
-                <th className="px-6 py-4 text-[10px] font-bold uppercase tracking-widest text-right  right-0 z-40 whitespace-nowrap" style={{ backgroundColor: colors.sidebar || colors.background, color: colors.textSecondary }}>Actions</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest w-12 text-center" style={{ color: colors.textSecondary }}>Sr.</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Details</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Academic</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Social</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Status</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest text-right" style={{ color: colors.textSecondary }}>Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y" style={{ divideColor: colors.accent + '08' }}>
               {paginatedUsers.map((user, index) => (
                 <tr key={user.id} className="hover:bg-opacity-10 transition-colors" style={{ color: colors.text }}>
-                  <td className="px-4 py-4 text-xs font-bold opacity-30 text-center whitespace-nowrap">
+                  <td className="px-4 py-4 text-xs font-bold opacity-30 text-center">
                     {(currentPage - 1) * itemsPerPage + index + 1}
                   </td>
-                  <td className="px-4 py-4 whitespace-nowrap">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border shadow-sm mx-auto" style={{ borderColor: colors.accent + '20' }}>
-                      <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
+                  <td className="px-4 py-4">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full overflow-hidden border shadow-sm shrink-0" style={{ borderColor: colors.accent + '20' }}>
+                           {user.profilePhoto ? (
+                               <img src={user.profilePhoto} alt={user.name} className="w-full h-full object-cover" />
+                           ) : (
+                               <div className="w-full h-full bg-purple-100 text-purple-600 flex items-center justify-center font-bold">{user.name?.charAt(0)}</div>
+                           )}
+                        </div>
+                        <div className="flex flex-col">
+                           <span className="text-sm font-bold truncate max-w-[150px]">{user.name}</span>
+                           <div className="flex flex-col opacity-60 text-[10px] font-medium">
+                               <span className="flex items-center gap-1"><Mail size={10} /> {user.email}</span>
+                               <span className="flex items-center gap-1"><Phone size={10} /> {user.phone}</span>
+                           </div>
+                        </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex flex-col">
-                      <span className="text-sm font-bold truncate max-w-[150px]">{user.name}</span>
-                      <span className="text-[10px] font-medium opacity-50 uppercase tracking-wider">Verified Identity</span>
-                    </div>
+                  <td className="px-4 py-4">
+                     <div className="flex flex-col truncate max-w-[200px]">
+                        <span className="text-xs font-bold opacity-80">{user.college || 'N/A'}</span>
+                        <span className="text-[10px] font-semibold opacity-50 uppercase tracking-wider">{user.course || 'N/A'}</span>
+                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex flex-col truncate max-w-[200px]">
-                      <span className="text-xs font-semibold opacity-60 truncate">{user.email}</span>
-                      <span className="text-[10px] font-bold opacity-30 tracking-tighter">{user.number}</span>
-                    </div>
+                  <td className="px-4 py-4">
+                      <div className="flex items-center gap-2">
+                          {user.social?.github && (
+                              <a href={user.social.github} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full hover:bg-black/5 transition-colors opacity-60 hover:opacity-100" style={{ color: colors.text }}>
+                                  <Github size={14} />
+                              </a>
+                          )}
+                          {user.social?.linkedin && (
+                              <a href={user.social.linkedin} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full hover:bg-black/5 transition-colors opacity-60 hover:opacity-100 text-blue-600">
+                                  <Linkedin size={14} />
+                              </a>
+                          )}
+                          {user.social?.portfolio && (
+                              <a href={user.social.portfolio} target="_blank" rel="noopener noreferrer" className="p-1.5 rounded-full hover:bg-black/5 transition-colors opacity-60 hover:opacity-100 text-purple-600">
+                                  <Globe size={14} />
+                              </a>
+                          )}
+                          {!user.social?.github && !user.social?.linkedin && !user.social?.portfolio && (
+                              <span className="text-[10px] opacity-30 font-bold uppercase tracking-wider">No Links</span>
+                          )}
+                      </div>
                   </td>
-                  <td className="px-6 py-4 text-right right-0 z-20 whitespace-nowrap" style={{ backgroundColor: colors.sidebar || colors.background }}>
+                  <td className="px-4 py-4">
+                      <div className="flex items-center gap-2">
+                         <Toggle active={(user.status || 'Active') === 'Active'} onClick={() => toggleStatus(user.id, user.status)} />
+                         <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                             (user.status || 'Active') === 'Active' ? 'text-green-600' : 'text-red-500'
+                         }`}>
+                             {user.status || 'Active'}
+                         </span>
+                      </div>
+                  </td>
+                  <td className="px-4 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button 
                         onClick={() => navigate(`/dashboard/users/view/${user.id}`)}
-                        className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
-                        style={{ color: colors.primary, backgroundColor: colors.primary + '10' }}
+                        className="p-2 cursor-pointer rounded border hover:bg-black/5 transition-colors"
+                        style={{ color: colors.primary, borderColor: colors.accent + '30' }}
+                        title="View Full Profile"
                       >
                         <Eye size={16} />
                       </button>
                       <button 
                         onClick={() => navigate(`/dashboard/users/edit/${user.id}`)}
-                        className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
-                        style={{ color: colors.accent, backgroundColor: colors.accent + '10' }}
+                        className="p-2 cursor-pointer rounded border hover:bg-black/5 transition-colors"
+                        style={{ color: colors.accent, borderColor: colors.accent + '30' }}
+                         title="Edit Details"
                       >
                         <Edit2 size={16} />
                       </button>
                       <button 
                         onClick={() => handleDelete(user.id)}
-                        className="p-2 cursor-pointer rounded-xl transition-all hover:bg-opacity-20"
-                        style={{ color: '#ef4444', backgroundColor: '#ef444415' }}
+                        className="p-2 cursor-pointer rounded border hover:bg-red-50 transition-colors"
+                        style={{ color: '#ef4444', borderColor: colors.accent + '30' }}
+                         title="Delete Identity"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -153,56 +204,31 @@ function Users() {
               ))}
             </tbody>
           </table>
-          
-          {paginatedUsers.length === 0 && (
-            <div className="py-20 text-center flex flex-col items-center justify-center opacity-30">
-              <UsersIcon size={48} className="mb-4" />
-              <p className="text-sm font-bold uppercase tracking-widest">No Identities Match Your Query</p>
-            </div>
-          )}
         </div>
-
-        {/* Fixed Pagination Bar */}
-        <div className="flex-shrink-0 px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t" style={{ borderColor: colors.accent + '15', backgroundColor: colors.sidebar || colors.background }}>
-           <div className="text-[10px] font-bold uppercase tracking-[3px] opacity-40 whitespace-nowrap" style={{ color: colors.textSecondary }}>
-             Vault Index: {currentPage} / {Math.max(1, totalPages)}
-           </div>
-           
-           <div className="flex items-center gap-3">
-             <button 
-               onClick={() => handlePageChange(currentPage - 1)}
-               disabled={currentPage === 1}
-               className="p-2.5 rounded-xl transition-all disabled:opacity-20 cursor-pointer shadow-sm active:scale-95 flex items-center gap-2 text-xs font-bold border whitespace-nowrap"
-               style={{ backgroundColor: colors.background, color: colors.text, borderColor: colors.accent + '20' }}
-             >
-               <ChevronLeft size={16} /> <span className="hidden sm:inline">PREV</span>
-             </button>
-             
-             <div className="flex gap-1">
-                {[...Array(totalPages)].map((_, i) => (
-                    <button 
-                        key={i}
-                        onClick={() => setCurrentPage(i + 1)}
-                        className={`w-8 h-8 rounded-lg text-xs font-bold transition-all ${currentPage === i + 1 ? 'shadow-inner' : 'opacity-40 hover:opacity-100'}`}
-                        style={{ 
-                            backgroundColor: currentPage === i + 1 ? colors.primary : 'transparent',
-                            color: currentPage === i + 1 ? colors.background : colors.text
-                        }}
-                    >
-                        {i + 1}
-                    </button>
-                ))}
-             </div>
-
-             <button 
-               onClick={() => handlePageChange(currentPage + 1)}
-               disabled={currentPage === totalPages || totalPages === 0}
-               className="p-2.5 rounded-xl transition-all disabled:opacity-20 cursor-pointer shadow-md active:scale-95 flex items-center gap-2 text-xs font-bold whitespace-nowrap"
-               style={{ backgroundColor: colors.primary, color: colors.background }}
-             >
-               <span className="hidden sm:inline">NEXT</span> <ChevronRight size={16} />
-             </button>
-           </div>
+        
+        {/* Pagination Info */}
+        <div className="p-4 border-t flex items-center justify-between" style={{ borderColor: colors.accent + '15' }}>
+            <span className="text-xs font-bold opacity-40 uppercase tracking-widest">
+                Page {currentPage} of {totalPages}
+            </span>
+            <div className="flex gap-2">
+                <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded border text-xs font-bold uppercase tracking-widest disabled:opacity-30 hover:bg-black/5 transition-colors"
+                    style={{ borderColor: colors.accent + '30' }}
+                >
+                    Prev
+                </button>
+                <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 rounded border text-xs font-bold uppercase tracking-widest disabled:opacity-30 hover:bg-black/5 transition-colors"
+                    style={{ borderColor: colors.accent + '30' }}
+                >
+                    Next
+                </button>
+            </div>
         </div>
       </div>
     </div>

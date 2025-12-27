@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2 } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import mainLogo from '../assets/mainLogo.png'
@@ -81,6 +81,7 @@ const Dashboard = () => {
     { name: 'Slider', icon: Image, path: '/dashboard/slider' },
     { name: 'Shorts', icon: Film, path: '/dashboard/shorts' },
     { name: 'Quizzes', icon: FileQuestion, path: '/dashboard/quizzes' },
+    { name: 'Referrals', icon: Share2, path: '/dashboard/referrals' },
   ]
 
   const themeOptions = [

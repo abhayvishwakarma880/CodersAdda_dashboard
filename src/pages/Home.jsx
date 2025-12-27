@@ -7,7 +7,7 @@ const Home = () => {
 
   const stats = [
     { title: 'Total Users', value: '2,543', icon: '', change: '+12%' },
-    { title: 'Revenue', value: '$4,678', icon: '', change: '+8%' },
+    { title: 'Revenue', value: '₹4,678', icon: '', change: '+8%' },
     { title: 'Courses', value: '999', icon: '', change: '+23%' },
     { title: 'Growth', value: '89%', icon: '', change: '+5%' }
   ]

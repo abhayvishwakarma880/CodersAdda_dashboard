@@ -64,11 +64,187 @@ export const DataProvider = ({ children }) => {
   ]);
 
   const [users, setUsers] = useState([
-    { id: '1', name: 'Abhay Vishwakarma', email: 'vabhay9651@gmail.com', number: '9651429000', photo: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop', role: 'Admin' },
-    { id: '2', name: 'Alok Singh', email: 'alok@example.com', number: '8877665544', photo: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop', role: 'Student' },
-    { id: '3', name: 'Priya Sharma', email: 'priya@example.com', number: '9911223344', photo: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop', role: 'Instructor' },
-    { id: '4', name: 'Rahul Kumar', email: 'rahul@example.com', number: '7766554433', photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop', role: 'Student' },
-    { id: '5', name: 'Anjali Gupta', email: 'anjali@example.com', number: '8800112233', photo: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop', role: 'Instructor' }
+    {
+      id: '1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@codersadda.com',
+      phone: '+91 9651429000',
+      profilePhoto: 'https://images.unsplash.com/photo-1543610892-0b1f7e6d8ac1?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'VIT Vellore',
+      course: 'M.Tech CSE',
+      semester: '4th',
+      technology: ['MERN Stack', 'Next.js', 'Typescript'],
+      skills: ['React', 'Node.js', 'AWS', 'Docker'],
+      about: 'Passionate full-stack developer with a love for clean code and modern web technologies. Enjoys mentoring and contributing to open source.',
+      studentDetails: {
+          completedCourses: 12,
+          ongoingCourses: 1,
+          learningHours: 450,
+          createdAt: '2023-01-10',
+          progress: 92
+      },
+      social: {
+        github: 'https://github.com/abhayvishwakarma',
+        linkedin: 'https://linkedin.com/in/abhayvishwakarma',
+        portfolio: 'https://abhay.dev'
+      },
+      referralData: { referralCount: 45, isReferred: false, referredByCode: null, myReferralCode: 'ABHAY2024' },
+      achievements: [
+        { title: 'Tech Lead', description: 'Led the university coding club for 2 consecutive years.' },
+        { title: 'Hackathon Winner', description: '1st Place in National Level Coding Hackathon 2023.' },
+        { title: 'Open Source Contributor', description: 'Merged 50+ PRs to major React libraries.' }
+      ],
+      purchases: [
+        { id: 'p1', title: 'Full Stack Masterclass', type: 'Course', date: '2023-02-10', price: 2999 },
+        { id: 'p2', title: 'System Design Interview Guide', type: 'E-Book', date: '2023-05-15', price: 999 }
+      ],
+      subscription: { plan: 'Lifetime Pro', status: 'Active', expiryDate: 'Unlimited', benefits: ['All Access', '1-on-1 Mentorship', 'Priority Support'] },
+      wallet: { balance: 8500, earnings: 25000, withdrawn: 16500, transactions: [{ id: 't1', type: 'Credit', amount: 1000, description: 'Hackathon Prize', date: '2023-11-20' }, { id: 't2', type: 'Debit', amount: 2999, description: 'Course Purchase', date: '2023-02-10' }] }
+    },
+    {
+      id: '2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      profilePhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'LPU Jalandhar',
+      course: 'BCA',
+      semester: '2nd',
+      technology: ['Flutter', 'Dart', 'Firebase'],
+      skills: ['Mobile Dev', 'UI Animation', 'Riverpod'],
+      about: 'Aspiring mobile app developer focusing on creating beautiful and performant Flutter applications. Loves experimenting with animations.',
+      studentDetails: {
+          completedCourses: 3,
+          ongoingCourses: 2,
+          learningHours: 120,
+          createdAt: '2023-08-15',
+          progress: 45
+      },
+      social: {
+        github: 'https://github.com/riyasingh',
+        linkedin: 'https://linkedin.com/in/riyasingh',
+        portfolio: 'https://riya.design'
+      },
+      referralData: { referralCount: 5, isReferred: true, referredByCode: 'ABHAY99' },
+      achievements: [
+        { title: 'UI Wizard', description: 'Created the best mobile UI in the monthly challenge.' }
+      ],
+      purchases: [
+        { id: 'p1', title: 'Flutter Zero to Hero', type: 'Course', date: '2023-08-16', price: 1999 }
+      ],
+      subscription: { plan: 'Monthly Starter', status: 'Active', expiryDate: '2024-02-28', benefits: ['Mobile Access', 'HD Video'] },
+      wallet: { balance: 200, earnings: 500, withdrawn: 300, transactions: [{ id: 't1', type: 'Credit', amount: 500, description: 'Referral Bonus', date: '2023-09-01' }] }
+    },
+    {
+      id: '3',
+      name: 'Rahul Sharma',
+      email: 'rahul.ai@example.com',
+      phone: '+91 9988776655',
+      profilePhoto: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=60&w=200',
+      status: 'Disabled',
+      college: 'IIT Delhi',
+      course: 'B.Tech AI & DS',
+      semester: '6th',
+      technology: ['Python', 'TensorFlow', 'PyTorch'],
+      skills: ['Machine Learning', 'Data Analysis', 'Computer Vision'],
+      about: 'AI enthusiast exploring the depths of deep learning and computer vision. Working on autonomous drone navigation project.',
+      studentDetails: {
+          completedCourses: 15,
+          ongoingCourses: 0,
+          learningHours: 600,
+          createdAt: '2022-07-20',
+          progress: 100
+      },
+      social: {
+        github: 'https://github.com/rahul-ai',
+        linkedin: 'https://linkedin.com/in/rahulsharma',
+        portfolio: ''
+      },
+      referralData: { referralCount: 0, isReferred: false, referredByCode: null },
+      achievements: [
+        { title: 'Research Fellow', description: 'Published a paper on GANs in a reputed journal.' },
+        { title: 'Course Completer', description: 'Finished 15 advanced AI courses.' }
+      ],
+      purchases: [
+        { id: 'p1', title: 'Deep Learning Specialization', type: 'Course', date: '2022-07-22', price: 4999 },
+        { id: 'p2', title: 'Mathematics for ML', type: 'E-Book', date: '2022-08-10', price: 599 }
+      ],
+      subscription: null,
+      wallet: { balance: 0, earnings: 0, withdrawn: 0, transactions: [] }
+    },
+    {
+      id: '4',
+      name: 'Sneha Patel',
+      email: 'sneha.design@example.com',
+      phone: '+91 7766554433',
+      profilePhoto: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'NIFT Mumbai',
+      course: 'B.Des',
+      semester: '5th',
+      technology: ['Figma', 'Adobe XD', 'Sketch'],
+      skills: ['User Research', 'Prototyping', 'Wireframing', 'HTML/CSS'],
+      about: 'Creative designer transitioning into UI/UX development. I believe in accessible and inclusive design for everyone.',
+      studentDetails: {
+          completedCourses: 6,
+          ongoingCourses: 3,
+          learningHours: 210,
+          createdAt: '2023-03-12',
+          progress: 60
+      },
+      social: {
+        github: '',
+        linkedin: 'https://linkedin.com/in/snehadesign',
+        portfolio: 'https://dribbble.com/sneha'
+      },
+      referralData: { referralCount: 10, isReferred: true, referredByCode: 'DESIGN101' },
+      achievements: [
+        { title: 'Design Star', description: 'Won Best Design Award 2023.' }
+      ],
+      purchases: [
+        { id: 'p1', title: 'Advanced UX Strategy', type: 'Course', date: '2023-04-05', price: 2499 }
+      ],
+      subscription: { plan: 'Yearly Creative', status: 'Active', expiryDate: '2024-03-12', benefits: ['Design Resources Access', 'Community Access'] },
+      wallet: { balance: 1500, earnings: 3000, withdrawn: 1500, transactions: [{ id: 't1', type: 'Credit', amount: 1000, description: 'Design Contest Prize', date: '2023-06-20' }] }
+    },
+    {
+      id: '5',
+      name: 'Vikram Malhotra',
+      email: 'vikram.java@example.com',
+      phone: '+91 8899001122',
+      profilePhoto: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Bits Pilani',
+      course: 'B.E. CS',
+      semester: '8th',
+      technology: ['Java', 'Spring Boot', 'Microservices'],
+      skills: ['Backend Dev', 'SQL', 'System Design'],
+      about: 'Backend engineer getting ready for placements. Focused on scalability and performance optimization.',
+      studentDetails: {
+          completedCourses: 10,
+          ongoingCourses: 0,
+          learningHours: 400,
+          createdAt: '2022-05-01',
+          progress: 98
+      },
+      social: {
+        github: 'https://github.com/vikram-java',
+        linkedin: 'https://linkedin.com/in/vikrammalhotra',
+        portfolio: ''
+      },
+      referralData: { referralCount: 2, isReferred: false, referredByCode: null },
+      achievements: [
+        { title: 'Problem Solver', description: 'Solved 1000+ problems on LeetCode.' },
+        { title: 'Placement Ready', description: 'Secured an internship at Amazon.' }
+      ],
+      purchases: [
+        { id: 'p1', title: 'Complete Backend with Java', type: 'Course', date: '2022-06-15', price: 3999 }
+      ],
+      subscription: { plan: 'Quarterly Pro', status: 'Expired', expiryDate: '2023-08-01', benefits: [] },
+      wallet: { balance: 100, earnings: 100, withdrawn: 0, transactions: [] }
+    }
   ]);
 
   const [ebookCategories, setEbookCategories] = useState([
@@ -111,9 +287,9 @@ export const DataProvider = ({ children }) => {
   ]);
 
   const [sliders, setSliders] = useState([
-    { id: '1', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop', title: 'Welcome to CodersAdda' },
-    { id: '2', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop', title: 'Learn & Grow Together' },
-    { id: '3', image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=400&fit=crop', title: 'Build Your Future' }
+    { id: '1', image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop', title: 'Welcome to CodersAdda', status: 'Active' },
+    { id: '2', image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&h=400&fit=crop', title: 'Learn & Grow Together', status: 'Active' },
+    { id: '3', image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&h=400&fit=crop', title: 'Build Your Future', status: 'Disabled' }
   ]);
 
   const [shorts, setShorts] = useState([
@@ -181,20 +357,15 @@ export const DataProvider = ({ children }) => {
   };
 
   const addUser = (userData) => {
-    const newUser = {
-      ...userData,
-      id: Date.now().toString(),
-    };
-    setUsers(prev => [...prev, newUser]);
-    return newUser;
+    setUsers([...users, { ...userData, id: Date.now().toString() }]);
   };
 
   const updateUser = (id, userData) => {
-    setUsers(prev => prev.map(user => user.id === id ? { ...user, ...userData } : user));
+    setUsers(users.map(u => u.id === id ? { ...u, ...userData } : u));
   };
 
   const deleteUser = (id) => {
-    setUsers(prev => prev.filter(user => user.id !== id));
+    setUsers(users.filter(u => u.id !== id));
   };
 
   const addEbookCategory = (name) => {
@@ -335,37 +506,64 @@ export const DataProvider = ({ children }) => {
     }));
   };
 
+  // --- Quizzes Logic ---
   const [quizzes, setQuizzes] = useState([
     {
-      id: '1',
-      title: 'React Fundamentals',
-      description: 'Test your basic knowledge of React concepts.',
-      duration: '15',
-      points: 5,
-      totalQuestions: 5,
-      level: 'Beginner',
-      questions: [
-        {
-          id: 'q1',
-          question: 'What is the Virtual DOM?',
-          options: ['A direct copy of the DOM', 'A lightweight copy', 'A heavy XML', 'None'],
-          correctOption: 1
-        }
-      ]
+       id: '1',
+       title: 'React.js Fundamentals',
+       quizCode: 'REACT-101',
+       description: 'Test your knowledge on React hooks, components and state management.',
+       duration: '20',
+       points: '5',
+       totalQuestions: 10,
+       level: 'Intermediate',
+       status: 'Active',
+       questions: [
+           { id: 'q1', question: 'What is the virtual DOM?', options: ['A copy of real DOM', 'A browser API', 'A database', 'None'], correctOption: 0 }
+       ]
     }
   ]);
 
-  const addQuiz = (quizData) => {
-    const newQuiz = { ...quizData, id: Date.now().toString() };
-    setQuizzes([...quizzes, newQuiz]);
+  const addQuiz = (quiz) => {
+    setQuizzes([...quizzes, { ...quiz, id: Date.now().toString() }]);
   };
 
-  const updateQuiz = (id, quizData) => {
-    setQuizzes(quizzes.map(q => q.id === id ? { ...q, ...quizData } : q));
+  const updateQuiz = (id, updatedQuiz) => {
+    setQuizzes(quizzes.map(q => q.id === id ? { ...q, ...updatedQuiz } : q));
   };
 
   const deleteQuiz = (id) => {
     setQuizzes(quizzes.filter(q => q.id !== id));
+  };
+
+  // --- Referrals Logic ---
+  const [referrals, setReferrals] = useState([
+    {
+      id: '1',
+      fullName: 'Rahul Sharma',
+      email: 'rahul.sharma@example.com',
+      phone: '9876543210',
+      college: 'IIT Bombay',
+      course: 'B.Tech CSE',
+      referralCode: 'DCT89289838829'
+    },
+    {
+      id: '2',
+      fullName: 'Priya Verma',
+      email: 'priya.verma@example.com',
+      phone: '8765432109',
+      college: 'NIT Trichy',
+      course: 'MCA',
+      referralCode: 'DCT89289838830'
+    }
+  ]);
+
+  const updateReferral = (id, updatedData) => {
+    setReferrals(prev => prev.map(ref => ref.id === id ? { ...ref, ...updatedData } : ref));
+  };
+
+  const deleteReferral = (id) => {
+    setReferrals(prev => prev.filter(ref => ref.id !== id));
   };
 
   return (
@@ -410,7 +608,10 @@ export const DataProvider = ({ children }) => {
       quizzes,
       addQuiz,
       updateQuiz,
-      deleteQuiz
+      deleteQuiz,
+      referrals,
+      updateReferral,
+      deleteReferral
     }}>
       {children}
     </DataContext.Provider>

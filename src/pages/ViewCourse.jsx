@@ -59,6 +59,25 @@ function ViewCourse() {
     });
   };
 
+  const handleEditTopic = (sectionId, currentTitle) => {
+    Swal.fire({
+      title: 'Edit Topic Name',
+      input: 'text',
+      inputValue: currentTitle,
+      showCancelButton: true,
+      confirmButtonText: 'Update',
+      confirmButtonColor: colors.primary,
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const updatedCurriculum = course.curriculum.map(s => 
+          s.id === sectionId ? { ...s, title: result.value } : s
+        );
+        updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+        toast.success("Topic updated");
+      }
+    });
+  };
+
   const handleDeleteTopic = (sectionId) => {
     Swal.fire({
       title: 'Delete Topic?',
@@ -190,6 +209,9 @@ function ViewCourse() {
                                         style={{ color: colors.primary }}
                                     >
                                         <Plus size={12} /> Add Lecture
+                                    </button>
+                                    <button onClick={() => handleEditTopic(section.id, section.title)} className="p-1 text-blue-500 cursor-pointer hover:bg-blue-50 rounded">
+                                        <Edit size={14} />
                                     </button>
                                     <button onClick={() => handleDeleteTopic(section.id)} className="p-1 text-red-500 cursor-pointer hover:bg-red-50 rounded">
                                         <Trash2 size={14} />

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Video, Save, X, Plus, Info, Layout, Play, Clock, Hash, FileText, Monitor } from 'lucide-react';
+import { ArrowLeft, Video, Save, X, Monitor, FileText, Clock, Layout, Hash, Play } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
@@ -8,13 +8,27 @@ import { toast } from 'react-toastify';
 function EditLecture() {
   const { colors } = useTheme();
   const { courses, updateCourse } = useData();
-  const { id, lectureId } = useParams(); // courseId, lectureId
+  const { id, lectureId } = useParams();
   const navigate = useNavigate();
-  const videoInputRef = useRef(null);
-  
+
   const [course, setCourse] = useState(null);
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState({
+    title: '',
+    sectionId: '',
+    description: '',
+    duration: '',
+    videoFileName: '',
+    videoUrl: '',
+    thumbnailUrl: '',
+    pdfFileName: '',
+    pdfUrl: '',
+    isLocked: false,
+    lectureSrNo: '',
+    status: 'Active'
+  });
+
   const thumbnailInputRef = useRef(null);
+  const videoInputRef = useRef(null);
   const pdfInputRef = useRef(null);
 
   useEffect(() => {
@@ -22,21 +36,23 @@ function EditLecture() {
     if (foundCourse) {
       setCourse(foundCourse);
       let foundLecture = null;
-      let sectionId = '';
+      let foundSectionId = '';
+
+      // Find the lecture and its section
       foundCourse.curriculum?.forEach(section => {
         const l = section.lessons.find(ls => ls.id === lectureId);
         if (l) {
             foundLecture = l;
-            sectionId = section.id;
+            foundSectionId = section.id;
         }
       });
 
       if (foundLecture) {
         setFormData({
             title: foundLecture.title || '',
+            sectionId: foundSectionId,
             description: foundLecture.description || '',
             duration: foundLecture.duration || '',
-            sectionId: sectionId,
             videoFileName: foundLecture.videoFileName || '',
             videoUrl: foundLecture.videoUrl || '',
             thumbnailUrl: foundLecture.thumbnailUrl || '',
@@ -54,8 +70,49 @@ function EditLecture() {
     }
   }, [id, lectureId, courses, navigate]);
 
-  if (!course || !formData) return null;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.title || !formData.sectionId) {
+        toast.warning("Title and Section are required");
+        return;
+    }
 
+    // Logic to update the course curriculum
+    const updatedCurriculum = course.curriculum.map(section => {
+        // Remove from old section if section changed
+        if (section.id !== formData.sectionId) {
+            return {
+                ...section,
+                lessons: section.lessons.filter(l => l.id !== lectureId)
+            };
+        }
+        return section;
+    }).map(section => {
+        // Update in new/current section
+        if (section.id === formData.sectionId) {
+             const existingLessonIndex = section.lessons.findIndex(l => l.id === lectureId);
+             const updatedLesson = {
+                 id: lectureId,
+                 ...formData
+             };
+
+             if (existingLessonIndex > -1) {
+                 // Update existing
+                 const newLessons = [...section.lessons];
+                 newLessons[existingLessonIndex] = updatedLesson;
+                 return { ...section, lessons: newLessons };
+             } else {
+                 // Moved from another section, add here
+                 return { ...section, lessons: [...section.lessons, updatedLesson] };
+             }
+        }
+        return section;
+    });
+
+    updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
+    toast.success("Lecture updated successfully!");
+    navigate(`/dashboard/courses/view/${id}`);
+  };
 
   const handleVideoChange = (e) => {
     const file = e.target.files[0];
@@ -80,7 +137,7 @@ function EditLecture() {
           videoUrl: videoUrl,
           duration: durationStr
         }));
-        toast.info(`Video updated: ${file.name} (${durationStr})`);
+        toast.info(`Video updated: ${file.name}`);
       };
     }
   };
@@ -88,76 +145,25 @@ function EditLecture() {
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error("Image size should be less than 2MB");
-        return;
-      }
-      setFormData({
-        ...formData,
-        thumbnailUrl: URL.createObjectURL(file)
-      });
-      toast.info("Thumbnail updated");
+      setFormData({ ...formData, thumbnailUrl: URL.createObjectURL(file) });
     }
   };
 
   const handlePdfChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.type !== 'application/pdf') {
-        toast.error("Please upload a PDF file");
-        return;
-      }
-      setFormData({
-        ...formData,
-        pdfFileName: file.name,
-        pdfUrl: URL.createObjectURL(file)
-      });
-      toast.info("PDF updated: " + file.name);
+      setFormData({ ...formData, pdfFileName: file.name, pdfUrl: URL.createObjectURL(file) });
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    // Update curriculum by mapping through sections and lessons
-    const updatedCurriculum = course.curriculum.map(section => {
-      // Find and remove lecture from any section it was previously in (to handle potential section change)
-      const filteredLessons = section.lessons.filter(l => l.id !== lectureId);
-      
-      // If this is the newly targeted section, add the updated lecture
-      if (section.id === formData.sectionId) {
-          return {
-              ...section,
-              lessons: [...filteredLessons, {
-                  id: lectureId,
-                  title: formData.title,
-                  description: formData.description,
-                  duration: formData.duration,
-                  videoFileName: formData.videoFileName,
-                  videoUrl: formData.videoUrl,
-                  thumbnailUrl: formData.thumbnailUrl,
-                  pdfFileName: formData.pdfFileName,
-                  pdfUrl: formData.pdfUrl,
-                  isLocked: formData.isLocked,
-                  lectureSrNo: formData.lectureSrNo,
-                  status: formData.status
-              }]
-          };
-      }
-      return { ...section, lessons: filteredLessons };
-    });
+  if (!course) return null;
 
-    updateCourse(course.id, { ...course, curriculum: updatedCurriculum });
-    toast.success('Lecture updated successfully!');
-    navigate(`/dashboard/courses/view/${course.id}`);
-  };
-
-  const labelStyle = { color: colors.textSecondary, fontSize: '12px', fontWeight: '600', marginBottom: '8px', display: 'block' };
+  const labelStyle = { color: colors.textSecondary, fontSize: '10px', fontWeight: 'bold', uppercase: 'uppercase', tracking: '0.05em', marginBottom: '4px', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' };
 
   return (
     <div className="w-full mx-auto pb-20 pt-4 px-4 h-full overflow-auto">
-      <div className="flex items-center gap-4 mb-8">
-        <button 
+      <div className="flex items-center gap-4 mb-8 max-w-4xl">
+        <button
           onClick={() => navigate(-1)}
           className="p-2 rounded transition-all cursor-pointer border"
           style={{ color: colors.text, backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}
@@ -170,10 +176,10 @@ function EditLecture() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-8 items-stretch">
-        {/* Left Column - Details */}
-        <div className="flex-1 space-y-6">
-          <div className="h-full p-8 rounded border shadow-sm flex flex-col" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+        {/* Lecture Details */}
+        <div className="space-y-6">
+          <div className="p-8 rounded border shadow-sm flex flex-col" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
             <h3 className="text-xs font-black uppercase tracking-widest opacity-40 mb-6">Lecture Details</h3>
             <div className="space-y-6 flex-1">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -205,7 +211,7 @@ function EditLecture() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-1">
-                    <label style={labelStyle}>Change Module (Unit)</label>
+                    <label style={labelStyle}>Select Module (Unit)</label>
                     <div className="relative">
                         <Hash className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" size={18} />
                         <select 
@@ -220,7 +226,7 @@ function EditLecture() {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <label style={labelStyle}>Duration</label>
+                    <label style={labelStyle}>Duration (e.g. 10:45)</label>
                     <div className="relative">
                         <Clock className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" size={18} />
                         <input 
@@ -239,7 +245,7 @@ function EditLecture() {
                     rows={5}
                     value={formData.description}
                     onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="Describe this lecture..."
+                    placeholder="Enter what this lecture is about..."
                     className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold transition-all resize-none"
                     style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
                  />
@@ -247,7 +253,7 @@ function EditLecture() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
-                    <label style={labelStyle}>Privacy Setting</label>
+                    <label style={labelStyle}>Lecture Privacy</label>
                     <div className="flex gap-4">
                         <button 
                             type="button" onClick={() => setFormData({...formData, isLocked: false})}
@@ -269,7 +275,7 @@ function EditLecture() {
                                 borderColor: formData.isLocked ? colors.primary : colors.accent + '20'
                             }}
                         >
-                            Locked
+                            Locked 
                         </button>
                     </div>
                 </div>
@@ -294,58 +300,45 @@ function EditLecture() {
                 </div>
               </div>
             </div>
-            <div className="space-y-3 pt-6 shrink-0">
-                <button 
-                  type="submit"
-                  className="w-full py-4 cursor-pointer rounded font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3"
-                  style={{ backgroundColor: colors.primary, color: colors.background }}
-                >
-                  <Save size={18} /> Update Lecture
-                </button>
-                <button 
-                  type="button" onClick={() => navigate(-1)}
-                  className="w-full py-4 cursor-pointer rounded font-black text-xs uppercase tracking-widest border opacity-60 hover:opacity-100 transition-all flex items-center justify-center gap-3"
-                  style={{ borderColor: colors.accent + '30', color: colors.text }}
-                >
-                  Cancel
-                </button>
-            </div>
+
           </div>
         </div>
 
-        {/* Right Column - Media */}
-        <div className="w-full md:w-80 space-y-6 flex flex-col">
-            <div className="flex-1 flex flex-col gap-4">
+
+        {/* Media - Video, Thumbnail, PDF */}
+        <div className="p-6 rounded border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-6">Lecture Assets</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Video Upload */}
-                <div className="flex-1 p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
+                <div>
                     <label style={labelStyle}>Lecture Video</label>
                     <div 
                         onClick={() => videoInputRef.current.click()}
-                        className="flex-1 min-h-[120px] rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.videoFileName ? (
                             <div className="text-center p-4">
                                 <Play size={32} className="mx-auto mb-2 text-green-500" />
                                 <p className="text-[9px] font-bold uppercase tracking-wider truncate max-w-[150px]">{formData.videoFileName}</p>
-                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, videoFileName: '', videoUrl: '', duration: ''}); }} className="mt-2 text-[9px] font-black text-red-500">Remove</button>
+                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, videoFileName: '', videoUrl: '', duration: ''}); }} className="mt-2 text-[9px] font-black text-red-500 cursor-pointer">Remove</button>
                             </div>
                         ) : (
-                            <>
-                                <Video size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Update Video</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <Video size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Select Video</p>
+                            </div>
                         )}
                         <input type="file" ref={videoInputRef} onChange={handleVideoChange} accept="video/*" className="hidden" />
                     </div>
                 </div>
 
                 {/* Thumbnail Upload */}
-                <div className="p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
-                    <label style={labelStyle}>Update Thumbnail</label>
+                <div>
+                    <label style={labelStyle}>Thumbnail (Optional)</label>
                     <div 
                         onClick={() => thumbnailInputRef.current.click()}
-                        className="aspect-video rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5 overflow-hidden group"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5 overflow-hidden group"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.thumbnailUrl ? (
@@ -356,39 +349,57 @@ function EditLecture() {
                                 </div>
                             </div>
                         ) : (
-                            <>
-                                <Monitor size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Update Banner</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <Monitor size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Add Banner</p>
+                            </div>
                         )}
                         <input type="file" ref={thumbnailInputRef} onChange={handleThumbnailChange} accept="image/*" className="hidden" />
                     </div>
                 </div>
 
                 {/* PDF Upload */}
-                <div className="p-5 rounded border shadow-sm flex flex-col bg-white/50 dark:bg-black/10" style={{ borderColor: colors.accent + '20' }}>
-                    <label style={labelStyle}>Update Resources (PDF)</label>
+                <div>
+                    <label style={labelStyle}>Resources (PDF)</label>
                     <div 
                         onClick={() => pdfInputRef.current.click()}
-                        className="py-6 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
+                        className="h-40 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5"
                         style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
                     >
                         {formData.pdfFileName ? (
                             <div className="text-center px-4">
                                 <FileText size={32} className="mx-auto mb-2 text-primary" />
                                 <p className="text-[9px] font-bold uppercase tracking-wider truncate max-w-[150px]">{formData.pdfFileName}</p>
-                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, pdfFileName: '', pdfUrl: ''}); }} className="mt-2 text-[9px] font-black text-red-500">Remove</button>
+                                <button type="button" onClick={(e) => { e.stopPropagation(); setFormData({...formData, pdfFileName: '', pdfUrl: ''}); }} className="mt-2 text-[9px] font-black text-red-500 cursor-pointer">Remove</button>
                             </div>
                         ) : (
-                            <>
-                                <FileText size={32} className="opacity-20 mb-2" />
-                                <p className="text-[9px] font-bold opacity-40 uppercase tracking-widest">Update Notes</p>
-                            </>
+                            <div className="text-center opacity-40">
+                                <FileText size={32} className="mx-auto mb-2" />
+                                <p className="text-[9px] font-bold uppercase tracking-widest">Add Notes</p>
+                            </div>
                         )}
                         <input type="file" ref={pdfInputRef} onChange={handlePdfChange} accept=".pdf" className="hidden" />
                     </div>
                 </div>
             </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <button 
+              type="submit"
+              className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 cursor-pointer"
+              style={{ backgroundColor: colors.primary, color: colors.background }}
+            >
+              <Save size={18} /> Update Lecture
+            </button>
+            <button 
+              type="button" onClick={() => navigate(-1)}
+              className="flex-1 py-4 rounded font-black text-xs uppercase tracking-widest border opacity-60 hover:opacity-100 transition-all flex items-center justify-center gap-3 cursor-pointer"
+              style={{ borderColor: colors.accent + '30', color: colors.text }}
+            >
+              <X size={18} /> Cancel
+            </button>
         </div>
       </form>
     </div>
