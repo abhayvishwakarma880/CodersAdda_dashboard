@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, User, Trophy, BookOpen, CreditCard, Wallet, CheckCircle2, XCircle, Github, Linkedin, Globe, Mail, Phone, School, Layers, Code2, Award, Download, ArrowUpRight, ArrowDownLeft, UsersIcon } from 'lucide-react';
+import { ArrowLeft, User, Trophy, BookOpen, CreditCard, Wallet, CheckCircle2, XCircle, Github, Linkedin, Globe, Mail, Phone, School, Layers, Code2, Award, Download, ArrowUpRight, ArrowDownLeft, UsersIcon, Gift } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 function ViewUser() {
   const { colors } = useTheme();
-  const { users } = useData();
+  const { users, subscriptions } = useData();
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('personal');
+  const [showPlanDropdown, setShowPlanDropdown] = useState(false);
 
   useEffect(() => {
     const found = users.find(u => u.id === id);
@@ -26,7 +28,7 @@ function ViewUser() {
 
   const tabs = [
     { id: 'personal', label: 'Personal Details', icon: User },
-    { id: 'achievements', label: 'Achievements', icon: Trophy },
+    { id: 'achievements', label: 'Certificates', icon: Trophy },
     { id: 'courses', label: 'Course Purchase', icon: BookOpen },
     { id: 'subscription', label: 'Subscription', icon: CreditCard },
     { id: 'wallet', label: 'Wallet', icon: Wallet },
@@ -285,31 +287,141 @@ function ViewUser() {
                 <motion.div 
                     key="subscription"
                     initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
+                    className="space-y-6"
                 >
-                    {user.subscription ? (
-                        <div className="max-w-xl mx-auto p-8 rounded border shadow-lg relative overflow-hidden text-center" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                             <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500" />
-                             <h3 className="text-sm font-bold opacity-50 uppercase tracking-widest mb-2" style={{color:colors.text}}>Current Plan</h3>
-                             <h2 className="text-4xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">{user.subscription.plan}</h2>
-                             
-                             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-100 from-green-600 text-green-700 text-xs font-bold uppercase tracking-widest mb-8">
-                                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" /> {user.subscription.status}
-                             </div>
+                    {/* Give Plan Button - At Top */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <h3 className="text-lg font-bold" style={{color:colors.text}}>Subscription Plans</h3>
+                        <p className="text-xs opacity-60" style={{color:colors.textSecondary}}>Manage user subscription plans</p>
+                      </div>
+                      <div className="relative">
+                        <button 
+                          onClick={() => setShowPlanDropdown(!showPlanDropdown)}
+                          className="flex items-center gap-2 px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95 cursor-pointer"
+                          style={{ backgroundColor: colors.primary, color: colors.background }}
+                        >
+                          <Gift size={18} /> Give Plan
+                        </button>
+                        
+                        {/* Dropdown Menu */}
+                        {showPlanDropdown && (
+                          <div 
+                            className="absolute top-full mt-2 right-0 w-80 rounded-lg shadow-xl border z-20"
+                            style={{ backgroundColor: colors.background, borderColor: colors.accent + '30' }}
+                          >
+                            <div className="p-3 border-b" style={{borderColor: colors.accent + '20'}}>
+                              <p className="text-xs font-bold uppercase tracking-wider opacity-60" style={{color:colors.text}}>
+                                Select a Plan to Add
+                              </p>
+                            </div>
+                            <div className="p-2 max-h-96 overflow-y-auto">
+                              {subscriptions.filter(plan => plan.status === 'Active').map((plan) => (
+                                <button
+                                  key={plan.id}
+                                  onClick={() => {
+                                    // Add new plan to user's subscriptions
+                                    const newPlan = {
+                                      id: Date.now().toString(),
+                                      plan: plan.planType + ' Plan',
+                                      price: plan.price,
+                                      status: 'Active',
+                                      expiryDate: plan.duration === '1 Month' ? '30 Days' : plan.duration,
+                                      benefits: plan.benefits,
+                                      assignedDate: new Date().toLocaleDateString()
+                                    };
+                                    
+                                    // Check if user.subscription is array, if not make it array
+                                    if (user.subscription) {
+                                      if (Array.isArray(user.subscription)) {
+                                        setUser({...user, subscription: [...user.subscription, newPlan]});
+                                      } else {
+                                        // Convert single subscription to array and add new one
+                                        setUser({...user, subscription: [user.subscription, newPlan]});
+                                      }
+                                    } else {
+                                      setUser({...user, subscription: [newPlan]});
+                                    }
+                                    
+                                    toast.success(`${plan.planType} Plan assigned to ${user.name}!`);
+                                    setShowPlanDropdown(false);
+                                  }}
+                                  className="w-full text-left p-4 rounded-lg hover:bg-opacity-80 transition-all mb-2 border"
+                                  style={{
+                                    backgroundColor: colors.accent + '10',
+                                    borderColor: colors.accent + '20',
+                                    color: colors.text
+                                  }}
+                                >
+                                  <div className="flex items-center justify-between mb-1">
+                                    <div className="font-bold text-base">{plan.planType} Plan</div>
+                                    <div className="text-lg font-black" style={{color:colors.primary}}>₹{plan.price}</div>
+                                  </div>
+                                  <div className="text-xs opacity-60 mb-2">{plan.duration}</div>
+                                  <div className="flex flex-wrap gap-1">
+                                    {plan.benefits?.slice(0, 3).map((benefit, idx) => (
+                                      <span key={idx} className="text-xs px-2 py-0.5 rounded bg-green-100 text-green-700">
+                                        {benefit}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </button>
+                              ))}
+                              {subscriptions.filter(plan => plan.status === 'Active').length === 0 && (
+                                <div className="p-6 text-center text-sm opacity-60" style={{color:colors.text}}>
+                                  No active plans available
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    
+                    {/* Subscription Cards */}
+                    {user.subscription && (Array.isArray(user.subscription) ? user.subscription.length > 0 : true) ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {(Array.isArray(user.subscription) ? user.subscription : [user.subscription]).map((sub, index) => (
+                            <div key={index} className="p-6 rounded-lg border shadow-md" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
+                              <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold">
+                                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                                  {sub.status}
+                                </div>
+                                {sub.price && (
+                                  <div className="text-xl font-black" style={{color:colors.primary}}>₹{sub.price}</div>
+                                )}
+                              </div>
+                              
+                              <h3 className="text-xl font-bold mb-3" style={{color:colors.text}}>{sub.plan}</h3>
+                              
+                              <div className="space-y-2 mb-4">
+                                {sub.benefits?.map((benefit, i) => (
+                                  <div key={i} className="flex items-center gap-2 text-sm" style={{color:colors.textSecondary}}>
+                                    <CheckCircle2 size={14} className="text-green-500 shrink-0" /> 
+                                    <span className="line-clamp-1">{benefit}</span>
+                                  </div>
+                                ))}
+                              </div>
 
-                             <div className="space-y-3 text-left max-w-xs mx-auto mb-8">
-                                 {user.subscription.benefits?.map((benefit, i) => (
-                                     <div key={i} className="flex items-center gap-3 text-sm font-medium" style={{color:colors.text}}>
-                                         <CheckCircle2 size={16} className="text-green-500" /> {benefit}
-                                     </div>
-                                 ))}
-                             </div>
-
-                             <p className="text-xs opacity-40 font-bold uppercase tracking-widest" style={{color:colors.text}}>Valid Until: {user.subscription.expiryDate}</p>
+                              <div className="pt-3 border-t space-y-1" style={{borderColor: colors.accent + '20'}}>
+                                {sub.assignedDate && (
+                                  <p className="text-xs opacity-60" style={{color:colors.textSecondary}}>
+                                    Assigned: <span className="font-semibold" style={{color:colors.text}}>{sub.assignedDate}</span>
+                                  </p>
+                                )}
+                                <p className="text-xs opacity-60" style={{color:colors.textSecondary}}>
+                                  Valid Until: <span className="font-semibold" style={{color:colors.text}}>{sub.expiryDate}</span>
+                                </p>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                     ) : (
-                         <div className="text-center py-20 opacity-40 border rounded border-dashed" style={{ borderColor: colors.accent + '40' }}>
-                             <CreditCard size={48} className="mx-auto mb-4" />
-                             <p>No active subscription.</p>
+                        <div className="text-center py-20 border rounded-lg border-dashed" style={{ borderColor: colors.accent + '30', backgroundColor: colors.sidebar || colors.background }}>
+                          <CreditCard size={48} className="mx-auto mb-3 opacity-30" style={{color:colors.text}} />
+                          <p className="font-semibold opacity-60" style={{color:colors.text}}>No subscription plans assigned</p>
+                          <p className="text-xs opacity-40 mt-2" style={{color:colors.textSecondary}}>Click "Give Plan" to assign a plan</p>
                         </div>
                     )}
                 </motion.div>

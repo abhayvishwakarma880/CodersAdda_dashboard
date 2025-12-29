@@ -23,6 +23,7 @@ function AddJob() {
     companyEmail: '',
     companyMobile: '',
     companyWebsite: '',
+    companyAddress: '',
     description: '',
     status: 'Active'
   };
@@ -212,6 +213,22 @@ function AddJob() {
                     style={inputStyle}
                     />
                 </div>
+              </div>
+            </div>
+            
+            {/* Full Address Field */}
+            <div className="mt-4 space-y-1">
+              <label style={labelStyle}>Full Address</label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-3 opacity-30" size={16} />
+                <textarea 
+                  rows="3" 
+                  value={formData.companyAddress} 
+                  onChange={(e) => setFormData({...formData, companyAddress: e.target.value})}
+                  placeholder="Enter complete company address..."
+                  className="w-full pl-10 pr-4 py-3 rounded-md border outline-none resize-none text-sm"
+                  style={inputStyle}
+                ></textarea>
               </div>
             </div>
           </div>

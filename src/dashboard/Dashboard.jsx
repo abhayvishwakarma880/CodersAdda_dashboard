@@ -8,7 +8,7 @@ import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
-  const [sidebarOpen, setSidebarOpen] = useState(window.innerWidth >= 768)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
@@ -58,6 +58,7 @@ const Dashboard = () => {
 
   const navLinks = [
     { name: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+    { name: 'Sales', icon: TrendingUp, path: '/dashboard/sales' },
     { name: 'Users', icon: Users, path: '/dashboard/users' },
     { 
       name: 'Courses', 
@@ -95,7 +96,7 @@ const Dashboard = () => {
     <div className='flex h-screen relative overflow-hidden' style={{ backgroundColor: colors.background }}>
       {/* Sidebar */}
       <div className={`fixed top-0 left-0 h-full z-40 transition-all duration-700 ease-out border-r md:relative md:z-auto flex flex-col ${
-        sidebarOpen ? 'translate-x-0 w-64 ' : '-translate-x-full w-64 md:translate-x-0 md:w-16'
+        sidebarOpen ? 'translate-x-0 w-64 ' : '-translate-x-full w-64 md:translate-x-0 md:w-18'
       }`} 
            style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '30' }}>
         <div className='p-4 flex items-center justify-center border-b h-15' style={{borderColor: colors.accent + '30'}}>
@@ -132,7 +133,7 @@ const Dashboard = () => {
                     onClick={() => setOpenSubmenu(isOpen ? null : link.name)}
                     className={`flex items-center justify-between w-[93%] px-4 py-2 mx-2 rounded mb-1 transition-all duration-200 cursor-pointer ${
                       isAnySubmenuActive ? 'ring-1' : ''
-                    }`}
+                    } ${!sidebarOpen ? '!justify-center !w-auto' : ''}`}
                     style={{ 
                       color: isAnySubmenuActive ? colors.primary : colors.text,
                       backgroundColor: isAnySubmenuActive ? colors.primary + '20' : 'transparent',
@@ -148,10 +149,11 @@ const Dashboard = () => {
                         e.target.style.backgroundColor = 'transparent'
                       }
                     }}
+                    title={!sidebarOpen ? link.name : ''}
                   >
-                    <div className="flex items-center">
-                      <link.icon className='w-5 h-5' />
-                      <span className={`ml-3 ${sidebarOpen ? 'block' : 'hidden'}`}>{link.name}</span>
+                    <div className={`flex items-center ${!sidebarOpen ? 'justify-center' : ''}`}>
+                      <link.icon className='w-5 h-5 shrink-0' />
+                      <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${sidebarOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden'}`}>{link.name}</span>
                     </div>
                     {sidebarOpen && (
                       <ChevronDown 
@@ -220,7 +222,7 @@ const Dashboard = () => {
                  }}
                  className={`flex items-center px-4 py-2 mx-2 rounded mb-2 transition-all duration-200 ${
                    isActive ? 'ring-1' : ''
-                 }`}
+                 } ${!sidebarOpen ? 'justify-center' : ''}`}
                  style={{ 
                    color: isActive ? colors.primary : colors.text,
                    backgroundColor: isActive ? colors.primary + '20' : 'transparent',
@@ -235,9 +237,10 @@ const Dashboard = () => {
                    if (!isActive) {
                      e.target.style.backgroundColor = 'transparent'
                    }
-                 }}>
-                <link.icon className='w-5 h-5' />
-                <span className={`ml-3 ${sidebarOpen ? 'block' : 'hidden'}`}>{link.name}</span>
+                 }}
+                 title={!sidebarOpen ? link.name : ''}>
+                <link.icon className='w-5 h-5 shrink-0' />
+                <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${sidebarOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden'}`}>{link.name}</span>
               </NavLink>
             )
           })}
@@ -249,7 +252,7 @@ const Dashboard = () => {
                     // Add logout functionality here
                     console.log('Logout clicked')
                   }}
-                  className='flex cursor-pointer items-center px-4 py-3 w-full rounded transition-all duration-200 font-semibold'
+                  className={`flex cursor-pointer items-center px-4 py-3 w-full rounded transition-all duration-200 font-semibold ${!sidebarOpen ? 'justify-center' : ''}`}
                   style={{ color: '#DC2626' }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = '#DC262620'
@@ -258,9 +261,10 @@ const Dashboard = () => {
                   onMouseLeave={(e) => {
                     e.target.style.backgroundColor = 'transparent'
                     e.target.style.color = '#DC2626'
-                  }}>
-            <LogOut className='w-5 h-5' />
-            <span className={`ml-3 ${sidebarOpen ? 'block' : 'hidden'}`}>Logout</span>
+                  }}
+                  title={!sidebarOpen ? 'Logout' : ''}>
+            <LogOut className='w-5 h-5 shrink-0' />
+            <span className={`ml-3 whitespace-nowrap transition-all duration-300 ${sidebarOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0 overflow-hidden'}`}>Logout</span>
           </button>
         </div>
       </div>
@@ -302,33 +306,17 @@ const Dashboard = () => {
             </div>
           </div>
           
-          {/* Center Time & Date */}
-          <div className='hidden md:flex flex-col items-center flex-1 justify-center'>
-            <div className=' font-bold' style={{ color: colors.primary }}>
-              <Clock />
-            </div>
-            {/* <div className='text-xs md:text-sm' style={{ color: colors.textSecondary }}>
-              {formatDate(currentTime)}
-            </div> */}
-          </div>
-          
-          {/* Mobile Time - Absolute Center */}
-          <div className='md:hidden flex flex-col items-center absolute left-1/2 transform -translate-x-1/2'>
-            <div className='text-sm font-bold' style={{ color: colors.primary }}>
-              <Clock />
-            </div>
-            {/* <div className='text-xs' style={{ color: colors.textSecondary }}>
-              {formatDate(currentTime)}
-            </div> */}
-          </div>
           
           <div className='flex items-center space-x-2 md:space-x-4 flex-1 justify-end'>
+            <div className='text-sm md:text-base font-bold' style={{ color: colors.primary }}>
+              <Clock />
+            </div>
              <button onClick={() => setSettingsOpen(true)}
                     className='p-2 cursor-pointer rounded-lg transition-colors'
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-              {/* <Settings className='w-5 h-5 md:w-6 md:h-6' /> */}
+              <Settings className='w-5 h-5 md:w-6 md:h-6' />
             </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>

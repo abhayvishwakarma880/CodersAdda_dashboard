@@ -35,8 +35,10 @@ import ViewReferral from "../pages/ViewReferral";
 import EditReferral from "../pages/EditReferral";
 import QuizReport from "../pages/QuizReport";
 import UserQuizResult from "../pages/UserQuizResult";
+import Sales from "../pages/Sales";
 
 export const AppRoute = [
+  {path:'sales',component:Sales},
   {path:'category',component:Category},
   {path:'courses',component:Courses},
   {path:'courses/add',component:AddCourse},
