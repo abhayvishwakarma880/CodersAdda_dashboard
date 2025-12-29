@@ -28,7 +28,8 @@ export const DataProvider = ({ children }) => {
       duration: '6 Months',
       studentsCount: '1.2k+',
       priceType: 'Paid',
-      price: '4999',
+      Oprice: '4999',
+      Cprice: '399',
       image: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&q=80',
       status: 'Active',
       technology: 'MERN Stack',
@@ -53,7 +54,8 @@ export const DataProvider = ({ children }) => {
       duration: '4 Months',
       studentsCount: '800+',
       priceType: 'Paid',
-      price: '3499',
+      Oprice: '3499',
+      Cprice: '3499',
       image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80',
       status: 'Active',
       technology: 'Flutter',
@@ -89,7 +91,7 @@ export const DataProvider = ({ children }) => {
         linkedin: 'https://linkedin.com/in/abhayvishwakarma',
         portfolio: 'https://abhay.dev'
       },
-      referralData: { referralCount: 45, isReferred: false, referredByCode: null, myReferralCode: 'ABHAY2024' },
+      referralData: { referralCount: 45, isReferred: false, referredByCode: null, myReferralCode: 'abhay2024' },
       achievements: [
         { title: 'Tech Lead', description: 'Led the university coding club for 2 consecutive years.' },
         { title: 'Hackathon Winner', description: '1st Place in National Level Coding Hackathon 2023.' },
@@ -127,7 +129,7 @@ export const DataProvider = ({ children }) => {
         linkedin: 'https://linkedin.com/in/riyasingh',
         portfolio: 'https://riya.design'
       },
-      referralData: { referralCount: 5, isReferred: true, referredByCode: 'ABHAY99' },
+      referralData: { referralCount: 5, isReferred: true, referredByCode: 'ABHAY99', myReferralCode: 'riya2024' },
       achievements: [
         { title: 'UI Wizard', description: 'Created the best mobile UI in the monthly challenge.' }
       ],
@@ -162,7 +164,7 @@ export const DataProvider = ({ children }) => {
         linkedin: 'https://linkedin.com/in/rahulsharma',
         portfolio: ''
       },
-      referralData: { referralCount: 0, isReferred: false, referredByCode: null },
+      referralData: { referralCount: 0, isReferred: false, referredByCode: null,myReferralCode: 'rahul2024' },
       achievements: [
         { title: 'Research Fellow', description: 'Published a paper on GANs in a reputed journal.' },
         { title: 'Course Completer', description: 'Finished 15 advanced AI courses.' }
@@ -199,7 +201,7 @@ export const DataProvider = ({ children }) => {
         linkedin: 'https://linkedin.com/in/snehadesign',
         portfolio: 'https://dribbble.com/sneha'
       },
-      referralData: { referralCount: 10, isReferred: true, referredByCode: 'DESIGN101' },
+      referralData: { referralCount: 10, isReferred: true, referredByCode: 'DESIGN101',myReferralCode: 'sneha2024' },
       achievements: [
         { title: 'Design Star', description: 'Won Best Design Award 2023.' }
       ],
@@ -234,7 +236,7 @@ export const DataProvider = ({ children }) => {
         linkedin: 'https://linkedin.com/in/vikrammalhotra',
         portfolio: ''
       },
-      referralData: { referralCount: 2, isReferred: false, referredByCode: null },
+      referralData: { referralCount: 2, isReferred: false, referredByCode: null,myReferralCode: 'vikramma2024' },
       achievements: [
         { title: 'Problem Solver', description: 'Solved 1000+ problems on LeetCode.' },
         { title: 'Placement Ready', description: 'Secured an internship at Amazon.' }
@@ -254,9 +256,9 @@ export const DataProvider = ({ children }) => {
   ]);
 
   const [ebooks, setEbooks] = useState([
-    { id: 'eb1', title: 'Flutter Complete Guide', author: 'Dr. Angela Yu', category: 'Programming', priceType: 'Free', price: '', fileSize: '2.4 MB', downloadUrl: 'https://example.com/flutter.pdf', status: 'Active' },
-    { id: 'eb2', title: 'JavaScript Basics', author: 'Kyle Simpson', category: 'Programming', priceType: 'Free', price: '', fileSize: '1.8 MB', downloadUrl: 'https://example.com/js.pdf', status: 'Active' },
-    { id: 'eb3', title: 'UI/UX Design Principles', author: 'Steve Krug', category: 'Design', priceType: 'Paid', price: '499', fileSize: '3.2 MB', downloadUrl: 'https://example.com/design.pdf', status: 'Active' }
+    { id: 'eb1', title: 'Flutter Complete Guide', author: 'Dr. Angela Yu', category: 'Programming', priceType: 'Free', Oprice: '330',Cprice: '239', fileSize: '2.4 MB', downloadUrl: 'https://example.com/flutter.pdf', status: 'Active' },
+    { id: 'eb2', title: 'JavaScript Basics', author: 'Kyle Simpson', category: 'Programming', priceType: 'Free', Oprice: '',Cprice: '', fileSize: '1.8 MB', downloadUrl: 'https://example.com/js.pdf', status: 'Active' },
+    { id: 'eb3', title: 'UI/UX Design Principles', author: 'Steve Krug', category: 'Design', priceType: 'Paid', Oprice: '499',Oprice: '399', fileSize: '3.2 MB', downloadUrl: 'https://example.com/design.pdf', status: 'Active' }
   ]);
 
   const [jobs, setJobs] = useState([

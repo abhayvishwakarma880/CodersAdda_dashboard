@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 import Toggle from '../components/ui/Toggle';
 
 function Users() {
-  const { colors } = useTheme();
+  const { colors,currentTheme,isDarkMode } = useTheme();
   const { users, deleteUser, updateUser } = useData();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -107,6 +107,7 @@ function Users() {
                 <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Academic</th>
                 <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Social</th>
                 <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Status</th>
+                <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest" style={{ color: colors.textSecondary }}>Referral Code</th>
                 <th className="px-4 py-4 text-[10px] font-bold uppercase tracking-widest text-right" style={{ color: colors.textSecondary }}>Actions</th>
               </tr>
             </thead>
@@ -163,13 +164,18 @@ function Users() {
                       </div>
                   </td>
                   <td className="px-4 py-4">
-                      <div className="flex items-center gap-2">
-                         <Toggle active={(user.status || 'Active') === 'Active'} onClick={() => toggleStatus(user.id, user.status)} />
-                         <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                      <div className="flex items-center gap-2" >
+                         <Toggle  active={(user.status || 'Active') === 'Active'} onClick={() => toggleStatus(user.id, user.status)} />
+                         <span className={`text-[10px]  font-bold uppercase tracking-widest ${
                              (user.status || 'Active') === 'Active' ? 'text-green-600' : 'text-red-500'
                          }`}>
                              {user.status || 'Active'}
                          </span>
+                      </div>
+                  </td>
+                  <td className="px-4 py-4">
+                      <div className="flex items-center gap-2" >
+                         <span>{user.referralData?.myReferralCode || 'GENERATE'}</span>
                       </div>
                   </td>
                   <td className="px-4 py-4 text-right">
@@ -208,7 +214,7 @@ function Users() {
         
         {/* Pagination Info */}
         <div className="p-4 border-t flex items-center justify-between" style={{ borderColor: colors.accent + '15' }}>
-            <span className="text-xs font-bold opacity-40 uppercase tracking-widest">
+            <span style={{color:colors.textSecondary}} className="text-xs font-bold opacity-40 uppercase tracking-widest">
                 Page {currentPage} of {totalPages}
             </span>
             <div className="flex gap-2">
@@ -216,7 +222,7 @@ function Users() {
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
                     className="px-3 py-1 rounded border text-xs font-bold uppercase tracking-widest disabled:opacity-30 hover:bg-black/5 transition-colors"
-                    style={{ borderColor: colors.accent + '30' }}
+                    style={{ borderColor: colors.accent + '30', color:colors.primary }}
                 >
                     Prev
                 </button>
@@ -224,7 +230,7 @@ function Users() {
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={currentPage === totalPages}
                     className="px-3 py-1 rounded border text-xs font-bold uppercase tracking-widest disabled:opacity-30 hover:bg-black/5 transition-colors"
-                    style={{ borderColor: colors.accent + '30' }}
+                    style={{ borderColor: colors.accent + '30', color:colors.primary }}
                 >
                     Next
                 </button>

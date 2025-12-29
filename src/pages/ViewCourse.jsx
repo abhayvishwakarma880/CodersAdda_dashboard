@@ -178,7 +178,7 @@ function ViewCourse() {
                          <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-gray-100">{course.duration}</span>
                     </div>
                     <h2 className="text-lg font-bold" style={{ color: colors.text }}>{course.title}</h2>
-                    <p className="text-xs font-medium opacity-60 leading-relaxed max-w-2xl">{course.about}</p>
+                    <p style={{color:colors.text}} className="text-xs font-medium opacity-60 leading-relaxed max-w-2xl">{course.about}</p>
                 </div>
             </div>
 
@@ -300,7 +300,7 @@ function ViewCourse() {
                     <div className="space-y-1">
                         <p className="text-[10px] font-bold opacity-40 uppercase tracking-widest">Enrollment Fee</p>
                         <p className="text-3xl font-black" style={{ color: colors.text }}>
-                            {course.priceType === 'Free' ? 'FREE' : `₹${course.price}`}
+                            {course.priceType === 'Free' ? 'FREE' : `₹${course.Cprice}`}
                         </p>
                     </div>
                 </div>

@@ -55,7 +55,7 @@ function Category() {
       text: "You won't be able to revert this!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: colors.primary,
+      confirmButtonColor: "#000",
       cancelButtonColor: '#ef4444',
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {

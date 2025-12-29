@@ -73,7 +73,7 @@ const Dashboard = () => {
       icon: Book, 
       submenu: [
         { name: 'Category', path: '/dashboard/ebooks?tab=categories' },
-        { name: 'PDF Resources', path: '/dashboard/ebooks?tab=pdf' },
+        { name: 'Add Ebooks', path: '/dashboard/ebooks?tab=pdf' },
       ]
     },
     { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
@@ -323,13 +323,13 @@ const Dashboard = () => {
           </div>
           
           <div className='flex items-center space-x-2 md:space-x-4 flex-1 justify-end'>
-            {/* <button onClick={() => setSettingsOpen(true)}
+             <button onClick={() => setSettingsOpen(true)}
                     className='p-2 cursor-pointer rounded-lg transition-colors'
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
               <Settings className='w-5 h-5 md:w-6 md:h-6' />
-            </button> */}
+            </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
               <span className='text-white font-semibold text-sm'><img src={logo} alt="logo" className='rounded-full' /></span>
@@ -345,7 +345,7 @@ const Dashboard = () => {
       </div>
 
       {/* Settings Modal */}
-      <div className={`settings-modal fixed top-0 right-0 w-full sm:w-80 z-50 transform transition-all duration-700 ease-out ${
+      {/* <div className={`settings-modal fixed top-0 right-0 w-full sm:w-80 z-50 transform transition-all duration-700 ease-out ${
         settingsOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       } shadow-2xl`} style={{ backgroundColor: colors.background }}>
         <div className='p-6 border-l h-auto' style={{ borderColor: colors.accent + '30' }}>
@@ -414,7 +414,7 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }

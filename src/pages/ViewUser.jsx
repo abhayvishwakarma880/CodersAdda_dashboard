@@ -48,7 +48,7 @@ function ViewUser() {
         </button>
         <div>
           <h1 className="text-2xl font-bold" style={{ color: colors.text }}>User Profile</h1>
-          <p className="text-xs font-bold opacity-40 uppercase tracking-widest">Manage Student Identity</p>
+          <p className="text-xs font-bold opacity-40 uppercase tracking-widest" style={{color:colors.textSecondary}}>Manage Student Identity</p>
         </div>
       </div>
 
@@ -62,20 +62,20 @@ function ViewUser() {
                )}
            </div>
            <div className="flex-1 text-center md:text-left">
-               <h2 className="text-2xl font-bold mb-1">{user.name}</h2>
+               <h2 className="text-2xl font-bold mb-1" style={{color:colors.textSecondary}}>{user.name}</h2>
                <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs font-bold opacity-60 uppercase tracking-wider mb-3">
-                   <span className="flex items-center gap-1"><Mail size={12} /> {user.email}</span>
-                   <span className="flex items-center gap-1"><Phone size={12} /> {user.phone}</span>
+                   <span className="flex items-center gap-1" style={{color:colors.textSecondary}}><Mail size={12} /> {user.email}</span>
+                   <span className="flex items-center gap-1" style={{color:colors.textSecondary}}><Phone size={12} /> {user.phone}</span>
                </div>
                <div className="flex justify-center md:justify-start gap-3">
-                   {user.social?.github && <a href={user.social.github} target="_blank" className="p-2 rounded-full bg-black/5 hover:bg-black/10 transition-colors"><Github size={16} /></a>}
-                   {user.social?.linkedin && <a href={user.social.linkedin} target="_blank" className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-black/10 transition-colors"><Linkedin size={16} /></a>}
-                   {user.social?.portfolio && <a href={user.social.portfolio} target="_blank" className="p-2 rounded-full bg-purple-50 text-purple-600 hover:bg-black/10 transition-colors"><Globe size={16} /></a>}
+                   {user.social?.github && <a href={user.social.github} target="_blank" className="p-2 rounded-full bg-black/5 hover:bg-black/10 transition-colors" style={{backgroundColor:colors.textSecondary}}><Github size={16} /></a>}
+                   {user.social?.linkedin && <a href={user.social.linkedin} target="_blank" className="p-2 rounded-full bg-blue-50 text-blue-600 hover:bg-black/10 transition-colors" style={{backgroundColor:colors.textSecondary}} ><Linkedin size={16} /></a>}
+                   {user.social?.portfolio && <a href={user.social.portfolio} target="_blank" className="p-2 rounded-full bg-purple-50 text-purple-600 hover:bg-black/10 transition-colors" style={{backgroundColor:colors.textSecondary}}><Globe size={16} /></a>}
                </div>
            </div>
            <div className="flex flex-col gap-2 min-w-[150px]">
                <div className="p-3 rounded bg-black/5 border border-black/5 text-center">
-                   <span className="block text-xs font-bold opacity-50 uppercase tracking-wider">Status</span>
+                   <span className="block text-xs font-bold opacity-50 uppercase tracking-wider" style={{color:colors.textSecondary}}>Status</span>
                    <span className={`text-sm font-black uppercase tracking-widest ${user.status === 'Active' ? 'text-green-600' : 'text-red-500'}`}>{user.status}</span>
                </div>
            </div>
@@ -114,33 +114,33 @@ function ViewUser() {
                 >
                     {/* About Section */}
                     <div className="md:col-span-2 p-6 rounded border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-2 flex items-center gap-2"><User size={16} /> About</h3>
-                        <p className="text-sm opacity-80 leading-relaxed font-medium">{user.about || 'No bio added.'}</p>
+                        <h3 className="text-sm font-bold uppercase tracking-widest mb-2 flex items-center gap-2" style={{color:colors.text}}><User size={16} /> About</h3>
+                        <p className="text-sm opacity-80 leading-relaxed font-medium" style={{color:colors.textSecondary}}>{user.about || 'No bio added.'}</p>
                     </div>
 
                     {/* Student Stats */}
                     <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2"><UsersIcon size={16} /> Student Stats</h3>
+                        <h3 className="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-2" style={{color:colors.text}}><UsersIcon size={16} /> Student Stats</h3>
                         <div className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="p-3 rounded bg-black/5">
-                                    <span className="block text-2xl font-black">{user.studentDetails?.completedCourses || 0}</span>
+                                <div className="p-3 rounded bg-black/5" style={{color:colors.textSecondary}}>
+                                    <span className="block text-2xl font-black" >{user.studentDetails?.completedCourses || 0}</span>
                                     <span className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Completed</span>
                                 </div>
-                                <div className="p-3 rounded bg-black/5">
+                                <div className="p-3 rounded bg-black/5" style={{color:colors.textSecondary}}>
                                     <span className="block text-2xl font-black">{user.studentDetails?.ongoingCourses || 0}</span>
                                     <span className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Ongoing</span>
                                 </div>
-                                <div className="p-3 rounded bg-black/5">
+                                <div className="p-3 rounded bg-black/5" style={{color:colors.textSecondary}}>
                                     <span className="block text-xl font-black">{user.studentDetails?.learningHours || 0}h</span>
                                     <span className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Learning Time</span>
                                 </div>
-                                <div className="p-3 rounded bg-black/5">
+                                <div className="p-3 rounded bg-black/5" style={{color:colors.textSecondary}}>
                                     <span className="block text-xl font-black">{user.studentDetails?.progress || 0}%</span>
                                     <span className="text-[10px] font-bold opacity-50 uppercase tracking-wider">Avg Progress</span>
                                 </div>
                             </div>
-                            <div className="pt-2 border-t" style={{ borderColor: colors.accent + '10' }}>
+                            <div className="pt-2 border-t" style={{ borderColor: colors.accent + '10',color:colors.textSecondary }}>
                                 <p className="text-[10px] uppercase tracking-widest font-bold opacity-40">Joined On</p>
                                 <p className="font-bold">{new Date(user.studentDetails?.createdAt).toLocaleDateString()}</p>
                             </div>
@@ -149,7 +149,7 @@ function ViewUser() {
 
                     {/* Academic Info */}
                     <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2"><School size={16} /> Academic Info</h3>
+                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2" style={{color:colors.textSecondary}}><School size={16} /> Academic Info</h3>
                         <div className="grid grid-cols-1 gap-4">
                             <div><p style={labelStyle}>College</p><p style={valueStyle}>{user.college}</p></div>
                             <div><p style={labelStyle}>Course</p><p style={valueStyle}>{user.course}</p></div>
@@ -159,7 +159,7 @@ function ViewUser() {
 
                     {/* Skills */}
                     <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2"><Code2 size={16} /> Skills & Tech</h3>
+                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2" style={{color:colors.text}}><Code2 size={16} /> Skills & Tech</h3>
                         <div>
                             <p style={labelStyle}>Technology Stack</p>
                             <div className="flex flex-wrap gap-2 mt-2">
@@ -180,7 +180,7 @@ function ViewUser() {
 
                      {/* Referral Stats */}
                      <div className="md:col-span-2 p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2"><UsersIcon size={16} /> Referral Stats</h3>
+                        <h3 className="text-sm font-bold uppercase tracking-widest opacity-40 mb-4 flex items-center gap-2" style={{color:colors.textSecondary}}><UsersIcon size={16} /> Referral Stats</h3>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                              {/* My Referral Code Field */}
                              <div className="p-4 rounded bg-gradient-to-r from-blue-500 to-purple-600 text-white text-center shadow-md relative overflow-hidden group">
@@ -189,14 +189,14 @@ function ViewUser() {
                                  <span className="text-[10px] font-bold uppercase tracking-wider opacity-80 relative z-10">My Referral Code</span>
                              </div>
 
-                            <div className="p-4 rounded bg-black/5 border border-black/5 text-center">
+                            <div className="p-4 rounded bg-black/5 border border-black/5 text-center" style={{color:colors.textSecondary}}>
                                 <span className="block text-2xl font-black">{user.referralData?.referralCount || 0}</span>
-                                <span className="text-xs font-bold opacity-50 uppercase tracking-wider">Users Referred</span>
+                                <span className="text-xs font-bold opacity-50 uppercase tracking-wider" >Users Referred</span>
                             </div>
                             <div className="p-4 rounded bg-black/5 border border-black/5 flex flex-col items-center justify-center">
-                                <span className="text-xs font-bold opacity-50 uppercase tracking-wider mb-2">Referred By Someone?</span>
+                                <span className="text-xs font-bold opacity-50 uppercase tracking-wider mb-2" style={{color:colors.textSecondary}}>Referred By Someone?</span>
                                 {user.referralData?.isReferred ? (
-                                    <div className="flex items-center gap-2 text-green-600 font-bold bg-green-100 px-3 py-1 rounded-full text-xs uppercase tracking-widest">
+                                    <div className="flex items-center gap-2 text-green-600 font-bold bg-green-100 px-3 py-1 rounded-full text-xs uppercase tracking-widest" >
                                         <CheckCircle2 size={14} /> Yes
                                     </div>
                                 ) : (
@@ -224,9 +224,9 @@ function ViewUser() {
                 >
                     {user.achievements?.length > 0 ? (
                         user.achievements.map((ach, i) => (
-                            <div key={i} className="p-6 rounded border shadow-sm relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-                                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-110 transition-transform">
-                                    <Award size={80} />
+                            <div key={i} className="p-6 rounded border shadow-sm relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20', color:colors.text }}>
+                                <div className="absolute top-0 right-0 p-4 group-hover:scale-110 transition-transform" style={{color:colors.textSecondary}}>
+                                    <Award  size={80} />
                                 </div>
                                 <div className="relative z-10">
                                     <div className="w-12 h-12 rounded bg-yellow-100 flex items-center justify-center text-yellow-600 mb-4">
@@ -260,12 +260,12 @@ function ViewUser() {
                                         {purchase.type === 'Course' ? <Layers size={24} /> : <BookOpen size={24} />}
                                     </div>
                                     <div>
-                                        <h4 className="font-bold">{purchase.title}</h4>
-                                        <p className="text-xs opacity-60 font-bold uppercase tracking-wider">{purchase.type} • Purchased on {purchase.date}</p>
+                                        <h4 style={{color:colors.text}} className="font-bold">{purchase.title}</h4>
+                                        <p style={{color:colors.text}} className="text-xs opacity-60 font-bold uppercase tracking-wider">{purchase.type} • Purchased on {purchase.date}</p>
                                     </div>
                                 </div>
                                 <div className="text-right">
-                                    <span className="block font-bold text-lg">₹{purchase.price}</span>
+                                    <span style={{color:colors.text}} className="block font-bold text-lg">₹{purchase.price}</span>
                                     <div className="flex items-center gap-1 text-green-600 text-[10px] font-bold uppercase tracking-widest justify-end">
                                         <CheckCircle2 size={12} /> Paid
                                     </div>
@@ -289,7 +289,7 @@ function ViewUser() {
                     {user.subscription ? (
                         <div className="max-w-xl mx-auto p-8 rounded border shadow-lg relative overflow-hidden text-center" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
                              <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 to-purple-500" />
-                             <h3 className="text-sm font-bold opacity-50 uppercase tracking-widest mb-2">Current Plan</h3>
+                             <h3 className="text-sm font-bold opacity-50 uppercase tracking-widest mb-2" style={{color:colors.text}}>Current Plan</h3>
                              <h2 className="text-4xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600">{user.subscription.plan}</h2>
                              
                              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-100 from-green-600 text-green-700 text-xs font-bold uppercase tracking-widest mb-8">
@@ -298,13 +298,13 @@ function ViewUser() {
 
                              <div className="space-y-3 text-left max-w-xs mx-auto mb-8">
                                  {user.subscription.benefits?.map((benefit, i) => (
-                                     <div key={i} className="flex items-center gap-3 text-sm font-medium">
+                                     <div key={i} className="flex items-center gap-3 text-sm font-medium" style={{color:colors.text}}>
                                          <CheckCircle2 size={16} className="text-green-500" /> {benefit}
                                      </div>
                                  ))}
                              </div>
 
-                             <p className="text-xs opacity-40 font-bold uppercase tracking-widest">Valid Until: {user.subscription.expiryDate}</p>
+                             <p className="text-xs opacity-40 font-bold uppercase tracking-widest" style={{color:colors.text}}>Valid Until: {user.subscription.expiryDate}</p>
                         </div>
                     ) : (
                          <div className="text-center py-20 opacity-40 border rounded border-dashed" style={{ borderColor: colors.accent + '40' }}>
@@ -323,15 +323,15 @@ function ViewUser() {
                 >
                     {/* Wallet Stats */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="p-6 rounded border bg-white shadow-sm" style={{ borderColor: colors.accent + '20' }}>
+                        <div className="p-6 rounded border shadow-sm" style={{ borderColor: colors.accent + '20', backgroundColor:colors.sidebar }}>
                             <span className="block text-xs font-bold opacity-70 uppercase tracking-widest mb-1" style={{ color: colors.text }}>Total Balance</span>
                             <span className="text-3xl text-green-600 font-bold">₹{user.wallet?.balance || 0}</span>
                         </div>
-                        <div className="p-6 rounded border bg-white shadow-sm" style={{ borderColor: colors.accent + '20' }}>
+                        <div className="p-6 rounded border shadow-sm" style={{ borderColor: colors.accent + '20',backgroundColor:colors.sidebar }}>
                             <span className="block text-xs font-bold opacity-50 uppercase tracking-widest mb-1" style={{ color: colors.text }}>Total Earnings</span>
                             <span className="text-3xl font-bold text-green-600">+₹{user.wallet?.earnings || 0}</span>
                         </div>
-                        <div className="p-6 rounded border bg-white shadow-sm" style={{ borderColor: colors.accent + '20' }}>
+                        <div className="p-6 rounded border shadow-sm" style={{ borderColor: colors.accent + '20',backgroundColor:colors.sidebar }}>
                             <span className="block text-xs font-bold opacity-50 uppercase tracking-widest mb-1" style={{ color: colors.text }}>Withdrawn</span>
                             <span className="text-3xl font-bold text-red-500">-₹{user.wallet?.withdrawn || 0}</span>
                         </div>
@@ -339,7 +339,7 @@ function ViewUser() {
 
                     {/* Transactions */}
                     <div className="rounded border overflow-hidden" style={{ borderColor: colors.accent + '20', backgroundColor: colors.sidebar || colors.background }}>
-                        <div className="p-4 border-b font-bold text-sm uppercase tracking-widest opacity-60" style={{ borderColor: colors.accent + '20' }}>Transaction History</div>
+                        <div className="p-4 border-b font-bold text-sm uppercase tracking-widest opacity-60" style={{ borderColor: colors.accent + '20',color:colors.text }}>Transaction History</div>
                         <div className="divide-y" style={{ divideColor: colors.accent + '10' }}>
                             {user.wallet?.transactions?.length > 0 ? (
                                 user.wallet.transactions.map((txn, i) => (
@@ -348,7 +348,7 @@ function ViewUser() {
                                             <div className={`p-2 rounded-full ${txn.type === 'Credit' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
                                                 {txn.type === 'Credit' ? <ArrowDownLeft size={20} /> : <ArrowUpRight size={20} />}
                                             </div>
-                                            <div>
+                                            <div style={{color:colors.text}}>
                                                 <p className="font-bold text-sm">{txn.description}</p>
                                                 <p className="text-xs opacity-50 font-bold uppercase tracking-wider">{txn.date}</p>
                                             </div>

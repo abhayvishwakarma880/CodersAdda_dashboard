@@ -56,7 +56,7 @@ function AddJob() {
         <h1 className="text-2xl font-bold" style={{ color: colors.text }}>Post New Job</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+      <form onSubmit={handleSubmit} className="max-w-full space-y-6">
 
           
           {/* Job Info */}

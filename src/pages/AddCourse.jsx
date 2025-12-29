@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, Trash2, Play, Lock, Info, Layout, Award, CheckCircle2,
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
+import { color } from 'framer-motion';
 
 function AddCourse() {
   const { colors } = useTheme();
@@ -26,7 +27,8 @@ function AddCourse() {
     rating: '4.5',
     LectureNumber: '',
     priceType: 'Free', 
-    price: '',
+    Oprice: '',
+    Cprice: '',
     whatYouWillLearn: [''],
     curriculum: [],
     status: 'Active',
@@ -110,7 +112,7 @@ function AddCourse() {
         <h1 className="text-2xl font-bold" style={{ color: colors.text }}>Add New Course</h1>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+      <form onSubmit={handleSubmit} className="max-w-full space-y-6">
           
           {/* General Information */}
           <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
@@ -180,7 +182,7 @@ function AddCourse() {
                 <div className="flex gap-2">
                   {['Free', 'Paid'].map(type => (
                     <button 
-                      key={type} type="button" onClick={() => setFormData({...formData, priceType: type, price: type === 'Free' ? '' : formData.price})}
+                      key={type} type="button" onClick={() => setFormData({...formData, priceType: type, price: type === 'Free' ? '' : formData.Oprice || formData.Cprice})}
                       className={`flex-1 py-2 rounded-md border text-sm font-semibold transition-all cursor-pointer ${formData.priceType === type ? 'shadow-sm' : 'opacity-50'}`}
                       style={{ 
                         backgroundColor: formData.priceType === type ? colors.primary : 'transparent', 
@@ -194,14 +196,25 @@ function AddCourse() {
                 </div>
               </div>
               {formData.priceType === 'Paid' && (
-                <div className="space-y-1">
-                  <label style={labelStyle}>Price (₹)</label>
+                <div className="space-y-1 flex gap-3">
+                  <div className='w-full'>
+                    <label style={labelStyle}>Original Price (₹)</label>
                   <input 
-                    type="number" required value={formData.price} onChange={(e) => setFormData({...formData, price: e.target.value})}
+                    type="number" required value={formData.Oprice} onChange={(e) => setFormData({...formData, Oprice: e.target.value})}
                     placeholder="Enter amount"
                     className="w-full px-4 py-2 rounded-md border outline-none text-sm"
                     style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
                   />
+                  </div>
+                  <div className='w-full'>
+                    <label style={labelStyle}>Current Price (₹)</label>
+                  <input 
+                    type="number" required value={formData.Cprice} onChange={(e) => setFormData({...formData, Cprice: e.target.value})}
+                    placeholder="Enter amount"
+                    className="w-full px-4 py-2 rounded-md border outline-none text-sm"
+                    style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
+                  />
+                  </div>
                 </div>
               )}
             </div>
@@ -250,7 +263,7 @@ function AddCourse() {
 
         {/* Media Upload */}
         <div className="p-6 rounded border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-4">Course Assets</h3>
+          <h3 className="text-sm font-bold uppercase tracking-wider mb-4" style={{color:colors.text}}>Course Assets</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
@@ -263,7 +276,7 @@ function AddCourse() {
                 {formData.image ? (
                   <img src={formData.image} alt="Preview" className="w-full h-full object-cover" />
                 ) : (
-                  <div className="text-center opacity-40">
+                  <div className="text-center opacity-40" style={{color:colors.text}}>
                     <ImageIcon size={32} className="mx-auto mb-2" />
                     <p className="text-xs font-bold">Upload Image</p>
                   </div>
@@ -286,7 +299,7 @@ function AddCourse() {
                     <button type="button" onClick={(e) => { e.stopPropagation(); removeVideo(); }} className="mt-2 text-[10px] text-red-500 font-bold cursor-pointer">Remove</button>
                   </div>
                 ) : (
-                  <div className="text-center opacity-40">
+                  <div className="text-center opacity-40" style={{color:colors.text}}>
                     <Video size={32} className="mx-auto mb-2" />
                     <p className="text-xs font-bold">Upload Video</p>
                   </div>
@@ -302,7 +315,7 @@ function AddCourse() {
         {/* FAQs Section */}
         <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
             <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Course FAQs</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color:colors.text}}>Course FAQs</h3>
                 <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, faqs: [...(prev.faqs || []), { question: '', answer: '' }] }))}
@@ -317,6 +330,7 @@ function AddCourse() {
                     <div key={index} className="flex gap-4 items-start p-4 rounded bg-black/5">
                         <div className="flex-1 space-y-3">
                             <input
+                            style={{color:colors.text}}
                                 type="text"
                                 value={faq.question}
                                 onChange={(e) => {
@@ -328,6 +342,7 @@ function AddCourse() {
                                 className="w-full bg-transparent border-b border-black/10 outline-none text-sm font-bold"
                             />
                             <textarea
+                            style={{color:colors.text}}
                                 value={faq.answer}
                                 onChange={(e) => {
                                     const newFaqs = [...(formData.faqs || [])];
@@ -351,14 +366,14 @@ function AddCourse() {
                         </button>
                     </div>
                 ))}
-                {(!formData.faqs || formData.faqs.length === 0) && <p className="text-xs opacity-40 text-center py-4">No FAQs added yet.</p>}
+                {(!formData.faqs || formData.faqs.length === 0) && <p className="text-xs opacity-40 text-center py-4" style={{color:colors.text}}>No FAQs added yet.</p>}
             </div>
         </div>
 
         {/* Reviews Section */}
         <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
              <div className="flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Course Reviews</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color:colors.text}}>Course Reviews</h3>
                 <button
                     type="button"
                     onClick={() => setFormData(prev => ({ ...prev, reviews: [...(prev.reviews || []), { user: '', rating: 5, comment: '' }] }))}
@@ -374,6 +389,7 @@ function AddCourse() {
                         <div className="flex-1 space-y-3">
                             <div className="flex gap-4">
                                 <input
+                                style={{color:colors.text}}
                                     type="text"
                                     value={review.user}
                                     onChange={(e) => {
@@ -387,6 +403,7 @@ function AddCourse() {
                                 <div className="flex items-center gap-2">
                                     <span className="text-xs font-bold opacity-60">Rating:</span>
                                     <select
+                                    
                                         value={review.rating}
                                         onChange={(e) => {
                                             const newReviews = [...(formData.reviews || [])];
@@ -401,6 +418,7 @@ function AddCourse() {
                                 </div>
                             </div>
                             <textarea
+                            style={{color:colors.text}}
                                 value={review.comment}
                                 onChange={(e) => {
                                     const newReviews = [...(formData.reviews || [])];
@@ -424,12 +442,12 @@ function AddCourse() {
                         </button>
                     </div>
                 ))}
-                {(!formData.reviews || formData.reviews.length === 0) && <p className="text-xs opacity-40 text-center py-4">No reviews added yet.</p>}
+                {(!formData.reviews || formData.reviews.length === 0) && <p className="text-xs opacity-40 text-center py-4" style={{color:colors.text}}>No reviews added yet.</p>}
             </div>
         </div>
 
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Course Status</h3>
+          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color:colors.text}}>Course Status</h3>
           <div className="grid grid-cols-2 gap-3 max-w-xs">
               {['Active', 'Disabled'].map(stat => (
                   <button 

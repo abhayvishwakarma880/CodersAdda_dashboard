@@ -12,6 +12,7 @@ function Courses() {
   const { colors } = useTheme();
   const { courses, categories, deleteCourse, updateCourse } = useData();
   const navigate = useNavigate();
+  console.log(courses.Cpripe)
   
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -168,7 +169,7 @@ function Courses() {
                       <span className="px-3 py-1 rounded bg-green-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm">Free</span>
                     ) : (
                       <span className="px-3 py-1 rounded bg-amber-500 text-white text-[10px] font-bold uppercase tracking-wider shadow-sm flex items-center gap-1">
-                        <Lock size={10} /> {course.price ? `₹${course.price}` : 'Premium'}
+                        <Lock size={10} /> {courses.price ? `₹${courses.Oprice}` : 'Premium'}
                       </span>
                     )}
                   </div>
@@ -217,7 +218,7 @@ function Courses() {
                     <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: colors.primary }}>{course.category}</span>
                     <span className="opacity-20">•</span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider ${course.priceType === 'Free' ? 'text-green-500' : 'text-amber-500'}`}>
-                      {course.priceType === 'Free' ? 'Free' : `Premium ₹${course.price || ''}`}
+                      {course.priceType === 'Free' ? 'Free' : `Premium ₹${course.Cprice || ''}`}
                     </span>
                     <span className="opacity-20">•</span>
                     <div className="flex items-center gap-2">
