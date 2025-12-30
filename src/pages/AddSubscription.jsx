@@ -242,7 +242,12 @@ function AddSubscription() {
                   className="w-4 h-4 cursor-pointer"
                   style={{ accentColor: colors.primary }}
                 />
-                <span className="text-sm font-semibold flex-1" style={{ color: colors.text }}>{course.title}</span>
+                <div className="flex-1 min-w-0">
+                  <span className="text-sm font-semibold block truncate" style={{ color: colors.text }}>{course.title}</span>
+                  {course.badge && course.badge !== 'Normal' && (
+                    <span className="text-[8px] font-black uppercase text-amber-500">{course.badge}</span>
+                  )}
+                </div>
               </label>
             ))}
             {courses.length === 0 && (

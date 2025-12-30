@@ -155,6 +155,11 @@ function Courses() {
                         style={{ backgroundColor: colors.primary + 'CC', color: colors.background }}>
                         {course.category}
                     </div>
+                    {course.badge && course.badge !== 'Normal' && (
+                        <div className="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md border border-amber-500/50 bg-amber-500 text-white shadow-sm">
+                            {course.badge}
+                        </div>
+                    )}
                     <div className="flex items-center gap-2 backdrop-blur-md bg-black/20 p-1 px-2 rounded-full border border-white/10 w-fit">
                         <Toggle active={course.status === 'Active'} onClick={() => toggleCourseStatus(course.id, course.status)} />
                         <span className={`text-[9px] font-black uppercase tracking-wider ${course.status === 'Active' ? 'text-green-400' : 'text-red-400'}`}>
@@ -216,6 +221,12 @@ function Courses() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: colors.primary }}>{course.category}</span>
+                    {course.badge && course.badge !== 'Normal' && (
+                      <>
+                        <span className="opacity-20">•</span>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-amber-500">{course.badge}</span>
+                      </>
+                    )}
                     <span className="opacity-20">•</span>
                     <span className={`text-[10px] font-bold uppercase tracking-wider ${course.priceType === 'Free' ? 'text-green-500' : 'text-amber-500'}`}>
                       {course.priceType === 'Free' ? 'Free' : `Premium ₹${course.Cprice || ''}`}

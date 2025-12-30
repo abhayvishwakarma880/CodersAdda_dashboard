@@ -260,6 +260,7 @@ function Sales() {
           type: 'Course',
           sold: `${course.studentsCount || '50+'} students`,
           time: index === 0 ? '5 mins ago' : index === 1 ? '15 mins ago' : '45 mins ago',
+          badge: course.badge,
           originalData: course
         })),
         ebooks: ebooks.slice(0, 3).map((ebook, index) => ({
@@ -307,6 +308,7 @@ function Sales() {
           sold: `${course.studentsCount || '50+'} students`,
           status: course.status,
           type: 'Course',
+          badge: course.badge,
           originalData: course
         })),
         ebooks: ebooks.slice(0, 3).map((ebook) => ({
@@ -561,7 +563,14 @@ function Sales() {
                     <h4 className="font-bold text-sm" style={{ color: colors.text }}>
                       {item.name}
                     </h4>
-                    <p className="text-xs opacity-60" style={{ color: colors.textSecondary }}>{item.category}</p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-xs opacity-60" style={{ color: colors.textSecondary }}>{item.category}</p>
+                      {item.badge && item.badge !== 'Normal' && (
+                        <span className="px-1.5 py-0.5 rounded-[4px] text-[8px] font-black uppercase bg-amber-500 text-white shadow-sm">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <span className="font-black text-lg ml-2" style={{ color: '#10b981' }}>
                     {item.price}
@@ -772,7 +781,14 @@ function Sales() {
             {/* Modal Header */}
             <div className="p-6 border-b flex items-center justify-between" style={{ borderColor: colors.accent + '20' }}>
               <div>
-                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>{selectedItem.name || selectedItem.plan}</h2>
+                <div className="flex items-center gap-3">
+                  <h2 className="text-2xl font-bold" style={{ color: colors.text }}>{selectedItem.name || selectedItem.plan}</h2>
+                  {selectedItem.badge && selectedItem.badge !== 'Normal' && (
+                    <span className="px-2 py-0.5 rounded text-[10px] font-black uppercase bg-amber-500 text-white shadow-sm">
+                      {selectedItem.badge}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm opacity-60" style={{ color: colors.textSecondary }}>{selectedItem.type} Details & Purchase History</p>
               </div>
               <button 
@@ -822,6 +838,7 @@ function Sales() {
                       <tr style={{ backgroundColor: colors.accent + '10' }}>
                         <th className="p-4 text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Student</th>
                         <th className="p-4 text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Email</th>
+                        <th className="p-4 text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Mobile</th>
                         <th className="p-4 text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Join Date</th>
                         <th className="p-4 text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Amount Paid</th>
                       </tr>
@@ -838,6 +855,7 @@ function Sales() {
                               </div>
                             </td>
                             <td className="p-4 text-sm" style={{ color: colors.textSecondary }}>{user.email}</td>
+                            <td className="p-4 text-sm" style={{ color: colors.textSecondary }}>{user.phone || '+91 98765 43210'}</td>
                             <td className="p-4 text-sm" style={{ color: colors.textSecondary }}>{purchase?.date || user.studentDetails.createdAt}</td>
                             <td className="p-4 text-sm font-bold" style={{ color: colors.primary }}>₹{purchase?.price || selectedItem.price.replace('₹', '')}</td>
                           </tr>

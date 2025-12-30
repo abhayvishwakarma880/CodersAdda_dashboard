@@ -262,7 +262,17 @@ function ViewUser() {
                                         {purchase.type === 'Course' ? <Layers size={24} /> : <BookOpen size={24} />}
                                     </div>
                                     <div>
-                                        <h4 style={{color:colors.text}} className="font-bold">{purchase.title}</h4>
+                                        <div className="flex items-center gap-2">
+                                            <h4 style={{color:colors.text}} className="font-bold">{purchase.title}</h4>
+                                            {purchase.type === 'Course' && (() => {
+                                                const course = courses.find(c => c.title === purchase.title);
+                                                return course?.badge && course.badge !== 'Normal' && (
+                                                    <span className="text-[8px] font-black uppercase text-amber-500 px-1 rounded bg-amber-50 border border-amber-200">
+                                                        {course.badge}
+                                                    </span>
+                                                );
+                                            })()}
+                                        </div>
                                         <p style={{color:colors.text}} className="text-xs opacity-60 font-bold uppercase tracking-wider">{purchase.type} • Purchased on {purchase.date}</p>
                                     </div>
                                 </div>

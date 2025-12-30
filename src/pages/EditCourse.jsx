@@ -27,7 +27,8 @@ function EditCourse() {
         promoVideo: course.promoVideo || '',
         promoVideoUrl: course.promoVideoUrl || '',
         faqs: course.faqs || [],
-        reviews: course.reviews || []
+        reviews: course.reviews || [],
+        badge: course.badge || 'Normal'
       });
     } else {
       navigate('/dashboard/courses');
@@ -195,6 +196,19 @@ function EditCourse() {
                   />
                 </div>
               )}
+              <div className="space-y-1">
+                <label style={labelStyle}>Course Badge</label>
+                <select 
+                  required value={formData.badge} onChange={(e) => setFormData({...formData, badge: e.target.value})}
+                  className="w-full px-4 py-2 rounded-md border outline-none cursor-pointer text-sm"
+                  style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
+                >
+                  <option value="Normal">Normal</option>
+                  <option value="Top Course">Top Course</option>
+                  <option value="Popular Course">Popular Course</option>
+                  <option value="Trending Course">Trending Course</option>
+                </select>
+              </div>
             </div>
           </div>
 

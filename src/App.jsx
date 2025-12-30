@@ -7,10 +7,12 @@ import Login from "./Login";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoute } from "./routes/AppRoute";
+import ScrollToTop from "./ScrollToTop";
 
 const App = () => {
   return (
     <ThemeProvider>
+      <ScrollToTop />
       <DataProvider>
         <>
           <Routes>

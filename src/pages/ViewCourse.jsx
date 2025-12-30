@@ -175,6 +175,9 @@ function ViewCourse() {
                 <div className="flex-1 space-y-2">
                     <div className="flex gap-2">
                          <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-primary/10" style={{ color: colors.primary }}>{course.priceType}</span>
+                         {course.badge && course.badge !== 'Normal' && (
+                             <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-amber-500 text-white">{course.badge}</span>
+                         )}
                          <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase bg-gray-100">{course.duration}</span>
                     </div>
                     <h2 className="text-lg font-bold" style={{ color: colors.text }}>{course.title}</h2>

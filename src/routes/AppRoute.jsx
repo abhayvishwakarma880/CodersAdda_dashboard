@@ -36,9 +36,17 @@ import EditReferral from "../pages/EditReferral";
 import QuizReport from "../pages/QuizReport";
 import UserQuizResult from "../pages/UserQuizResult";
 import Sales from "../pages/Sales";
+import CourseSales from "../pages/CourseSales";
+import EbookSales from "../pages/EbookSales";
+import JobSales from "../pages/JobSales";
+import SubscriptionSales from "../pages/SubscriptionSales";
 
 export const AppRoute = [
   {path:'sales',component:Sales},
+  {path:'sales/courses',component:CourseSales},
+  {path:'sales/ebooks',component:EbookSales},
+  {path:'sales/jobs',component:JobSales},
+  {path:'sales/subscriptions',component:SubscriptionSales},
   {path:'category',component:Category},
   {path:'courses',component:Courses},
   {path:'courses/add',component:AddCourse},

@@ -103,7 +103,12 @@ function ViewSubscription() {
                             <div className="w-8 h-8 rounded flex items-center justify-center bg-primary/10" style={{ color: colors.primary }}>
                                 <BookOpen size={16} />
                             </div>
-                            <span className="text-sm font-bold opacity-80 flex-1" style={{ color: colors.text }}>{course.title}</span>
+                            <div className="flex-1 min-w-0">
+                                <span className="text-sm font-bold opacity-80 block truncate" style={{ color: colors.text }}>{course.title}</span>
+                                {course.badge && course.badge !== 'Normal' && (
+                                    <span className="text-[8px] font-black uppercase text-amber-500">{course.badge}</span>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

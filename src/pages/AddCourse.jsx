@@ -29,6 +29,7 @@ function AddCourse() {
     priceType: 'Free', 
     Oprice: '',
     Cprice: '',
+    badge: 'Normal',
     whatYouWillLearn: [''],
     curriculum: [],
     status: 'Active',
@@ -116,7 +117,7 @@ function AddCourse() {
           
           {/* General Information */}
           <div className="p-6 rounded-lg border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-            <h2 className="text-lg font-bold mb-6 flex items-center gap-2" style={{ color: colors.text }}>
+            <h2 className="text-lg font-bold mb-6 flex items-center gap-2" style={{ color: colors.primary }}>
               <Info size={18} className="text-primary" style={{ color: colors.primary }} /> General Information
             </h2>
 
@@ -217,6 +218,19 @@ function AddCourse() {
                   </div>
                 </div>
               )}
+              <div className="space-y-1">
+                <label style={labelStyle}>Course Badge</label>
+                <select 
+                  required value={formData.badge} onChange={(e) => setFormData({...formData, badge: e.target.value})}
+                  className="w-full px-4 py-2 rounded-md border outline-none cursor-pointer text-sm"
+                  style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
+                >
+                  <option value="Normal">Normal</option>
+                  <option value="Top Course">Top Course</option>
+                  <option value="Popular Course">Popular Course</option>
+                  <option value="Trending Course">Trending Course</option>
+                </select>
+              </div>
             </div>
           </div>
 

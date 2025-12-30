@@ -58,7 +58,17 @@ const Dashboard = () => {
 
   const navLinks = [
     { name: 'Dashboard', icon: BarChart3, path: '/dashboard' },
-    { name: 'Sales', icon: TrendingUp, path: '/dashboard/sales' },
+    { 
+      name: 'Sales', 
+      icon: TrendingUp, 
+      submenu: [
+        { name: 'Dashboard', path: '/dashboard/sales' },
+        { name: 'Course Sales', path: '/dashboard/sales/courses' },
+        { name: 'Ebooks Sales', path: '/dashboard/sales/ebooks' },
+        { name: 'Jobs Sales', path: '/dashboard/sales/jobs' },
+        { name: 'Subscription', path: '/dashboard/sales/subscriptions' }
+      ]
+    },
     { name: 'Users', icon: Users, path: '/dashboard/users' },
     { 
       name: 'Courses', 
@@ -302,7 +312,7 @@ const Dashboard = () => {
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-              <Settings className='w-5 h-5 md:w-6 md:h-6' />
+              {/* <Settings className='w-5 h-5 md:w-6 md:h-6' /> */}
             </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
