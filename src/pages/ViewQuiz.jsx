@@ -128,7 +128,7 @@ function ViewQuiz() {
             className="flex items-center gap-2 px-6 py-3 rounded font-bold text-xs uppercase tracking-widest shadow-lg active:scale-95 transition-all cursor-pointer text-white"
             style={{ backgroundColor: colors.primary }}
         >
-            <FileText size={18} /> View Reports
+            <FileText size={18} /> View Attempt
         </button>
       </div>
 

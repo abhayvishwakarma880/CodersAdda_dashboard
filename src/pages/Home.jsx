@@ -3,7 +3,8 @@ import { useTheme } from '../context/ThemeContext'
 import { useData } from '../context/DataContext'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { Film, Eye, Heart, Share2, TrendingUp, Users, BookOpen, Book, Briefcase, CreditCard, User, Send } from 'lucide-react'
+import { Film, Eye, Heart, Share2, TrendingUp, Users, BookOpen, Book, Briefcase, CreditCard, User, Send, ChartNoAxesCombined, ChartSpline, MessageCircle } from 'lucide-react'
+import { NavLink } from 'react-router-dom'
 
 const Home = () => {
   const { colors } = useTheme()
@@ -18,11 +19,11 @@ const Home = () => {
 
   // Stats data with lucide icons
   const statsData = [
-    { id: 'users', title: 'Users', value: '2,543', icon: Users, color: '#3b82f6', growth: '+12%' },
-    { id: 'courses', title: 'Courses', value: '156', icon: BookOpen, color: '#10b981', growth: '+8%' },
-    { id: 'ebooks', title: 'Ebook', value: '89', icon: Book, color: '#8b5cf6', growth: '+15%' },
-    { id: 'jobs', title: 'Jobs', value: '234', icon: Briefcase, color: '#f59e0b', growth: '+23%' },
-    { id: 'subscription', title: 'Subscription', value: '45', icon: CreditCard, color: '#ef4444', growth: '+18%' }
+    { id: 'users', path: '/dashboard/users', title: 'Users', value: '2,543', icon: Users, color: '#3b82f6', growth: '+12%' },
+    { id: 'courses',path: '/dashboard/courses', title: 'Courses', value: '156', icon: BookOpen, color: '#10b981', growth: '+8%' },
+    { id: 'ebooks',path: '/dashboard/ebooks', title: 'Ebook', value: '89', icon: Book, color: '#8b5cf6', growth: '+15%' },
+    { id: 'jobs',path: '/dashboard/jobs', title: 'Jobs', value: '234', icon: Briefcase, color: '#f59e0b', growth: '+23%' },
+    { id: 'subscription',path: '/dashboard/subscriptions', title: 'Subscription', value: '45', icon: CreditCard, color: '#ef4444', growth: '+18%' }
   ]
 
   // Sales data for progress bars
@@ -302,8 +303,8 @@ const Home = () => {
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-6'>
           <div className='flex items-center space-x-3'>
             <div className='w-12 h-12 rounded-full flex items-center justify-center text-2xl'
-                 style={{ backgroundColor: colors.primary + '20' }}>
-              📊
+                 style={{ backgroundColor: colors.primary + '20', color:colors.text }}>
+              <ChartNoAxesCombined />
             </div>
             <div>
               <h3 className='font-semibold' style={{ color: colors.text }}>Real-time Analytics</h3>
@@ -312,8 +313,8 @@ const Home = () => {
           </div>
           <div className='flex items-center space-x-3'>
             <div className='w-12 h-12 rounded-full flex items-center justify-center text-2xl'
-                 style={{ backgroundColor: colors.accent + '30' }}>
-              📈
+                 style={{ backgroundColor: colors.accent + '30',color:colors.text }}>
+              <ChartSpline />
             </div>
             <div>
               <h3 className='font-semibold' style={{ color: colors.text }}>Growth Insights</h3>
@@ -322,8 +323,8 @@ const Home = () => {
           </div>
           <div className='flex items-center space-x-3'>
             <div className='w-12 h-12 rounded-full flex items-center justify-center text-2xl'
-                 style={{ backgroundColor: colors.warning + '20' }}>
-              💬
+                 style={{ backgroundColor: colors.warning + '20', color:colors.text }}>
+              <TrendingUp  />
             </div>
             <div>
               <h3 className='font-semibold' style={{ color: colors.text }}>User Engagement</h3>
@@ -338,7 +339,7 @@ const Home = () => {
         {statsData.map((stat) => {
           const IconComponent = stat.icon
           return (
-            <div
+            <NavLink to={stat.path}
               key={stat.id}
               className='p-6 rounded-lg border shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105'
               style={{
@@ -369,7 +370,7 @@ const Home = () => {
               <p className='text-sm font-medium' style={{ color: colors.textSecondary }}>
                 Total {stat.title}
               </p>
-            </div>
+            </NavLink>
           )
         })}
       </div>
@@ -389,10 +390,10 @@ const Home = () => {
               <button
                 key={filter}
                 onClick={() => setChartFilter(filter)}
-                className='px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200'
+                className='px-4 cursor-pointer py-2 rounded-lg text-sm font-medium transition-all duration-200'
                 style={{
                   backgroundColor: chartFilter === filter ? colors.primary : colors.accent + '20',
-                  color: chartFilter === filter ? '#fff' : colors.text
+                  color: chartFilter === filter ? colors.background : colors.text
                 }}
               >
                 {filter}
@@ -418,10 +419,10 @@ const Home = () => {
               <button
                 key={tab}
                 onClick={() => setDistTab(tab)}
-                className='px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200'
+                className='px-4 cursor-pointer py-2 rounded-lg text-sm font-medium transition-all duration-200'
                 style={{
                   backgroundColor: distTab === tab ? colors.primary : colors.accent + '20',
-                  color: distTab === tab ? '#fff' : colors.text
+                  color: distTab === tab ? colors.background : colors.text
                 }}
               >
                 {tab}
@@ -435,10 +436,10 @@ const Home = () => {
               <button
                 key={filter}
                 onClick={() => setDistFilter(filter)}
-                className='px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200'
+                className='px-4 cursor-pointer py-2 rounded-lg text-sm font-medium transition-all duration-200'
                 style={{
                   backgroundColor: distFilter === filter ? colors.primary : colors.accent + '20',
-                  color: distFilter === filter ? '#fff' : colors.text
+                  color: distFilter === filter ? colors.background : colors.text
                 }}
               >
                 {filter}
@@ -561,7 +562,7 @@ const Home = () => {
                       </p>
                       <button
                         onClick={() => setReplyTo(replyTo === comment.id ? null : comment.id)}
-                        className='text-xs font-medium hover:underline'
+                        className='text-xs cursor-pointer font-medium hover:underline'
                         style={{ color: colors.primary }}
                       >
                         Reply
@@ -604,8 +605,8 @@ const Home = () => {
                     />
                     <button
                       onClick={() => handleReply(comment.id)}
-                      className='p-2 rounded-lg transition-all hover:opacity-80'
-                      style={{ backgroundColor: colors.primary, color: '#fff' }}
+                      className='p-2 cursor-pointer rounded-lg transition-all hover:opacity-80'
+                      style={{ backgroundColor: colors.primary, color: colors.background }}
                     >
                       <Send size={18} />
                     </button>

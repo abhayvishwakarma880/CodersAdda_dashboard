@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Edit2, Trash2, FileQuestion, Clock, Layout, Award, MoreVertical, Hash, Eye } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, FileQuestion, Clock, Layout, Award, MoreVertical, Hash, Eye, Copy, FileText } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import Swal from 'sweetalert2';
@@ -17,6 +17,11 @@ function Quizzes() {
     quiz.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
     quiz.description?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Quiz Code copied to clipboard!');
+  };
 
   const toggleQuizStatus = (id, currentStatus) => {
     const newStatus = (currentStatus || 'Active') === 'Active' ? 'Disabled' : 'Active';
@@ -102,15 +107,26 @@ function Quizzes() {
                         </div>
                       </td>
                       <td className="p-4">
-                          <div className="flex items-center gap-1 opacity-70">
-                              <Hash size={12} />
-                              <span>{quiz.quizCode || 'N/A'}</span>
+                          <div className="flex items-center gap-2">
+                              <div className="flex items-center gap-1 opacity-70">
+                                  <Hash size={12} />
+                                  <span>{quiz.quizCode || 'N/A'}</span>
+                              </div>
+                              {quiz.quizCode && (
+                                <button
+                                    onClick={() => copyToClipboard(quiz.quizCode)}
+                                    className="p-1.5 rounded hover:bg-black/5 text-gray-400 hover:text-blue-500 transition-all cursor-pointer"
+                                    title="Copy Code"
+                                >
+                                    <Copy size={12} />
+                                </button>
+                              )}
                           </div>
                       </td>
                       <td className="p-4">
                           <div className="flex flex-col gap-1 text-xs opacity-70">
                               <span className="flex items-center gap-1"><Clock size={12} /> {quiz.duration} mins</span>
-                              <span className="flex items-center gap-1"><Award size={12} /> {quiz.points} Pts/Q</span>
+                              <span className="flex items-center gap-1"><Award size={12} /> 1 Mark</span>
                               <span className="flex items-center gap-1"><Layout size={12} /> {quiz.level}</span>
                           </div>
                       </td>
@@ -127,8 +143,16 @@ function Quizzes() {
                       <td className="p-4">
                         <div className="flex items-center justify-end gap-2">
                            <button
+                             onClick={() => navigate(`/dashboard/quizzes/report/${quiz.id}`)}
+                             className="p-2 rounded border hover:bg-purple-50 text-purple-600 cursor-pointer transition-colors"
+                             style={{ borderColor: colors.accent + '30' }}
+                             title="View Attempts"
+                           >
+                             <FileText size={16} />
+                           </button>
+                           <button
                              onClick={() => navigate(`/dashboard/quizzes/view/${quiz.id}`)}
-                             className="p-2 rounded border hover:bg-black/5 text-purple-500 cursor-pointer transition-colors"
+                             className="p-2 rounded border hover:bg-black/5 text-gray-600 cursor-pointer transition-colors"
                              style={{ borderColor: colors.accent + '30' }}
                              title="View details"
                            >

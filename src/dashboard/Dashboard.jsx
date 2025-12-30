@@ -8,7 +8,7 @@ import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
@@ -73,8 +73,9 @@ const Dashboard = () => {
       name: 'E-Books', 
       icon: Book, 
       submenu: [
-        { name: 'Category', path: '/dashboard/ebooks?tab=categories' },
-        { name: 'Add Ebooks', path: '/dashboard/ebooks?tab=pdf' },
+        { name: 'Category', path: '/dashboard/category' },
+        { name: 'Add Ebooks', path: '/dashboard/ebooks/add' },
+        { name: 'All Ebooks', path: '/dashboard/ebooks' }
       ]
     },
     { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
@@ -115,15 +116,6 @@ const Dashboard = () => {
             if (link.submenu) {
               const isOpen = openSubmenu === link.name
               const isAnySubmenuActive = link.submenu.some(sub => {
-                if (link.name === 'E-Books') {
-                  // For E-Books, check both path and tab param
-                  const tabMatch = sub.path.includes('?tab=')
-                  if (tabMatch) {
-                    const tabValue = sub.path.split('?tab=')[1]
-                    return location.pathname === '/dashboard/ebooks' && location.search.includes(`tab=${tabValue}`)
-                  }
-                  return location.pathname === sub.path
-                }
                 return location.pathname === sub.path
               })
               
@@ -168,12 +160,6 @@ const Dashboard = () => {
                     <div className="ml-8 mr-2 mb-2 space-y-1 pt-1">
                       {link.submenu.map((sublink, subIndex) => {
                         let isSubActive = location.pathname === sublink.path
-                        
-                        // Special handling for E-Books with URL params
-                        if (link.name === 'E-Books' && sublink.path.includes('?tab=')) {
-                          const tabValue = sublink.path.split('?tab=')[1]
-                          isSubActive = location.pathname === '/dashboard/ebooks' && location.search.includes(`tab=${tabValue}`)
-                        }
                         
                         return (
                           <NavLink
@@ -316,7 +302,7 @@ const Dashboard = () => {
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-              {/* <Settings className='w-5 h-5 md:w-6 md:h-6' /> */}
+              <Settings className='w-5 h-5 md:w-6 md:h-6' />
             </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>

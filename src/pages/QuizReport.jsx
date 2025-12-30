@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Download, Eye, Search, FileText } from 'lucide-react';
+import { ArrowLeft, Download, Eye, Search, FileText, Hash, Phone, Clock, Award, Star } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
@@ -9,7 +9,7 @@ import 'jspdf-autotable';
 
 function QuizReport() {
   const { colors } = useTheme();
-  const { quizzes } = useData();
+  const { quizzes, users } = useData();
   const { id } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState(null);
@@ -24,11 +24,42 @@ function QuizReport() {
     }
   }, [id, quizzes, navigate]);
 
-  if (!quiz) return null;
+  const processedAttempts = useMemo(() => {
+    if (!quiz || !quiz.attempts) return [];
 
-  const filteredAttempts = quiz.attempts?.filter(attempt => 
-    attempt.studentName.toLowerCase().includes(searchQuery.toLowerCase())
-  ) || [];
+    // Map attempts to include extra data
+    const attemptsWithData = quiz.attempts.map(attempt => {
+        const student = users.find(u => u.id === attempt.studentId);
+        return {
+            ...attempt,
+            mobile: student?.phone || 'N/A',
+            quizCode: quiz.quizCode || 'N/A',
+            // Default duration if missing for dummy data
+            duration: attempt.duration || Math.floor(Math.random() * 20) + 5 
+        };
+    });
+
+    // Sort: Marks DESC, Duration ASC
+    const sorted = attemptsWithData.sort((a, b) => {
+        if (b.marks !== a.marks) {
+            return b.marks - a.marks;
+        }
+        return a.duration - b.duration;
+    });
+
+    // Assign Rank
+    return sorted.map((attempt, index) => ({
+        ...attempt,
+        rank: index + 1
+    }));
+  }, [quiz, users]);
+
+  const filteredAttempts = processedAttempts.filter(attempt => 
+    attempt.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    attempt.mobile.includes(searchQuery)
+  );
+
+  if (!quiz) return null;
 
   const handleExportReport = () => {
     const doc = new jsPDF();
@@ -40,43 +71,37 @@ function QuizReport() {
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
     doc.text(`Quiz Title: ${quiz.title}`, 14, 30);
-    doc.text(`Description: ${quiz.description.substring(0, 70)}...`, 14, 36);
+    doc.text(`Quiz Code: ${quiz.quizCode || 'N/A'}`, 14, 36);
     doc.text(`Generated On: ${new Date().toLocaleString()}`, 14, 42);
     doc.text(`Total Attempts: ${quiz.attempts?.length || 0}`, 14, 48);
 
-    const filteredData = filteredAttempts.length > 0 ? filteredAttempts : (quiz.attempts || []);
-
-    if (filteredData.length === 0) {
+    if (filteredAttempts.length === 0) {
         toast.info("No attempts data available to export.");
         return;
     }
 
     // Table
-    const tableColumn = ["Student Name", "Date", "Score", "Total", "Status", "Performance"];
-    const tableRows = filteredData.map(attempt => {
-       const percentage = Math.round((attempt.marks / attempt.totalMarks) * 100);
-       return [
-         attempt.studentName,
-         attempt.date,
-         attempt.marks,
-         attempt.totalMarks,
-         attempt.status,
-         `${percentage}%`
-       ];
-    });
+    const tableColumn = ["Rank", "Student Name", "Mobile", "Quiz Code", "Marks", "Duration"];
+    const tableRows = filteredAttempts.map(attempt => [
+      `#${attempt.rank}`,
+      attempt.studentName,
+      attempt.mobile,
+      attempt.quizCode,
+      `${attempt.marks}/${attempt.totalMarks}`,
+      `${attempt.duration}m`
+    ]);
 
     doc.autoTable({
       head: [tableColumn],
       body: tableRows,
       startY: 55,
       theme: 'grid',
-      styles: { fontSize: 10, cellPadding: 4 },
+      styles: { fontSize: 9, cellPadding: 3 },
       headStyles: { fillColor: [66, 133, 244], textColor: 255, fontStyle: 'bold', halign: 'center' },
       columnStyles: {
-        0: { fontStyle: 'bold' },
-        2: { halign: 'center' },
-        3: { halign: 'center' },
-        5: { halign: 'center', fontStyle: 'bold' },
+        0: { halign: 'center', fontStyle: 'bold' },
+        4: { halign: 'center' },
+        5: { halign: 'center' },
       },
       alternateRowStyles: { fillColor: [240, 240, 240] }
     });
@@ -111,13 +136,45 @@ function QuizReport() {
         </button>
       </div>
 
-      {/* Stats/Filters */}
+      {/* Stats Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Star className="text-yellow-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Total Attempts</span>
+              <span className="font-bold text-lg">{processedAttempts.length}</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Award className="text-green-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Average Score</span>
+              <span className="font-bold text-lg">
+                  {processedAttempts.length > 0 
+                    ? Math.round(processedAttempts.reduce((acc, curr) => acc + curr.marks, 0) / processedAttempts.length)
+                    : 0}
+              </span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Clock className="text-blue-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Avg. Duration</span>
+              <span className="font-bold text-lg">
+                  {processedAttempts.length > 0 
+                    ? Math.round(processedAttempts.reduce((acc, curr) => acc + (curr.duration || 0), 0) / processedAttempts.length)
+                    : 0}m
+              </span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Hash className="text-purple-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Quiz Code</span>
+              <span className="font-bold text-lg">{quiz.quizCode || 'N/A'}</span>
+          </div>
+      </div>
+
+      {/* Search */}
       <div className="mb-6 flex gap-4">
           <div className="relative flex-1 max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" size={18} />
             <input 
               type="text" 
-              placeholder="Search student..." 
+              placeholder="Search student or mobile..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-3 rounded border outline-none text-sm font-semibold transition-all"
@@ -132,28 +189,55 @@ function QuizReport() {
             <table className="w-full text-left border-collapse">
                 <thead>
                     <tr style={{ backgroundColor: colors.accent + '05', borderBottom: `1px solid ${colors.accent}15` }}>
+                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Rank</th>
                         <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Student Name</th>
-                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Date</th>
-                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Score</th>
-                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Status</th>
+                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Details</th>
+                        <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60">Performance</th>
                         <th className="p-4 text-[10px] font-black uppercase tracking-widest opacity-60 text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody className="divide-y" style={{ borderColor: colors.accent + '10' }}>
                     {filteredAttempts.length > 0 ? (
-                        filteredAttempts.map((attempt, index) => (
-                            <tr key={index} className="hover:bg-black/[0.01] transition-colors">
-                                <td className="p-4 font-bold text-sm" style={{ color: colors.text }}>{attempt.studentName}</td>
-                                <td className="p-4 text-xs font-semibold opacity-70">{attempt.date}</td>
+                        filteredAttempts.map((attempt) => (
+                            <tr key={`${attempt.studentId}-${attempt.rank}`} className="hover:bg-black/[0.01] transition-colors">
                                 <td className="p-4">
-                                     <span className={`px-2 py-1 rounded text-[10px] font-black uppercase ${attempt.marks >= (attempt.totalMarks * 0.5) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                        {attempt.marks} / {attempt.totalMarks}
-                                     </span>
+                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black ${
+                                        attempt.rank === 1 ? 'bg-yellow-100 text-yellow-700' :
+                                        attempt.rank === 2 ? 'bg-gray-100 text-gray-700' :
+                                        attempt.rank === 3 ? 'bg-orange-100 text-orange-700' :
+                                        'bg-black/5 text-black/40'
+                                    }`}>
+                                        {attempt.rank}
+                                    </div>
                                 </td>
                                 <td className="p-4">
-                                    <span className={`text-[10px] font-black uppercase tracking-wider ${attempt.status === 'Pass' ? 'text-green-500' : 'text-red-500'}`}>
-                                        {attempt.status}
-                                    </span>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-sm" style={{ color: colors.text }}>{attempt.studentName}</span>
+                                        <div className="flex items-center gap-2 opacity-50">
+                                            <Phone size={10} />
+                                            <span className="text-[10px] font-semibold">{attempt.mobile}</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="p-4">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-center gap-1.5 opacity-70">
+                                            <Hash size={10} />
+                                            <span className="text-[10px] font-bold">{quiz.quizCode || 'N/A'}</span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5 opacity-70">
+                                            <Clock size={10} />
+                                            <span className="text-[10px] font-bold">{attempt.duration}m duration</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td className="p-4">
+                                     <div className="flex flex-col gap-1">
+                                        <span className={`w-fit px-2 py-1 rounded text-[10px] font-black uppercase ${attempt.marks >= (attempt.totalMarks * 0.5) ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                            {attempt.marks} / {attempt.totalMarks}
+                                        </span>
+                                        <span className="text-[9px] opacity-40 font-bold">{Math.round((attempt.marks/attempt.totalMarks)*100)}% Accuracy</span>
+                                     </div>
                                 </td>
                                 <td className="p-4 text-right">
                                     <button 
@@ -168,7 +252,7 @@ function QuizReport() {
                         ))
                     ) : (
                         <tr>
-                            <td colSpan="5" className="p-8 text-center opacity-30 font-bold uppercase tracking-widest text-xs">
+                            <td colSpan="6" className="p-8 text-center opacity-30 font-bold uppercase tracking-widest text-xs">
                                 No attempts found
                             </td>
                         </tr>

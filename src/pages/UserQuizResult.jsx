@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Download, CheckCircle, XCircle } from 'lucide-react';
+import { ArrowLeft, Download, CheckCircle, XCircle, Hash, Phone, Clock, Award, Star, ListChecks } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import jsPDF from 'jspdf';
@@ -8,7 +8,7 @@ import 'jspdf-autotable';
 
 function UserQuizResult() {
   const { colors } = useTheme();
-  const { quizzes } = useData();
+  const { quizzes, users } = useData();
   const { quizId, studentId } = useParams();
   const navigate = useNavigate();
   const [quiz, setQuiz] = useState(null);
@@ -20,14 +20,36 @@ function UserQuizResult() {
       setQuiz(foundQuiz);
       const foundAttempt = foundQuiz.attempts?.find(a => a.studentId === studentId);
       if (foundAttempt) {
-        setAttempt(foundAttempt);
+        // Find user details 
+        const student = users.find(u => u.id === studentId);
+        setAttempt({
+            ...foundAttempt,
+            mobile: student?.phone || 'N/A',
+            quizCode: foundQuiz.quizCode || 'N/A',
+            duration: foundAttempt.duration || 0
+        });
       } else {
         navigate(`/dashboard/quizzes/report/${quizId}`);
       }
     } else {
       navigate('/dashboard/quizzes');
     }
-  }, [quizId, studentId, quizzes, navigate]);
+  }, [quizId, studentId, quizzes, navigate, users]);
+
+  const rankData = useMemo(() => {
+    if (!quiz || !quiz.attempts) return { rank: 'N/A', total: 0 };
+    
+    const sorted = [...quiz.attempts].sort((a, b) => {
+        if (b.marks !== a.marks) return b.marks - a.marks;
+        return (a.duration || 0) - (b.duration || 0);
+    });
+
+    const index = sorted.findIndex(a => a.studentId === studentId);
+    return {
+        rank: index !== -1 ? index + 1 : 'N/A',
+        total: sorted.length
+    };
+  }, [quiz, studentId]);
 
   if (!quiz || !attempt) return null;
 
@@ -36,52 +58,65 @@ function UserQuizResult() {
 
     doc.setFontSize(18);
     doc.text(`Quiz Result: ${quiz.title}`, 14, 20);
-    doc.setFontSize(12);
-    doc.text(`Student: ${attempt.studentName}`, 14, 30);
-    doc.text(`Score: ${attempt.marks} / ${attempt.totalMarks}`, 14, 38);
-    doc.text(`Date: ${attempt.date}`, 14, 46);
+    
+    doc.setFontSize(10);
+    doc.text(`Student Name: ${attempt.studentName}`, 14, 30);
+    doc.text(`Mobile: ${attempt.mobile}`, 14, 36);
+    doc.text(`Quiz Code: ${attempt.quizCode}`, 14, 42);
+    doc.text(`Rank: #${rankData.rank} out of ${rankData.total}`, 14, 48);
+    doc.text(`Score: ${attempt.marks} / ${attempt.totalMarks}`, 14, 54);
+    doc.text(`Duration: ${attempt.duration} mins`, 14, 60);
 
-    let yPos = 60;
+    let yPos = 75;
 
     quiz.questions.forEach((q, index) => {
-        const studentAnsObj = attempt.answers.find(ans => ans.questionId === q.id);
+        const studentAnsObj = attempt.answers?.find(ans => ans.questionId === q.id);
         const studentOptionIndex = studentAnsObj ? studentAnsObj.selectedOption : -1;
         const isCorrect = studentOptionIndex === q.correctOption;
 
         // Page break check
-        if (yPos > 270) {
+        if (yPos > 250) {
             doc.addPage();
             yPos = 20;
         }
 
         doc.setFontSize(11);
-        doc.setFont(undefined, 'bold');
+        doc.setFont("helvetica", 'bold');
         doc.text(`Q${index + 1}: ${q.question}`, 14, yPos);
         yPos += 8;
 
-        doc.setFont(undefined, 'normal');
+        doc.setFont("helvetica", 'normal');
         doc.setFontSize(10);
         
         q.options.forEach((opt, optIdx) => {
-             let prefix = "- ";
-             if (optIdx === q.correctOption) prefix = "(Correct) ";
-             if (optIdx === studentOptionIndex) prefix = "(Selected) ";
-             if (optIdx === q.correctOption && optIdx === studentOptionIndex) prefix = "(Correct & Selected) ";
+             let prefix = "  [ ] ";
+             if (optIdx === q.correctOption) {
+                 prefix = "  [Tick] ";
+                 doc.setTextColor(0, 150, 0); 
+             }
+             if (optIdx === studentOptionIndex && !isCorrect) {
+                 prefix = "  [X] ";
+                 doc.setTextColor(200, 0, 0);
+             }
 
              doc.text(`${prefix}${opt}`, 20, yPos);
+             doc.setTextColor(0, 0, 0);
              yPos += 6;
         });
 
-        yPos += 4;
-        if (!isCorrect) {
+        yPos += 2;
+        doc.setFont("helvetica", 'italic');
+        if (studentOptionIndex === -1) {
+            doc.text("Result: Not Attempted", 20, yPos);
+        } else if (!isCorrect) {
              doc.setTextColor(200, 0, 0);
-             doc.text(`Result: Incorrect`, 14, yPos);
+             doc.text(`Result: Incorrect (Selected: ${['A','B','C','D'][studentOptionIndex]}, Correct: ${['A','B','C','D'][q.correctOption]})`, 20, yPos);
         } else {
              doc.setTextColor(0, 150, 0);
-             doc.text(`Result: Correct`, 14, yPos);
+             doc.text(`Result: Correct`, 20, yPos);
         }
         doc.setTextColor(0, 0, 0);
-        yPos += 10;
+        yPos += 12;
     });
 
     doc.save(`Result_${attempt.studentName.replace(/\s+/g, '_')}_${quiz.title.replace(/\s+/g, '_')}.pdf`);
@@ -113,20 +148,38 @@ function UserQuizResult() {
         </button>
       </div>
 
-      {/* Summary Card */}
-      <div className="p-6 rounded border shadow-sm mb-8 grid grid-cols-2 md:grid-cols-4 gap-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-         <div>
-             <p className="text-[10px] font-black opacity-40 uppercase tracking-widest">Score</p>
-             <p className="text-2xl font-black">{attempt.marks} <span className="text-sm opacity-40">/ {attempt.totalMarks}</span></p>
-         </div>
-         <div>
-             <p className="text-[10px] font-black opacity-40 uppercase tracking-widest">Status</p>
-             <p className={`text-xl font-black uppercase ${attempt.status === 'Pass' ? 'text-green-500' : 'text-red-500'}`}>{attempt.status}</p>
-         </div>
-         <div>
-             <p className="text-[10px] font-black opacity-40 uppercase tracking-widest">Date</p>
-             <p className="text-lg font-bold opacity-80">{attempt.date}</p>
-         </div>
+      {/* Info Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Star className="text-yellow-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Rank</span>
+              <span className="font-bold text-lg">#{rankData.rank}</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Award className="text-green-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Score</span>
+              <span className="font-bold text-lg">{attempt.marks} / {attempt.totalMarks}</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Phone className="text-blue-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Mobile</span>
+              <span className="font-bold text-xs">{attempt.mobile}</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Hash className="text-purple-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Quiz Code</span>
+              <span className="font-bold text-xs">{attempt.quizCode}</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <Clock className="text-orange-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Duration</span>
+              <span className="font-bold text-lg">{attempt.duration}m</span>
+          </div>
+          <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
+              <ListChecks className="text-cyan-500 mb-1" size={20} />
+              <span className="text-[10px] font-bold opacity-60 uppercase">Accuracy</span>
+              <span className="font-bold text-lg">{Math.round((attempt.marks / attempt.totalMarks) * 100)}%</span>
+          </div>
       </div>
 
       {/* Questions Review */}
@@ -170,8 +223,21 @@ function UserQuizResult() {
                                             className="p-3 rounded border flex items-center justify-between"
                                             style={optionStyle}
                                         >
-                                            <span className="text-sm">{opt}</span>
-                                            {icon}
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-sm font-semibold opacity-40">{['A','B','C','D'][optIdx]}.</span>
+                                                <span className="text-sm">{opt}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2">
+                                                {optIdx === q.correctOption && (
+                                                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-500 text-white font-bold uppercase tracking-wider">Correct Answer</span>
+                                                )}
+                                                {optIdx === studentOptionIndex && (
+                                                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${isCorrect ? 'bg-blue-500' : 'bg-red-500'} text-white`}>
+                                                        Your Answer
+                                                    </span>
+                                                )}
+                                                {icon}
+                                            </div>
                                         </div>
                                     );
                                 })}

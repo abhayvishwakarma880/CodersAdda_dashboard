@@ -13,7 +13,7 @@ function AddSubscription() {
   const isEdit = Boolean(id);
 
   const [formData, setFormData] = useState({
-    planType: 'Mobile',
+    planType: '',
     duration: '1 Month',
     price: '',
     benefits: [''],
@@ -69,6 +69,10 @@ function AddSubscription() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.planType) {
+      toast.warning("Please enter a plan type");
+      return;
+    }
     if (!formData.price) {
       toast.warning("Please enter a price");
       return;
@@ -114,16 +118,15 @@ function AddSubscription() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1">
               <label style={labelStyle}>Plan Type</label>
-              <select 
+              <input 
+                type="text"
+                required
                 value={formData.planType}
                 onChange={(e) => setFormData({...formData, planType: e.target.value})}
-                className="w-full px-4 py-2.5 rounded border outline-none text-sm font-semibold cursor-pointer"
+                placeholder="e.g. Mobile, Premium"
+                className="w-full px-4 py-2.5 rounded border outline-none text-sm font-semibold"
                 style={inputStyle}
-              >
-                <option value="Mobile">Mobile</option>
-                <option value="Super">Super</option>
-                <option value="Premium">Premium</option>
-              </select>
+              />
             </div>
             
             <div className="space-y-1">

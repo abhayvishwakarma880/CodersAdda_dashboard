@@ -602,40 +602,41 @@ export const DataProvider = ({ children }) => {
            { id: 'q19', question: 'useCallback returns?', options: ['Memoized value', 'Memoized function', 'State', 'Ref'], correctOption: 1 },
            { id: 'q20', question: 'What package is used for routing?', options: ['react-router-dom', 'react-route', 'router-js', 'react-nav'], correctOption: 0 }
        ],
-       attempts: [
-          { studentId: '2', studentName: 'Riya Singh', date: '2023-12-01', marks: 95, totalMarks: 100, status: 'Pass', answers: [] },
-          { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-02', marks: 40, totalMarks: 100, status: 'Fail', answers: [] },
-          { studentId: '4', studentName: 'Sneha Patel', date: '2023-12-05', marks: 85, totalMarks: 100, status: 'Pass', answers: [] },
-          { studentId: '5', studentName: 'Vikram Mehta', date: '2023-12-06', marks: 30, totalMarks: 100, status: 'Fail', answers: [] },
-          { studentId: '6', studentName: 'Anjali Gupta', date: '2023-12-07', marks: 100, totalMarks: 100, status: 'Pass', answers: [] }
-      ]
-    },
-    {
-       id: '2',
-       title: 'Python for Data Science Basics',
-       quizCode: 'PY-DS-101',
-       description: 'Test your understanding of Python lists, dictionaries, pandas basics and numpy arrays.',
-       duration: '30',
-       points: '5',
-       totalQuestions: 10,
-       level: 'Intermediate',
-       status: 'Active',
-       questions: [
-           { id: 'q1', question: 'Which library is used for data manipulation?', options: ['Pandas', 'Numpy', 'Matplotlib', 'Seaborn'], correctOption: 0 },
-           { id: 'q2', question: 'Mutable data type in Python?', options: ['List', 'Tuple', 'String', 'Int'], correctOption: 0 },
-           { id: 'q3', question: 'Keyword to define a function?', options: ['func', 'def', 'function', 'lambda'], correctOption: 1 },
-           { id: 'q4', question: 'Output of 2 ** 3?', options: ['6', '8', '9', '5'], correctOption: 1 },
-           { id: 'q5', question: 'How to install packages?', options: ['pip install', 'npm install', 'apt-get', 'brew'], correctOption: 0 },
-           { id: 'q6', question: 'Comment character in Python?', options: ['//', '#', '/*', '<!--'], correctOption: 1 },
-           { id: 'q7', question: 'Boolean values are?', options: ['True/False', 'true/false', '1/0', 'Yes/No'], correctOption: 0 },
-           { id: 'q8', question: 'Data structure for unique items?', options: ['List', 'Set', 'Dict', 'Tuple'], correctOption: 1 },
-           { id: 'q9', question: 'String slicing [::-1] does?', options: ['Reverses string', 'Copies string', 'Deletes string', 'Nothing'], correctOption: 0 },
-           { id: 'q10', question: 'File mode "w" stands for?', options: ['Write', 'Read', 'Watch', 'Wait'], correctOption: 0 }
-       ],
-       attempts: [
-           { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-10', marks: 45, totalMarks: 50, status: 'Pass', answers: [] }
+        attempts: [
+           { studentId: '6', studentName: 'Anjali Gupta', date: '2023-12-07', marks: 100, totalMarks: 100, status: 'Pass', duration: 35, answers: [] },
+           { studentId: '2', studentName: 'Riya Singh', date: '2023-12-01', marks: 95, totalMarks: 100, status: 'Pass', duration: 40, answers: [] },
+           { studentId: '4', studentName: 'Sneha Patel', date: '2023-12-05', marks: 95, totalMarks: 100, status: 'Pass', duration: 42, answers: [] },
+           { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-02', marks: 40, totalMarks: 100, status: 'Fail', duration: 45, answers: [] },
+           { studentId: '5', studentName: 'Vikram Mehta', date: '2023-12-06', marks: 30, totalMarks: 100, status: 'Fail', duration: 25, answers: [] }
        ]
-    },
+     },
+     {
+        id: '2',
+        title: 'Python for Data Science Basics',
+        quizCode: 'PY-DS-101',
+        description: 'Test your understanding of Python lists, dictionaries, pandas basics and numpy arrays.',
+        duration: '30',
+        points: '5',
+        totalQuestions: 10,
+        level: 'Intermediate',
+        status: 'Active',
+        questions: [
+            { id: 'q1', question: 'Which library is used for data manipulation?', options: ['Pandas', 'Numpy', 'Matplotlib', 'Seaborn'], correctOption: 0 },
+            { id: 'q2', question: 'Mutable data type in Python?', options: ['List', 'Tuple', 'String', 'Int'], correctOption: 0 },
+            { id: 'q3', question: 'Keyword to define a function?', options: ['func', 'def', 'function', 'lambda'], correctOption: 1 },
+            { id: 'q4', question: 'Output of 2 ** 3?', options: ['6', '8', '9', '5'], correctOption: 1 },
+            { id: 'q5', question: 'How to install packages?', options: ['pip install', 'npm install', 'apt-get', 'brew'], correctOption: 0 },
+            { id: 'q6', question: 'Comment character in Python?', options: ['//', '#', '/*', '<!--'], correctOption: 1 },
+            { id: 'q7', question: 'Boolean values are?', options: ['True/False', 'true/false', '1/0', 'Yes/No'], correctOption: 0 },
+            { id: 'q8', question: 'Data structure for unique items?', options: ['List', 'Set', 'Dict', 'Tuple'], correctOption: 1 },
+            { id: 'q9', question: 'String slicing [::-1] does?', options: ['Reverses string', 'Copies string', 'Deletes string', 'Nothing'], correctOption: 0 },
+            { id: 'q10', question: 'File mode "w" stands for?', options: ['Write', 'Read', 'Watch', 'Wait'], correctOption: 0 }
+        ],
+        attempts: [
+            { studentId: '3', studentName: 'Rahul Sharma', date: '2023-12-10', marks: 45, totalMarks: 50, status: 'Pass', duration: 22, answers: [] },
+            { studentId: '2', studentName: 'Riya Singh', date: '2023-12-11', marks: 45, totalMarks: 50, status: 'Pass', duration: 20, answers: [] }
+        ]
+     },
     {
         id: '3',
         title: 'UI/UX Design Principles',

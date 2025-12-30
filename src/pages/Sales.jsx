@@ -471,10 +471,10 @@ function Sales() {
               <button
                 key={filter}
                 onClick={() => setChartFilter(filter)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+                className="px-4 cursor-pointer py-2 rounded-lg text-sm font-medium transition-all"
                 style={{
                   backgroundColor: chartFilter === filter ? colors.primary : colors.accent + '20',
-                  color: chartFilter === filter ? '#fff' : colors.text
+                  color: chartFilter === filter ? colors.background : colors.text
                 }}
               >
                 {filter}
@@ -505,20 +505,20 @@ function Sales() {
         <div className="flex items-center space-x-3">
           <button
             onClick={() => setSalesView('recent')}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg"
+            className="px-5 cursor-pointer py-2.5 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg"
             style={{
               backgroundColor: salesView === 'recent' ? colors.primary : colors.accent + '20',
-              color: salesView === 'recent' ? '#fff' : colors.text
+              color: salesView === 'recent' ? colors.background : colors.text
             }}
           >
             Recent Sales
           </button>
           <button
             onClick={() => setSalesView('mostly')}
-            className="px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg"
+            className="px-5 cursor-pointer py-2.5 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg"
             style={{
               backgroundColor: salesView === 'mostly' ? colors.primary : colors.accent + '20',
-              color: salesView === 'mostly' ? '#fff' : colors.text
+              color: salesView === 'mostly' ? colors.background : colors.text
             }}
           >
             Most Sold
@@ -777,7 +777,7 @@ function Sales() {
               </div>
               <button 
                 onClick={() => setIsModalOpen(false)}
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
+                className="w-10 cursor-pointer h-10 rounded-full flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
                 style={{ backgroundColor: colors.accent + '20', color: colors.text }}
               >
                 ✕
@@ -860,7 +860,7 @@ function Sales() {
               <button 
                 onClick={() => setIsModalOpen(false)}
                 className="px-6 py-2 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg"
-                style={{ backgroundColor: colors.primary, color: '#fff' }}
+                style={{ backgroundColor: colors.primary, color: colors.background }}
               >
                 Close Details
               </button>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Save, X, Plus, Trash2, CheckCircle2, Upload, FileSpreadsheet, Hash } from 'lucide-react';
+import { ArrowLeft, Save, X, Plus, Trash2, CheckCircle2, Upload, FileSpreadsheet, Hash, Download } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useData } from '../context/DataContext';
 import { toast } from 'react-toastify';
@@ -16,7 +16,7 @@ function AddQuiz() {
     quizCode: '',
     description: '',
     duration: '',
-    points: '',
+    points: '1',
     level: 'Beginner',
     questions: []
   });
@@ -26,6 +26,32 @@ function AddQuiz() {
     options: ['', '', '', ''],
     correctOption: 0
   });
+
+  const downloadSampleExcel = () => {
+    const sampleData = [
+      {
+        'Question': 'What is React.js?',
+        'Option A': 'A library for building UI',
+        'Option B': 'A database',
+        'Option C': 'A backend framework',
+        'Option D': 'A styling tool',
+        'Correct Option': 'A'
+      },
+      {
+        'Question': 'Which hook is used for state?',
+        'Option A': 'useEffect',
+        'Option B': 'useState',
+        'Option C': 'useContext',
+        'Option D': 'useReducer',
+        'Correct Option': 'B'
+      }
+    ];
+
+    const worksheet = XLSX.utils.json_to_sheet(sampleData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sample Questions");
+    XLSX.writeFile(workbook, "quiz_sample_format.xlsx");
+  };
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -150,7 +176,7 @@ function AddQuiz() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
+      <form onSubmit={handleSubmit} className="max-w-full space-y-6">
         
         {/* Basic Details */}
         <div className="p-8 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
@@ -256,20 +282,30 @@ function AddQuiz() {
                     <p className="text-[10px] opacity-40">Questions are added unlimited</p>
                  </div>
                  
-                 {/* Excel Upload */}
-                 <div className="relative">
-                     <input 
-                        type="file" 
-                        accept=".xlsx, .xls" 
-                        onChange={handleFileUpload}
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                     />
-                     <button
+                 {/* Excel Upload & Download */}
+                 <div className="flex items-center gap-2">
+                    <button
                         type="button"
-                        className="px-4 py-2 rounded bg-green-500 text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-green-600 transition-colors"
-                     >
-                         <FileSpreadsheet size={16} /> Upload Excel
-                     </button>
+                        onClick={downloadSampleExcel}
+                        className="px-4 py-2 rounded border-2 border-green-500 text-green-600 text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-green-50 transition-colors"
+                        style={{ borderColor: colors.primary + '40' }}
+                    >
+                        <Download size={16} /> Sample Excel
+                    </button>
+                    <div className="relative">
+                        <input 
+                            type="file" 
+                            accept=".xlsx, .xls" 
+                            onChange={handleFileUpload}
+                            className="absolute inset-0 opacity-0 cursor-pointer"
+                        />
+                        <button
+                            type="button"
+                            className="px-4 py-2 rounded bg-green-500 text-white text-xs font-bold uppercase tracking-widest flex items-center gap-2 hover:bg-green-600 transition-colors"
+                        >
+                            <FileSpreadsheet size={16} /> Upload Excel
+                        </button>
+                    </div>
                  </div>
              </div>
 
@@ -331,12 +367,30 @@ function AddQuiz() {
                                          newOpts[idx] = e.target.value;
                                          setCurrentQuestion({...currentQuestion, options: newOpts}); 
                                      }}
-                                     placeholder={`Option ${idx + 1}`}
+                                     placeholder={`Option ${['A','B','C','D'][idx]}`}
                                      className="flex-1 px-3 py-2 rounded border outline-none text-xs font-semibold"
                                      style={{  borderColor: colors.accent + '20', color: colors.text, backgroundColor: 'transparent' }}
                                  />
                              </div>
                          ))}
+                     </div>
+
+                     <div className="flex flex-col gap-2">
+                        <label style={labelStyle}>Choose Correct Answer</label>
+                        <div className="flex gap-4">
+                            {['A', 'B', 'C', 'D'].map((opt, idx) => (
+                                <label key={opt} className="flex items-center gap-2 cursor-pointer group">
+                                    <input 
+                                        type="radio" 
+                                        name="correctAnswer" 
+                                        checked={currentQuestion.correctOption === idx}
+                                        onChange={() => setCurrentQuestion({...currentQuestion, correctOption: idx})}
+                                        className="w-4 h-4 cursor-pointer accent-green-600"
+                                    />
+                                    <span className={`text-sm font-bold ${currentQuestion.correctOption === idx ? 'text-green-600' : 'opacity-60'}`}>Option {opt}</span>
+                                </label>
+                            ))}
+                        </div>
                      </div>
                      
                      <div className="flex justify-end pt-2">
