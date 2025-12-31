@@ -1,47 +1,55 @@
 import Category from "../pages/Category";
-import Courses from "../pages/Courses";
-import AddCourse from "../pages/AddCourse";
-import EditCourse from "../pages/EditCourse";
-import ViewCourse from "../pages/ViewCourse";
-import Users from "../pages/Users";
-import EditUser from "../pages/EditUser";
-import ViewUser from "../pages/ViewUser";
-import EBooks from "../pages/EBooks";
-import AddEBook from "../pages/AddEBook";
-import EditEBook from "../pages/EditEBook";
-import ViewEBook from "../pages/ViewEBook";
-import Jobs from "../pages/Jobs";
-import AddJob from "../pages/AddJob";
-import EditJob from "../pages/EditJob";
-import ViewJob from "../pages/ViewJob";
-import AddLecture from "../pages/AddLecture";
-import ViewLecture from "../pages/ViewLecture";
-import EditLecture from "../pages/EditLecture";
-import Subscriptions from "../pages/Subscriptions";
-import AddSubscription from "../pages/AddSubscription";
-import ViewSubscription from "../pages/ViewSubscription";
-import Slider from "../pages/Slider";
-import EditSlider from "../pages/EditSlider";
-import Shorts from "../pages/Shorts";
-import AddShort from "../pages/AddShort";
-import EditShort from "../pages/EditShort";
-import ViewShort from "../pages/ViewShort";
-import Quizzes from "../pages/Quizzes";
-import AddQuiz from "../pages/AddQuiz";
-import EditQuiz from "../pages/EditQuiz";
-import ViewQuiz from "../pages/ViewQuiz";
-import Referrals from "../pages/Referrals";
-import ViewReferral from "../pages/ViewReferral";
-import EditReferral from "../pages/EditReferral";
-import QuizReport from "../pages/QuizReport";
-import UserQuizResult from "../pages/UserQuizResult";
-import Sales from "../pages/Sales";
-import CourseSales from "../pages/CourseSales";
-import EbookSales from "../pages/EbookSales";
-import JobSales from "../pages/JobSales";
-import SubscriptionSales from "../pages/SubscriptionSales";
+import Courses from "../pages/courses/Courses";
+import AddCourse from "../pages/courses/AddCourse";
+import EditCourse from "../pages/courses/EditCourse";
+import ViewCourse from "../pages/courses/ViewCourse";
+import Users from "../pages/users/Users";
+import EditUser from "../pages/users/EditUser";
+import ViewUser from "../pages/users/ViewUser";
+import EBooks from "../pages/ebooks/EBooks";
+import AddEBook from "../pages/ebooks/AddEBook";
+import EditEBook from "../pages/ebooks/EditEBook";
+import ViewEBook from "../pages/ebooks/ViewEBook";
+import Jobs from "../pages/jobs/Jobs";
+import AddJob from "../pages/jobs/AddJob";
+import EditJob from "../pages/jobs/EditJob";
+import ViewJob from "../pages/jobs/ViewJob";
+import AddLecture from "../pages/courses/AddLecture";
+import ViewLecture from "../pages/courses/ViewLecture";
+import EditLecture from "../pages/courses/EditLecture";
+import Subscriptions from "../pages/subscriptions/Subscriptions";
+import AddSubscription from "../pages/subscriptions/AddSubscription";
+import ViewSubscription from "../pages/subscriptions/ViewSubscription";
+import Slider from "../pages/sliders/Slider";
+import EditSlider from "../pages/sliders/EditSlider";
+import Shorts from "../pages/shorts/Shorts";
+import AddShort from "../pages/shorts/AddShort";
+import EditShort from "../pages/shorts/EditShort";
+import ViewShort from "../pages/shorts/ViewShort";
+import Quizzes from "../pages/quizzes/Quizzes";
+import AddQuiz from "../pages/quizzes/AddQuiz";
+import EditQuiz from "../pages/quizzes/EditQuiz";
+import ViewQuiz from "../pages/quizzes/ViewQuiz";
+import Referrals from "../pages/referrals/Referrals";
+import ViewReferral from "../pages/referrals/ViewReferral";
+import EditReferral from "../pages/referrals/EditReferral";
+import QuizReport from "../pages/quizzes/QuizReport";
+import UserQuizResult from "../pages/quizzes/UserQuizResult";
+import Sales from "../pages/sales/Sales";
+import CourseSales from "../pages/sales/CourseSales";
+import EbookSales from "../pages/sales/EbookSales";
+import JobSales from "../pages/sales/JobSales";
+import SubscriptionSales from "../pages/sales/SubscriptionSales";
+import Instructors from "../pages/instructors/Instructors";
+import AddInstructor from "../pages/instructors/AddInstructor";
+import ViewInstructor from "../pages/instructors/ViewInstructor";
+
+import EnrolledStudents from "../pages/enrollments/EnrolledStudents";
+import ViewEnrolledStudent from "../pages/enrollments/ViewEnrolledStudent";
+import GenerateCertificate from "../pages/courses/GenerateCertificate";
 
 export const AppRoute = [
+  {path:'courses/generate-certificate',component:GenerateCertificate},
   {path:'sales',component:Sales},
   {path:'sales/courses',component:CourseSales},
   {path:'sales/ebooks',component:EbookSales},
@@ -50,6 +58,7 @@ export const AppRoute = [
   {path:'category',component:Category},
   {path:'courses',component:Courses},
   {path:'courses/add',component:AddCourse},
+  {path:'courses/enrolled',component:EnrolledStudents},
   {path:'courses/edit/:id',component:EditCourse},
   {path:'courses/view/:id',component:ViewCourse},
   {path:'courses/view/:id/add-lecture',component:AddLecture},
@@ -60,14 +69,17 @@ export const AppRoute = [
   {path:'users/view/:id',component:ViewUser},
   {path:'ebooks',component:EBooks},
   {path:'ebooks/add',component:AddEBook},
+  {path:'ebooks/enrolled',component:EnrolledStudents},
   {path:'ebooks/edit/:id',component:EditEBook},
   {path:'ebooks/view/:id',component:ViewEBook},
   {path:'jobs',component:Jobs},
   {path:'jobs/add',component:AddJob},
+  {path:'jobs/enrolled',component:EnrolledStudents},
   {path:'jobs/edit/:id',component:EditJob},
   {path:'jobs/view/:id',component:ViewJob},
   {path:'subscriptions',component:Subscriptions},
   {path:'subscriptions/add',component:AddSubscription},
+  {path:'subscriptions/enrolled',component:EnrolledStudents},
   {path:'subscriptions/edit/:id',component:AddSubscription},
   {path:'subscriptions/view/:id',component:ViewSubscription},
   {path:'slider',component:Slider},
@@ -85,4 +97,12 @@ export const AppRoute = [
   {path:'referrals/edit/:id',component:EditReferral},
   {path:'quizzes/report/:id',component:QuizReport},
   {path:'quizzes/report/:quizId/result/:studentId',component:UserQuizResult},
+  {path:'courses/enrolled/view/:id',component:ViewEnrolledStudent},
+  {path:'ebooks/enrolled/view/:id',component:ViewEnrolledStudent},
+  {path:'jobs/enrolled/view/:id',component:ViewEnrolledStudent},
+  {path:'subscriptions/enrolled/view/:id',component:ViewEnrolledStudent},
+  {path:'instructors',component:Instructors},
+  {path:'instructors/add',component:AddInstructor},
+  {path:'instructors/edit/:id',component:AddInstructor},
+  {path:'instructors/view/:id',component:ViewInstructor},
 ]

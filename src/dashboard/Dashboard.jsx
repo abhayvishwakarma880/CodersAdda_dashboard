@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2 } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2, GraduationCap } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
@@ -58,6 +58,7 @@ const Dashboard = () => {
 
   const navLinks = [
     { name: 'Dashboard', icon: BarChart3, path: '/dashboard' },
+    { name: 'Users', icon: Users, path: '/dashboard/users' },
     { 
       name: 'Sales', 
       icon: TrendingUp, 
@@ -69,14 +70,22 @@ const Dashboard = () => {
         { name: 'Subscription', path: '/dashboard/sales/subscriptions' }
       ]
     },
-    { name: 'Users', icon: Users, path: '/dashboard/users' },
+    { 
+      name: 'Instructors', 
+      icon: GraduationCap, 
+      submenu: [
+        { name: 'All Instructors', path: '/dashboard/instructors' },
+        { name: 'Create Instructor', path: '/dashboard/instructors/add' }
+      ]
+    },
     { 
       name: 'Courses', 
       icon: FileText, 
       submenu: [
         { name: 'Category', path: '/dashboard/category' },
         { name: 'Add Course', path: '/dashboard/courses/add' },
-        { name: 'All Courses', path: '/dashboard/courses' }
+        { name: 'All Courses', path: '/dashboard/courses' },
+        { name: 'Enrolled Students', path: '/dashboard/courses/enrolled' }
       ]
     },
     { 
@@ -85,11 +94,28 @@ const Dashboard = () => {
       submenu: [
         { name: 'Category', path: '/dashboard/category' },
         { name: 'Add Ebooks', path: '/dashboard/ebooks/add' },
-        { name: 'All Ebooks', path: '/dashboard/ebooks' }
+        { name: 'All Ebooks', path: '/dashboard/ebooks' },
+        { name: 'Enrolled Students', path: '/dashboard/ebooks/enrolled' }
       ]
     },
-    { name: 'Jobs', icon: Briefcase, path: '/dashboard/jobs' },
-    { name: 'Subscription', icon: CreditCard, path: '/dashboard/subscriptions' },
+    { 
+      name: 'Jobs', 
+      icon: Briefcase, 
+      submenu: [
+        { name: 'All Jobs', path: '/dashboard/jobs' },
+        { name: 'Add Jobs', path: '/dashboard/jobs/add' },
+        { name: 'Enrolled Students', path: '/dashboard/jobs/enrolled' }
+      ]
+    },
+    { 
+      name: 'Subscription', 
+      icon: CreditCard, 
+      submenu: [
+        { name: 'All Subscription', path: '/dashboard/subscriptions' },
+        { name: 'Add Subscription', path: '/dashboard/subscriptions/add' },
+        { name: 'Enrolled Students', path: '/dashboard/subscriptions/enrolled' }
+      ]
+    },
     { name: 'Slider', icon: Image, path: '/dashboard/slider' },
     { name: 'Shorts', icon: Film, path: '/dashboard/shorts' },
     { name: 'Quizzes', icon: FileQuestion, path: '/dashboard/quizzes' },
@@ -121,7 +147,7 @@ const Dashboard = () => {
              </div>
           )}
         </div>
-        <nav className='mt-5 pt-1 flex-1 overflow-y-auto overflow-x-hidden'>
+        <nav className='mt-5 pt-1 flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide'>
           {navLinks.map((link, index) => {
             if (link.submenu) {
               const isOpen = openSubmenu === link.name
@@ -312,7 +338,7 @@ const Dashboard = () => {
                     style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-              {/* <Settings className='w-5 h-5 md:w-6 md:h-6' /> */}
+              <Settings className='w-5 h-5 md:w-6 md:h-6' />
             </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
@@ -321,7 +347,7 @@ const Dashboard = () => {
           </div>
         </header>
 
-        <div className='h-full w-full p-4 md:p-6 overflow-auto' style={{ backgroundColor: colors.background }}>
+        <div className='h-full w-full p-4 md:p-6 overflow-auto scrollbar-hide' style={{ backgroundColor: colors.background }}>
           <div className="max-w-full h-full flex flex-col">
             <Outlet />
           </div>

@@ -95,7 +95,9 @@ export const DataProvider = ({ children }) => {
       achievements: [
         { title: 'Tech Lead', description: 'Led the university coding club for 2 consecutive years.' },
         { title: 'Hackathon Winner', description: '1st Place in National Level Coding Hackathon 2023.' },
-        { title: 'Open Source Contributor', description: 'Merged 50+ PRs to major React libraries.' }
+        { title: 'Open Source Contributor', description: 'Merged 50+ PRs to major React libraries.' },
+        { id: 'qc1', type: 'QuizCertificate', title: 'JavaScript Mastery', description: 'Scored excellent marks in advanced JS quiz.', date: '2023-11-20', score: 95 },
+        { id: 'qc2', type: 'QuizCertificate', title: 'React Expert', description: 'Completed React ecosystem challenge.', date: '2023-12-05', score: 88 }
       ],
       purchases: [
         { id: 'p1', title: 'Full Stack Masterclass', type: 'Course', date: '2023-02-10', price: 2999 },
@@ -246,6 +248,168 @@ export const DataProvider = ({ children }) => {
       ],
       subscription: { plan: 'Quarterly Pro', status: 'Expired', expiryDate: '2023-08-01', benefits: [] },
       wallet: { balance: 100, earnings: 100, withdrawn: 0, transactions: [] }
+    },
+    {
+      id: '6',
+      name: 'Amit Kumar',
+      email: 'amit.kumar@example.com',
+      phone: '+91 9876543210',
+      profilePhoto: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Delhi University',
+      course: 'B.Sc CS',
+      semester: '2nd',
+      technology: ['HTML', 'CSS', 'Javascript'],
+      skills: ['Frontend', 'UI Design'],
+      about: 'Beginner web developer learning the fundamentals. Interested in creating responsive layouts.',
+      studentDetails: { completedCourses: 1, ongoingCourses: 1, learningHours: 50, createdAt: '2023-10-01', progress: 20 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 0, isReferred: false, referredByCode: null, myReferralCode: 'amit2024' },
+      achievements: [],
+      purchases: [
+        { id: 'p1', title: 'Mastering React', type: 'E-Book', date: '2023-12-10', price: 299 },
+        { id: 'p2', title: 'Frontend Intern', type: 'Job', date: '2023-12-10', price: 0 }
+      ],
+      subscription: { plan: 'Free Access', status: 'Active', expiryDate: 'Lifetime', benefits: ['Course Preview'] },
+      wallet: { balance: 0, earnings: 0, withdrawn: 0, transactions: [] }
+    },
+    {
+      id: '7',
+      name: 'Priya Gupta',
+      email: 'priya.gupta@example.com',
+      phone: '+91 7654321098',
+      profilePhoto: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Bangalore University',
+      course: 'B.Tech IT',
+      semester: '6th',
+      technology: ['React Native', 'Javascript'],
+      skills: ['Mobile App', 'API Integration'],
+      about: 'Mobile developer exploring React Native for cross-platform apps.',
+      studentDetails: { completedCourses: 4, ongoingCourses: 2, learningHours: 150, createdAt: '2023-05-10', progress: 55 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 8, isReferred: true, referredByCode: 'ABHAY2024', myReferralCode: 'priya2024' },
+      achievements: [],
+      purchases: [
+        { id: 'p1', title: 'React Native Development', type: 'Course', date: '2023-09-20', price: 3499 },
+        { id: 'p2', title: 'Mobile UI Patterns', type: 'E-Book', date: '2023-11-25', price: 0 }
+      ],
+      subscription: { plan: 'Monthly Plus', status: 'Active', expiryDate: '2024-02-15', benefits: ['HD Quality', 'Offline Access'] },
+      wallet: { balance: 500, earnings: 1200, withdrawn: 700, transactions: [] }
+    },
+    {
+      id: '8',
+      name: 'Karan Mehta',
+      email: 'karan.mehta@example.com',
+      phone: '+91 6543210987',
+      profilePhoto: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Rajasthan University',
+      course: 'MCA',
+      semester: '2nd',
+      technology: ['Python', 'SQL'],
+      skills: ['Back-end', 'Data Processing'],
+      about: 'Python developer focused on backend automation and databases.',
+      studentDetails: { completedCourses: 2, ongoingCourses: 1, learningHours: 80, createdAt: '2023-11-20', progress: 30 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 1, isReferred: false, referredByCode: null, myReferralCode: 'karan2024' },
+      achievements: [],
+      purchases: [
+        { id: 'p1', title: 'Python for Beginners', type: 'Course', date: '2023-12-01', price: 0 },
+        { id: 'p2', title: 'Python Backend Developer', type: 'Job', date: '2023-11-20', price: 799 }
+      ],
+      subscription: null,
+      wallet: { balance: 50, earnings: 50, withdrawn: 0, transactions: [] }
+    },
+    {
+      id: '9',
+      name: 'Suresh Raina',
+      email: 'suresh.raina@example.com',
+      phone: '+91 9998887776',
+      profilePhoto: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'UP Technical University',
+      course: 'B.Tech CS',
+      semester: '4th',
+      technology: ['React', 'Node.js', 'Express', 'MongoDB'],
+      skills: ['Full Stack', 'Web Hosting'],
+      about: 'Passionate about build full stack web apps and deploying them to the cloud.',
+      studentDetails: { completedCourses: 8, ongoingCourses: 1, learningHours: 320, createdAt: '2023-01-15', progress: 85 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 15, isReferred: true, referredByCode: 'ABHAY2024', myReferralCode: 'suresh2024' },
+      achievements: [],
+      purchases: [
+        { id: 'p1', title: 'Full Stack Web Development', type: 'Course', date: '2023-10-15', price: 2999 },
+        { id: 'p2', title: 'Node.js Design Patterns', type: 'E-Book', date: '2023-12-15', price: 499 }
+      ],
+      subscription: { plan: 'Yearly Pro', status: 'Active', expiryDate: '2024-10-15', benefits: ['All Access', 'Mentorship'] },
+      wallet: { balance: 3500, earnings: 8500, withdrawn: 5000, transactions: [] }
+    },
+    {
+      id: '10',
+      name: 'Anjali Sharma',
+      email: 'anjali.sharma@example.com',
+      phone: '+91 8887776665',
+      profilePhoto: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Amity University',
+      course: 'BFA',
+      semester: '3rd',
+      technology: ['UI/UX', 'Figma'],
+      skills: ['Graphic Design', 'Visual Communication'],
+      about: 'UI/UX designer with a background in Fine Arts, creating visually appealing user interfaces.',
+      studentDetails: { completedCourses: 5, ongoingCourses: 2, learningHours: 180, createdAt: '2023-04-01', progress: 70 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 3, isReferred: false, referredByCode: null, myReferralCode: 'anjali2024' },
+      achievements: [],
+      purchases: [
+        { id: 'p1', title: 'UI/UX Design Masterclass', type: 'Course', date: '2023-11-01', price: 0 },
+        { id: 'p2', title: 'Figma for Beginners', type: 'E-Book', date: '2023-12-05', price: 0 }
+      ],
+      subscription: { plan: 'Student Creative', status: 'Active', expiryDate: '2024-04-01', benefits: ['Creative Resources'] },
+      wallet: { balance: 200, earnings: 400, withdrawn: 200, transactions: [] }
+    },
+    {
+      id: '11',
+      name: 'Deepak Hooda',
+      email: 'deepak.hooda@example.com',
+      phone: '+91 7776665554',
+      profilePhoto: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Chandigarh University',
+      course: 'B.Tech IT',
+      semester: '8th',
+      technology: ['Flutter', 'Dart'],
+      skills: ['Mobile Development'],
+      about: 'Flutter enthusiast looking for opportunities.',
+      studentDetails: { completedCourses: 15, ongoingCourses: 1, learningHours: 500, createdAt: '2023-01-01', progress: 95 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 0, isReferred: false, referredByCode: null, myReferralCode: 'deepak2024' },
+      achievements: [],
+      purchases: [{ id: 'p1', title: 'Mastering Flutter & Dart', type: 'Course', date: '2023-12-20', price: 3499 }],
+      subscription: { plan: 'Monthly Plus', status: 'Active', expiryDate: '2024-02-20', benefits: ['Full HD', 'Offline'] },
+      wallet: { balance: 100, earnings: 100, withdrawn: 0, transactions: [] }
+    },
+    {
+      id: '12',
+      name: 'Kavya Patel',
+      email: 'kavya.patel@example.com',
+      phone: '+91 3210987654',
+      profilePhoto: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=60&w=200',
+      status: 'Active',
+      college: 'Gujarat University',
+      course: 'M.Sc CS',
+      semester: '4th',
+      technology: ['Python', 'Django'],
+      skills: ['Backend Development'],
+      about: 'Loves backend and problem solving.',
+      studentDetails: { completedCourses: 20, ongoingCourses: 0, learningHours: 700, createdAt: '2022-10-01', progress: 100 },
+      social: { github: '', linkedin: '', portfolio: '' },
+      referralData: { referralCount: 20, isReferred: true, referredByCode: 'ABHAY2024', myReferralCode: 'kavya2024' },
+      achievements: [],
+      purchases: [{ id: 'p1', title: 'Lifetime Pro', type: 'Subscription', date: '2023-10-01', price: 9999 }],
+      subscription: { plan: 'Lifetime Pro', status: 'Active', expiryDate: 'Lifetime', benefits: ['All Access'] },
+      wallet: { balance: 5000, earnings: 15000, withdrawn: 10000, transactions: [] }
     }
   ]);
 
@@ -378,6 +542,11 @@ export const DataProvider = ({ children }) => {
         { id: 'c1', user: 'Dev Guru', text: 'Flexbox is awesome!', time: '1d ago', replies: [] }
       ]
     }
+  ]);
+
+  const [instructors, setInstructors] = useState([
+    { id: '1', name: 'Abhay Vishwakarma', email: 'abhay@codersadda.com', role: 'Senior Developer', status: 'Active', createdAt: '2023-01-01' },
+    { id: '2', name: 'Alok Singh', email: 'alok@codersadda.com', role: 'App Developer', status: 'Active', createdAt: '2023-02-15' }
   ]);
 
   // CRUD Functions
@@ -722,6 +891,695 @@ export const DataProvider = ({ children }) => {
     setReferrals(prev => prev.filter(ref => ref.id !== id));
   };
 
+  // Service-specific enrolled students with purchase details
+  const [courseEnrollments, setCourseEnrollments] = useState([
+    {
+      id: 'ce1',
+      studentId: '1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@codersadda.com',
+      phone: '+91 9651429000',
+      college: 'VIT Vellore',
+      courseName: 'Full Stack Web Development',
+      price: 2999,
+      originalPrice: 4999,
+      enrolledDate: '2023-02-10',
+      expiryDate: '2024-02-10',
+      transactionId: 'TXN001234567890',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ce2',
+      studentId: '2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      college: 'LPU Jalandhar',
+      courseName: 'Flutter Zero to Hero',
+      price: 1999,
+      originalPrice: 3499,
+      enrolledDate: '2023-08-16',
+      expiryDate: '2024-08-16',
+      transactionId: 'TXN001234567891',
+      paymentMode: 'Debit Card',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ce3',
+      studentId: '3',
+      name: 'Rahul Sharma',
+      email: 'rahul.ai@example.com',
+      phone: '+91 9988776655',
+      college: 'IIT Delhi',
+      courseName: 'Deep Learning Specialization',
+      price: 4999,
+      originalPrice: 6999,
+      enrolledDate: '2022-07-22',
+      expiryDate: '2023-07-22',
+      transactionId: 'TXN001234567892',
+      paymentMode: 'Bank Transfer',
+      paymentStatus: 'Completed',
+      status: 'Expired',
+      type: 'paid'
+    },
+    {
+      id: 'ce4',
+      studentId: '4',
+      name: 'Sneha Patel',
+      email: 'sneha.design@example.com',
+      phone: '+91 7766554433',
+      college: 'NIFT Mumbai',
+      courseName: 'JavaScript Basics',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-04-05',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567893',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ce5',
+      studentId: '5',
+      name: 'Vikram Malhotra',
+      email: 'vikram.java@example.com',
+      phone: '+91 8899001122',
+      college: 'Bits Pilani',
+      courseName: 'Complete Backend with Java',
+      price: 3999,
+      originalPrice: 5999,
+      enrolledDate: '2022-06-15',
+      expiryDate: '2023-06-15',
+      transactionId: 'TXN001234567894',
+      paymentMode: 'Credit Card',
+      paymentStatus: 'Completed',
+      status: 'Expired',
+      type: 'paid'
+    },
+    {
+      id: 'ce6',
+      studentId: '6',
+      name: 'Amit Kumar',
+      email: 'amit.kumar@example.com',
+      phone: '+91 9876543210',
+      college: 'Delhi University',
+      courseName: 'HTML & CSS Fundamentals',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-11-15',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567895',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ce7',
+      studentId: '7',
+      name: 'Priya Gupta',
+      email: 'priya.gupta@example.com',
+      phone: '+91 7654321098',
+      college: 'Bangalore University',
+      courseName: 'React Native Development',
+      price: 3499,
+      originalPrice: 4999,
+      enrolledDate: '2023-09-20',
+      expiryDate: '2024-09-20',
+      transactionId: 'TXN001234567896',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ce8',
+      studentId: '8',
+      name: 'Karan Mehta',
+      email: 'karan.mehta@example.com',
+      phone: '+91 6543210987',
+      college: 'Rajasthan University',
+      courseName: 'Python for Beginners',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-12-01',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567897',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ce9',
+      studentId: '9',
+      name: 'Suresh Raina',
+      email: 'suresh.raina@example.com',
+      phone: '+91 9998887776',
+      college: 'UP Technical University',
+      courseName: 'Full Stack Web Development',
+      price: 2999,
+      originalPrice: 4999,
+      enrolledDate: '2023-10-15',
+      expiryDate: '2024-10-15',
+      transactionId: 'TXN001234567912',
+      paymentMode: 'PhonePe',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ce10',
+      studentId: '10',
+      name: 'Anjali Sharma',
+      email: 'anjali.sharma@example.com',
+      phone: '+91 8887776665',
+      college: 'Amity University',
+      courseName: 'UI/UX Design Masterclass',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-11-01',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567913',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ce11',
+      studentId: '11',
+      name: 'Deepak Hooda',
+      email: 'deepak.hooda@example.com',
+      phone: '+91 7776665554',
+      college: 'Chandigarh University',
+      courseName: 'Mastering Flutter & Dart',
+      price: 3499,
+      originalPrice: 4999,
+      enrolledDate: '2023-12-20',
+      expiryDate: '2024-12-20',
+      transactionId: 'TXN001234567914',
+      paymentMode: 'Google Pay',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ce_comp1',
+      studentId: '1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@example.com',
+      phone: '+91 9988776655',
+      college: 'AKTU Lucknow',
+      courseName: 'Full Stack Web Development',
+      price: 4999,
+      originalPrice: 7999,
+      enrolledDate: '2023-01-10',
+      expiryDate: '2024-01-10',
+      completedDate: '2023-12-15',
+      transactionId: 'TXN_COMP_01',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Completed',
+      type: 'completed'
+    },
+    {
+      id: 'ce_comp2',
+      studentId: '2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      college: 'LPU Jalandhar',
+      courseName: 'Flutter Zero to Hero',
+      price: 1999,
+      originalPrice: 3499,
+      enrolledDate: '2023-02-15',
+      expiryDate: '2024-02-15',
+      completedDate: '2023-11-20',
+      transactionId: 'TXN_COMP_02',
+      paymentMode: 'Debit Card',
+      paymentStatus: 'Completed',
+      status: 'Completed',
+      type: 'completed'
+    },
+    {
+      id: 'ce_comp3',
+      studentId: '5',
+      name: 'Vikram Malhotra',
+      email: 'vikram.java@example.com',
+      phone: '+91 8899001122',
+      college: 'Bits Pilani',
+      courseName: 'Complete Backend with Java',
+      price: 3999,
+      originalPrice: 5999,
+      enrolledDate: '2023-03-10',
+      expiryDate: '2024-03-10',
+      completedDate: '2023-12-28',
+      transactionId: 'TXN_COMP_03',
+      paymentMode: 'Credit Card',
+      paymentStatus: 'Completed',
+      status: 'Completed',
+      type: 'completed'
+    }
+  ]);
+
+  const [ebookEnrollments] = useState([
+    {
+      id: 'ee1',
+      studentId: '1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@codersadda.com',
+      phone: '+91 9651429000',
+      college: 'VIT Vellore',
+      ebookName: 'System Design Interview Guide',
+      price: 999,
+      originalPrice: 1499,
+      enrolledDate: '2023-05-15',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567898',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ee2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      college: 'LPU Jalandhar',
+      ebookName: 'Flutter Complete Guide',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-08-20',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567899',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ee3',
+      name: 'Rahul Sharma',
+      email: 'rahul.ai@example.com',
+      phone: '+91 9988776655',
+      college: 'IIT Delhi',
+      ebookName: 'Mathematics for ML',
+      price: 599,
+      originalPrice: 899,
+      enrolledDate: '2022-08-10',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567900',
+      paymentMode: 'Debit Card',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ee4',
+      name: 'Sneha Patel',
+      email: 'sneha.design@example.com',
+      phone: '+91 7766554433',
+      college: 'NIFT Mumbai',
+      ebookName: 'UI/UX Design Principles',
+      price: 399,
+      originalPrice: 499,
+      enrolledDate: '2023-04-10',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567901',
+      paymentMode: 'Bank Transfer',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ee5',
+      name: 'Neha Sharma',
+      email: 'neha.sharma@example.com',
+      phone: '+91 5432109876',
+      college: 'Mumbai University',
+      ebookName: 'JavaScript Handbook',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-11-20',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567902',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ee6',
+      studentId: '6',
+      name: 'Amit Kumar',
+      email: 'amit.kumar@example.com',
+      phone: '+91 9876543210',
+      college: 'Delhi University',
+      ebookName: 'Mastering React',
+      price: 299,
+      originalPrice: 499,
+      enrolledDate: '2023-12-10',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567915',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'ee7',
+      studentId: '7',
+      name: 'Priya Gupta',
+      email: 'priya.gupta@example.com',
+      phone: '+91 7654321098',
+      college: 'Bangalore University',
+      ebookName: 'Mobile UI Patterns',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-11-25',
+      expiryDate: 'Lifetime',
+      transactionId: 'FREE001234567916',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'ee8',
+      studentId: '9',
+      name: 'Suresh Raina',
+      email: 'suresh.raina@example.com',
+      phone: '+91 9998887776',
+      college: 'UP Technical University',
+      ebookName: 'Node.js Design Patterns',
+      price: 499,
+      originalPrice: 1299,
+      enrolledDate: '2023-12-15',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567917',
+      paymentMode: 'Net Banking',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    }
+  ]);
+
+  const [jobEnrollments] = useState([
+    {
+      id: 'je1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@codersadda.com',
+      phone: '+91 9651429000',
+      college: 'VIT Vellore',
+      jobTitle: 'Senior Flutter Developer',
+      price: 499,
+      originalPrice: 999,
+      enrolledDate: '2023-12-01',
+      expiryDate: '2024-01-01',
+      transactionId: 'TXN001234567903',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'je2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      college: 'LPU Jalandhar',
+      jobTitle: 'UI/UX Designer',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-12-05',
+      expiryDate: '2024-01-05',
+      transactionId: 'FREE001234567904',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'je3',
+      name: 'Vikram Malhotra',
+      email: 'vikram.java@example.com',
+      phone: '+91 8899001122',
+      college: 'Bits Pilani',
+      jobTitle: 'Python Backend Developer',
+      price: 799,
+      originalPrice: 1299,
+      enrolledDate: '2023-11-20',
+      expiryDate: '2023-12-20',
+      transactionId: 'TXN001234567905',
+      paymentMode: 'Credit Card',
+      paymentStatus: 'Completed',
+      status: 'Expired',
+      type: 'paid'
+    },
+    {
+      id: 'je4',
+      name: 'Arjun Reddy',
+      email: 'arjun.reddy@example.com',
+      phone: '+91 4321098765',
+      college: 'Hyderabad University',
+      jobTitle: 'MERN Stack Developer',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-12-08',
+      expiryDate: '2024-01-08',
+      transactionId: 'FREE001234567906',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'je5',
+      studentId: '6',
+      name: 'Amit Kumar',
+      email: 'amit.kumar@example.com',
+      phone: '+91 9876543210',
+      college: 'Delhi University',
+      jobTitle: 'Frontend Intern',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-12-10',
+      expiryDate: '2024-01-10',
+      transactionId: 'FREE001234567919',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'je6',
+      studentId: '8',
+      name: 'Karan Mehta',
+      email: 'karan.mehta@example.com',
+      phone: '+91 6543210987',
+      college: 'Rajasthan University',
+      jobTitle: 'Python Backend Developer',
+      price: 799,
+      originalPrice: 1299,
+      enrolledDate: '2023-11-20',
+      expiryDate: '2023-12-20',
+      transactionId: 'TXN001234567920',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Expired',
+      type: 'paid'
+    }
+  ]);
+
+  const [subscriptionEnrollments] = useState([
+    {
+      id: 'se1',
+      name: 'Abhay Vishwakarma',
+      email: 'abhay@codersadda.com',
+      phone: '+91 9651429000',
+      college: 'VIT Vellore',
+      planName: 'Premium Plan',
+      price: 1999,
+      originalPrice: 2499,
+      enrolledDate: '2023-01-15',
+      expiryDate: '2024-01-15',
+      transactionId: 'TXN001234567907',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'se2',
+      name: 'Riya Singh',
+      email: 'riya.singh@example.com',
+      phone: '+91 8765432109',
+      college: 'LPU Jalandhar',
+      planName: 'Mobile Plan',
+      price: 299,
+      originalPrice: 399,
+      enrolledDate: '2023-08-20',
+      expiryDate: '2023-09-20',
+      transactionId: 'TXN001234567908',
+      paymentMode: 'Debit Card',
+      paymentStatus: 'Completed',
+      status: 'Expired',
+      type: 'paid'
+    },
+    {
+      id: 'se3',
+      name: 'Sneha Patel',
+      email: 'sneha.design@example.com',
+      phone: '+91 7766554433',
+      college: 'NIFT Mumbai',
+      planName: 'Super Plan',
+      price: 1499,
+      originalPrice: 1999,
+      enrolledDate: '2023-03-12',
+      expiryDate: '2024-03-12',
+      transactionId: 'TXN001234567909',
+      paymentMode: 'Bank Transfer',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'se4',
+      name: 'Amit Kumar',
+      email: 'amit.kumar@example.com',
+      phone: '+91 9876543210',
+      college: 'Delhi University',
+      planName: 'Basic Plan',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-11-15',
+      expiryDate: '2023-12-15',
+      transactionId: 'FREE001234567910',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Expired',
+      type: 'free'
+    },
+    {
+      id: 'se5',
+      name: 'Kavya Patel',
+      email: 'kavya.patel@example.com',
+      phone: '+91 3210987654',
+      college: 'Gujarat University',
+      planName: 'Lifetime Pro',
+      price: 9999,
+      originalPrice: 12999,
+      enrolledDate: '2023-10-01',
+      expiryDate: 'Lifetime',
+      transactionId: 'TXN001234567911',
+      paymentMode: 'UPI',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    },
+    {
+      id: 'se6',
+      studentId: '10',
+      name: 'Anjali Sharma',
+      email: 'anjali.sharma@example.com',
+      phone: '+91 8887776665',
+      college: 'Amity University',
+      planName: 'Creative Student Plan',
+      price: 0,
+      originalPrice: 0,
+      enrolledDate: '2023-04-01',
+      expiryDate: '2024-04-01',
+      transactionId: 'FREE001234567921',
+      paymentMode: 'Free Access',
+      paymentStatus: 'Free',
+      status: 'Active',
+      type: 'free'
+    },
+    {
+      id: 'se7',
+      studentId: '11',
+      name: 'Deepak Hooda',
+      email: 'deepak.hooda@example.com',
+      phone: '+91 7776665554',
+      college: 'Chandigarh University',
+      planName: 'Monthly Plus',
+      price: 499,
+      originalPrice: 799,
+      enrolledDate: '2023-12-20',
+      expiryDate: '2024-01-20',
+      transactionId: 'TXN001234567922',
+      paymentMode: 'Google Pay',
+      paymentStatus: 'Completed',
+      status: 'Active',
+      type: 'paid'
+    }
+  ]);
+
+  const updateCertificateStatus = (enrollmentId, isGenerated, config) => {
+    // We update users based on the enrollment data
+    setCourseEnrollments(currentEnrollments => {
+      const enrollment = currentEnrollments.find(e => e.id === enrollmentId);
+      if (enrollment && isGenerated) {
+        setUsers(prevUsers => prevUsers.map(user => {
+          if (user.id === enrollment.studentId) {
+            const existingCerts = user.achievements || [];
+            const certId = `cert_${enrollmentId}`;
+            const existingCertIndex = existingCerts.findIndex(c => c.id === certId);
+            
+            const newCert = { 
+              id: certId, 
+              title: `${enrollment.courseName} Certificate`, 
+              description: `Successfully completed on ${enrollment.completedDate}`,
+              type: 'Certificate',
+              date: enrollment.completedDate,
+              config: config,
+              courseName: enrollment.courseName
+            };
+
+            let updatedCerts;
+            if (existingCertIndex > -1) {
+              updatedCerts = [...existingCerts];
+              updatedCerts[existingCertIndex] = newCert;
+            } else {
+              updatedCerts = [...existingCerts, newCert];
+            }
+
+            return { ...user, achievements: updatedCerts };
+          }
+          return user;
+        }));
+      }
+      return currentEnrollments.map(e => e.id === enrollmentId ? { ...e, isCertificateGenerated: isGenerated, certificateConfig: config } : e);
+    });
+  };
+
+  const addInstructor = (data) => {
+    const newInstructor = { 
+      ...data, 
+      id: Date.now().toString(), 
+      createdAt: data.createdAt || new Date().toISOString().split('T')[0], 
+      status: 'Active' 
+    };
+    setInstructors(prev => [...prev, newInstructor]);
+  };
+
+  const updateInstructor = (id, data) => {
+    setInstructors(prev => prev.map(ins => ins.id === id ? { ...ins, ...data } : ins));
+  };
+
+  const deleteInstructor = (id) => {
+    setInstructors(prev => prev.filter(ins => ins.id !== id));
+  };
+
   return (
     <DataContext.Provider value={{
       categories,
@@ -767,7 +1625,17 @@ export const DataProvider = ({ children }) => {
       deleteQuiz,
       referrals,
       updateReferral,
-      deleteReferral
+      deleteReferral,
+      courseEnrollments,
+      setCourseEnrollments, // Added setCourseEnrollments
+      ebookEnrollments,
+      jobEnrollments,
+      subscriptionEnrollments,
+      updateCertificateStatus,
+      instructors,
+      addInstructor,
+      updateInstructor,
+      deleteInstructor
     }}>
       {children}
     </DataContext.Provider>

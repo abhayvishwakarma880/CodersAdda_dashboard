@@ -110,7 +110,7 @@ function Category() {
           <h1 className="text-2xl md:text-3xl font-semibold flex items-center gap-3" style={{ color: colors.text }}>
             Explore Categories
           </h1>
-          <p className="text-xs md:text-sm font-medium opacity-50 mt-1" style={{ color: colors.textSecondary }}>
+          <p className="text-xs md:text-sm font-medium opacity-50 mt-1" style={{ color: colors.text }}>
             Curate and manage your content taxonomies
           </p>
         </div>
