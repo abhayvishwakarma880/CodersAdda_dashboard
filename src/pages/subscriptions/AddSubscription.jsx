@@ -113,7 +113,7 @@ function AddSubscription() {
       <form onSubmit={handleSubmit} className="max-w-4xl space-y-6">
         {/* Basic Details */}
         <div className="p-6 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Basic Details</h3>
+          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color: colors.text}}>Basic Details</h3>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-1">
@@ -186,7 +186,7 @@ function AddSubscription() {
         {/* Benefits */}
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Plan Benefits</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color: colors.text}}>Plan Benefits</h3>
             <button 
               type="button"
               onClick={handleAddBenefit}
@@ -225,7 +225,7 @@ function AddSubscription() {
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
           <div className="flex items-center gap-2">
             <BookOpen size={16} style={{ color: colors.primary }} />
-            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Included Courses</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color: colors.text}}>Included Courses</h3>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -260,7 +260,7 @@ function AddSubscription() {
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
           <div className="flex items-center gap-2">
             <FileText size={16} style={{ color: colors.primary }} />
-            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Included E-Books</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color: colors.text}}>Included E-Books</h3>
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

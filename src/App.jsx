@@ -8,6 +8,9 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AppRoute } from "./routes/AppRoute";
 import ScrollToTop from "./ScrollToTop";
+import InstructorLogin from "./instructors/InstructorLogin";
+import InstructorDashboard from "./instructors/layouts/InstructorDashboard";
+import { InstructorRoute } from "./instructors/routes/InstructorRoute";
 
 const App = () => {
   return (
@@ -22,7 +25,15 @@ const App = () => {
               <Route path="home" element={<Home />} />
               {AppRoute.map((l,i)=>{
                 const Com = l.component;
-                return <Route path={l.path} element={<Com />} />
+                return <Route key={i} path={l.path} element={<Com />} />
+              })}
+            </Route>
+
+            <Route path="/instructor-login" element={<InstructorLogin />} />
+            <Route path="/instructor-dashboard" element={<InstructorDashboard />}>
+              {InstructorRoute.map((l,i)=>{
+                const Com = l.component;
+                return <Route key={i} path={l.path} element={<Com />} />
               })}
             </Route>
           </Routes>

@@ -4,11 +4,12 @@ import { useTheme } from '../context/ThemeContext'
 import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2, GraduationCap } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
+import logoo from '../assets/logoo.png'
 import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
-  const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
@@ -335,14 +336,13 @@ const Dashboard = () => {
             </div>
              <button onClick={() => setSettingsOpen(true)}
                     className='p-2 cursor-pointer rounded-lg transition-colors'
-                    style={{ color: colors.primary }}
                     onMouseEnter={(e) => e.target.style.backgroundColor = colors.primary + '20'}
                     onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}>
-              <Settings className='w-5 h-5 md:w-6 md:h-6' />
+              {/* <Settings className='w-5 h-5 md:w-6 md:h-6' /> */}
             </button> 
             <div className='w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center'
                  style={{ backgroundColor: colors.accent }}>
-              <span className='text-white font-semibold text-sm'><img src={logo} alt="logo" className='rounded-full' /></span>
+              <span className='text-white font-semibold text-sm'><img src={logoo} alt="logo" className='rounded-full' /></span>
             </div>
           </div>
         </header>

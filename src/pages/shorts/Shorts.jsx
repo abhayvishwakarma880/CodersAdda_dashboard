@@ -104,9 +104,9 @@ function Shorts() {
               </div>
 
               <h3 className="text-sm font-bold line-clamp-2 mb-1" style={{ color: colors.text }}>{short.description}</h3>
-              <p className="text-xs opacity-60 font-semibold mb-4">{short.instructor}</p>
+              <p className="text-xs opacity-60 font-semibold mb-4" style={{ color: colors.text }}>{short.instructor}</p>
 
-              <div className="flex items-center gap-4 mb-4 text-xs font-bold opacity-50">
+              <div className="flex items-center gap-4 mb-4 text-xs font-bold opacity-50" style={{color: colors.text}}>
                   <span className="flex items-center gap-1"><Heart size={12} /> {short.likes}</span>
                   <span className="flex items-center gap-1"><MessageCircle size={12} /> {short.comments?.length || 0}</span>
                   <span className="flex items-center gap-1"><Share2 size={12} /> {short.shares}</span>

@@ -1,20 +1,27 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
-const Login = () => {
+const InstructorLogin = () => {
   const [formData, setFormData] = useState({ email: '', password: '' })
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(formData)
-    navigate('/dashboard')
+    if (formData.email && formData.password) {
+        localStorage.setItem('userRole', 'instructor')
+        localStorage.setItem('instructorEmail', formData.email)
+        toast.success("Instructor Login Successful!")
+        navigate('/instructor-dashboard')
+    } else {
+        toast.error("Please enter credentials")
+    }
   }
 
   return (
     <div className='min-h-screen w-full bg-linear-to-br from-blue-50 to-indigo-100 flex justify-center items-center p-4'>
       <div className='w-full max-w-sm bg-white rounded-xl shadow-xl p-6 sm:p-8'>
-        <h1 className='text-3xl font-bold text-center text-gray-800 mb-8'>Admin Login</h1>
+        <h1 className='text-3xl font-bold text-center text-gray-800 mb-8'>Instructor Login</h1>
         <form onSubmit={handleSubmit} className='space-y-5'>
           <div>
             <label htmlFor="email" className='block text-sm font-medium text-gray-700 mb-2'>Enter email</label>
@@ -25,7 +32,7 @@ const Login = () => {
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
                 className='w-full p-3 pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all duration-200' 
-                placeholder='abc@example.com' 
+                placeholder='instructor@example.com' 
               />
               <svg className='w-5 h-5 text-gray-400 absolute left-3 top-3.5' fill='currentColor' viewBox='0 0 20 20'>
                 <path d='M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z'/>
@@ -58,10 +65,10 @@ const Login = () => {
         </form>
         <div className="mt-6 pt-6 border-t border-gray-100 text-center">
             <button 
-              onClick={() => navigate('/instructor-login')}
+              onClick={() => navigate(-1)}
               className="text-sm font-bold text-blue-600 hover:text-blue-700 cursor-pointer transition-colors"
             >
-              Login as Instructor →
+              ← Back to Admin Login
             </button>
         </div>
       </div>
@@ -69,4 +76,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default InstructorLogin

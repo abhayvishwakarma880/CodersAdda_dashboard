@@ -180,7 +180,7 @@ function AddQuiz() {
         
         {/* Basic Details */}
         <div className="p-8 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-2">Quiz Details</h3>
+            <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-2" style={{color:colors.text}}>Quiz Details</h3>
             <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -275,7 +275,7 @@ function AddQuiz() {
         {/* Questions Manager */}
         <div className="p-8 rounded border shadow-sm space-y-6" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                 <div>
+                 <div style={{color: colors.text}}>
                     <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">
                         Questions ({formData.questions.length})
                     </h3>
@@ -387,7 +387,7 @@ function AddQuiz() {
                                         onChange={() => setCurrentQuestion({...currentQuestion, correctOption: idx})}
                                         className="w-4 h-4 cursor-pointer accent-green-600"
                                     />
-                                    <span className={`text-sm font-bold ${currentQuestion.correctOption === idx ? 'text-green-600' : 'opacity-60'}`}>Option {opt}</span>
+                                    <span className={`text-sm font-bold `} style={{color: currentQuestion.correctOption === idx ? "green" : colors.text}}>Option {opt}</span>
                                 </label>
                             ))}
                         </div>

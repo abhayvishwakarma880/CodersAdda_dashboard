@@ -140,13 +140,13 @@ function QuizReport() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
               <Star className="text-yellow-500 mb-1" size={20} />
-              <span className="text-[10px] font-bold opacity-60 uppercase">Total Attempts</span>
-              <span className="font-bold text-lg">{processedAttempts.length}</span>
+              <span className="text-[10px] font-bold opacity-60 uppercase" style={{color:colors.text}}>Total Attempts</span>
+              <span className="font-bold text-lg" style={{color:colors.text}}>{processedAttempts.length}</span>
           </div>
           <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
               <Award className="text-green-500 mb-1" size={20} />
-              <span className="text-[10px] font-bold opacity-60 uppercase">Average Score</span>
-              <span className="font-bold text-lg">
+              <span className="text-[10px] font-bold opacity-60 uppercase" style={{color:colors.text}}>Average Score</span>
+              <span className="font-bold text-lg" style={{color:colors.text}}>
                   {processedAttempts.length > 0 
                     ? Math.round(processedAttempts.reduce((acc, curr) => acc + curr.marks, 0) / processedAttempts.length)
                     : 0}
@@ -154,8 +154,8 @@ function QuizReport() {
           </div>
           <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
               <Clock className="text-blue-500 mb-1" size={20} />
-              <span className="text-[10px] font-bold opacity-60 uppercase">Avg. Duration</span>
-              <span className="font-bold text-lg">
+              <span className="text-[10px] font-bold opacity-60 uppercase" style={{color:colors.text}}>Avg. Duration</span>
+              <span className="font-bold text-lg" style={{color:colors.text}}>
                   {processedAttempts.length > 0 
                     ? Math.round(processedAttempts.reduce((acc, curr) => acc + (curr.duration || 0), 0) / processedAttempts.length)
                     : 0}m
@@ -163,8 +163,8 @@ function QuizReport() {
           </div>
           <div className="p-4 rounded border bg-black/5 flex flex-col items-center justify-center text-center gap-1" style={{ borderColor: colors.accent + '10' }}>
               <Hash className="text-purple-500 mb-1" size={20} />
-              <span className="text-[10px] font-bold opacity-60 uppercase">Quiz Code</span>
-              <span className="font-bold text-lg">{quiz.quizCode || 'N/A'}</span>
+              <span className="text-[10px] font-bold opacity-60 uppercase" style={{color:colors.text}}>Quiz Code</span>
+              <span className="font-bold text-lg" style={{color:colors.text}}>{quiz.quizCode || 'N/A'}</span>
           </div>
       </div>
 

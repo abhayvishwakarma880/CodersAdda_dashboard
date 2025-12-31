@@ -235,7 +235,7 @@ function AddJob() {
 
         {/* Status & Actions */}
         <div className="p-6 rounded border shadow-sm space-y-4" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60">Job Status</h3>
+          <h3 className="text-sm font-bold uppercase tracking-wider opacity-60" style={{color: colors.text}}>Job Status</h3>
           <div className="grid grid-cols-2 gap-3 max-w-xs">
               {['Active', 'Disabled'].map(stat => (
                   <button 

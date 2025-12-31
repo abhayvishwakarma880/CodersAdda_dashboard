@@ -101,12 +101,12 @@ function AddShort() {
 
         {/* Video Upload Section */}
         <div className="p-6 rounded border shadow-sm" style={{ backgroundColor: colors.sidebar || colors.background, borderColor: colors.accent + '20' }}>
-             <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-6">Video Asset</h3>
+             <h3 className="text-sm font-bold uppercase tracking-wider opacity-60 mb-6" style={{ color: colors.text }}>Video Asset</h3>
              <div>
                 <div 
                     onClick={() => videoInputRef.current.click()}
                     className="relative aspect-[9/16] max-w-[240px] rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all hover:bg-black/5 overflow-hidden"
-                    style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
+                    style={{ borderColor: colors.accent + '30', backgroundColor: colors.sidebar }}
                 >
                     {formData.videoUrl ? (
                         <>
@@ -123,7 +123,7 @@ function AddShort() {
                             </button>
                         </>
                     ) : (
-                        <div className="text-center opacity-40 p-4">
+                        <div className="text-center opacity-40 p-4" style={{color: colors.text}}>
                             <Video size={48} className="mx-auto mb-2" />
                             <p className="text-xs font-bold uppercase tracking-widest">Select Vertical Video</p>
                             <p className="text-[10px] mt-1">9:16 Aspect Ratio</p>

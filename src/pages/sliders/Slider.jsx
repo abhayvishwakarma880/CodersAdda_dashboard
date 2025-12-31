@@ -166,7 +166,7 @@ function Slider() {
         >
           <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: colors.accent + '20' }}>
             <h2 className="text-lg font-bold" style={{ color: colors.text }}>Add Slider Image</h2>
-            <button onClick={() => { setIsModalOpen(false); setSelectedImage(null); }} className="p-1 rounded hover:bg-black/10 cursor-pointer transition-colors">
+            <button onClick={() => { setIsModalOpen(false); setSelectedImage(null); }} className="p-1 rounded hover:bg-black/10 cursor-pointer transition-colors" style={{color: colors.text}}>
               <X size={20} />
             </button>
           </div>
@@ -175,12 +175,12 @@ function Slider() {
             <div
               onClick={() => fileInputRef.current.click()}
               className="relative h-64 rounded border-2 border-dashed flex flex-col items-center justify-center cursor-pointer overflow-hidden transition-all hover:bg-black/5"
-              style={{ borderColor: colors.accent + '30', backgroundColor: colors.background }}
+              style={{ borderColor: colors.accent + '30', backgroundColor: colors.sidebar }}
             >
               {selectedImage ? (
                 <img src={selectedImage} alt="Preview" className="w-full h-full object-cover" />
               ) : (
-                <div className="text-center opacity-40">
+                <div className="text-center opacity-40" style={{color: colors.text}}>
                   <Upload size={48} className="mx-auto mb-2" />
                   <p className="text-sm font-bold">Click to upload image</p>
                   <p className="text-xs mt-1">Max size: 5MB</p>

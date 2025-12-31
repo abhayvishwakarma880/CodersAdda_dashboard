@@ -75,7 +75,7 @@ function Subscriptions() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b" style={{ borderColor: colors.accent + '10' }}>
+              <tr className="border-b" style={{ borderColor: colors.accent + '10',color: colors.text }}>
                 <th className="p-4 text-xs font-bold uppercase tracking-wider opacity-60">Plan Details</th>
                 <th className="p-4 text-xs font-bold uppercase tracking-wider opacity-60">Duration</th>
                 <th className="p-4 text-xs font-bold uppercase tracking-wider opacity-60">Price</th>
@@ -93,7 +93,7 @@ function Subscriptions() {
                       </div>
                       <div className="flex flex-col">
                         <span className="font-bold text-sm" style={{ color: colors.text }}>{plan.planType} Plan</span>
-                        <span className="text-[10px] opacity-50 font-bold">{plan.benefits?.length || 0} Benefits included</span>
+                        <span className="text-[10px] opacity-50 font-bold" style={{color:colors.textSecondary}}>{plan.benefits?.length || 0} Benefits included</span>
                       </div>
                     </div>
                   </td>
@@ -120,6 +120,7 @@ function Subscriptions() {
                         onClick={() => navigate(`/dashboard/subscriptions/view/${plan.id}`)}
                         className="p-2 rounded hover:bg-primary/10 text-primary transition-all cursor-pointer"
                         title="View"
+                        style={{color:colors.primary}}
                       >
                         <Eye size={18} />
                       </button>

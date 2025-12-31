@@ -83,7 +83,7 @@ function Quizzes() {
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="text-xs font-black uppercase tracking-widest opacity-60 border-b" style={{ borderColor: colors.accent + '20' }}>
+              <tr className="text-xs font-black uppercase tracking-widest opacity-60 border-b" style={{ borderColor: colors.accent + '20', color: colors.text }}>
                 <th className="p-4">Quiz Title</th>
                 <th className="p-4">Code</th>
                 <th className="p-4">Details</th>
@@ -94,7 +94,7 @@ function Quizzes() {
             <tbody className="text-sm font-semibold">
               {filteredQuizzes.length > 0 ? (
                   filteredQuizzes.map((quiz) => (
-                    <tr key={quiz.id} className="border-b last:border-0 hover:bg-black/5 transition-colors" style={{ borderColor: colors.accent + '10' }}>
+                    <tr key={quiz.id} className="border-b last:border-0 hover:bg-black/5 transition-colors" style={{ borderColor: colors.accent + '10', color: colors.text }}>
                       <td className="p-4">
                         <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded bg-blue-100 flex items-center justify-center text-blue-600 shrink-0">
