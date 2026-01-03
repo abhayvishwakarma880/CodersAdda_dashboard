@@ -44,11 +44,11 @@ function MyEarning() {
           <p className="text-sm opacity-60" style={{ color: colors.textSecondary }}>Detailed breakdown of your commission and sales</p>
         </div>
         <div className="flex gap-2">
-            <button className="flex items-center gap-2 px-4 py-2 rounded border text-xs font-bold transition-all hover:bg-black/5 cursor-pointer" style={{ borderColor: colors.accent + '20', color: colors.text }}>
+            {/* <button className="flex items-center gap-2 px-4 py-2 rounded border text-xs font-bold transition-all hover:bg-black/5 cursor-pointer" style={{ borderColor: colors.accent + '20', color: colors.text }}>
                 <Share2 size={14} /> Export Report
-            </button>
+            </button> */}
             <button className="px-4 py-2 rounded bg-primary text-white text-xs font-bold shadow-lg transition-all active:scale-95 cursor-pointer" style={{ backgroundColor: colors.primary }}>
-                Request Payout
+                Request Payment
             </button>
         </div>
       </div>

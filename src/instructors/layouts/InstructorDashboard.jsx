@@ -19,7 +19,7 @@ const InstructorDashboard = () => {
   const navLinks = [
     { name: 'Dashboard', icon: BarChart3, path: '/instructor-dashboard' },
     { name: 'My Courses', icon: BookOpen, path: '/instructor-dashboard/my-courses' },
-    { name: 'Salary', icon: IndianRupee, path: '/instructor-dashboard/salary' },
+    // { name: 'Salary', icon: IndianRupee, path: '/instructor-dashboard/salary' },
     { name: 'My Earning', icon: TrendingUp, path: '/instructor-dashboard/earnings' },
   ]
 

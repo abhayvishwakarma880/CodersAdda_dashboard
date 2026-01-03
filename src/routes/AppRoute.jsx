@@ -43,6 +43,26 @@ import SubscriptionSales from "../pages/sales/SubscriptionSales";
 import Instructors from "../pages/instructors/Instructors";
 import AddInstructor from "../pages/instructors/AddInstructor";
 import ViewInstructor from "../pages/instructors/ViewInstructor";
+import WebsiteCourses from "../pages/website/WebsiteCourses";
+import AddWebsiteCourse from "../pages/website/AddWebsiteCourse";
+import EditWebsiteCourse from "../pages/website/EditWebsiteCourse";
+import ViewWebsiteCourse from "../pages/website/ViewWebsiteCourse";
+import WebsiteCategories from "../pages/website/WebsiteCategories";
+import AddWebsiteCategory from "../pages/website/AddWebsiteCategory";
+import EditWebsiteCategory from "../pages/website/EditWebsiteCategory";
+import ViewWebsiteCategory from "../pages/website/ViewWebsiteCategory";
+import WebsiteReviews from "../pages/website/WebsiteReviews";
+import AddWebsiteReview from "../pages/website/AddWebsiteReview";
+import EditWebsiteReview from "../pages/website/EditWebsiteReview";
+import ViewWebsiteReview from "../pages/website/ViewWebsiteReview";
+import WebsiteBlogs from "../pages/website/WebsiteBlogs";
+import AddWebsiteBlog from "../pages/website/AddWebsiteBlog";
+import EditWebsiteBlog from "../pages/website/EditWebsiteBlog";
+import ViewWebsiteBlog from "../pages/website/ViewWebsiteBlog";
+import WebsiteSubscriptions from "../pages/website/WebsiteSubscriptions";
+import AddWebsiteSubscription from "../pages/website/AddWebsiteSubscription";
+import EditWebsiteSubscription from "../pages/website/EditWebsiteSubscription";
+import ViewWebsiteSubscription from "../pages/website/ViewWebsiteSubscription";
 
 import EnrolledStudents from "../pages/enrollments/EnrolledStudents";
 import ViewEnrolledStudent from "../pages/enrollments/ViewEnrolledStudent";
@@ -82,6 +102,26 @@ export const AppRoute = [
   {path:'subscriptions/enrolled',component:EnrolledStudents},
   {path:'subscriptions/edit/:id',component:AddSubscription},
   {path:'subscriptions/view/:id',component:ViewSubscription},
+  {path:'website/courses',component:WebsiteCourses},
+  {path:'website/courses/add',component:AddWebsiteCourse},
+  {path:'website/courses/edit/:id',component:EditWebsiteCourse},
+  {path:'website/courses/view/:id',component:ViewWebsiteCourse},
+  {path:'website/categories',component:WebsiteCategories},
+  {path:'website/categories/add',component:AddWebsiteCategory},
+  {path:'website/categories/edit/:id',component:EditWebsiteCategory},
+  {path:'website/categories/view/:id',component:ViewWebsiteCategory},
+  {path:'website/reviews',component:WebsiteReviews},
+  {path:'website/reviews/add',component:AddWebsiteReview},
+  {path:'website/reviews/edit/:id',component:EditWebsiteReview},
+  {path:'website/reviews/view/:id',component:ViewWebsiteReview},
+  {path:'website/blogs',component:WebsiteBlogs},
+  {path:'website/blogs/add',component:AddWebsiteBlog},
+  {path:'website/blogs/edit/:id',component:EditWebsiteBlog},
+  {path:'website/blogs/view/:id',component:ViewWebsiteBlog},
+  {path:'website/subscriptions',component:WebsiteSubscriptions},
+  {path:'website/subscriptions/add',component:AddWebsiteSubscription},
+  {path:'website/subscriptions/edit/:id',component:EditWebsiteSubscription},
+  {path:'website/subscriptions/view/:id',component:ViewWebsiteSubscription},
   {path:'slider',component:Slider},
   {path:'slider/edit/:id',component:EditSlider},
   {path:'shorts',component:Shorts},

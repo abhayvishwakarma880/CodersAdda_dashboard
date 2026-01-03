@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useTheme } from '../context/ThemeContext'
-import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2, GraduationCap } from 'lucide-react'
+import { Menu, Settings, Bell, X, BarChart3, TrendingUp, Users, FileText, Book, LogOut, ChartBarStacked, Briefcase, CreditCard, ChevronDown, Image, Film, FileQuestion, Share2, GraduationCap, Globe } from 'lucide-react'
 import { Clock } from './Clock'
 import logo from '../assets/logo.png'
 import logoo from '../assets/logoo.png'
@@ -9,7 +9,7 @@ import mainLogo from '../assets/mainLogo.png'
 
 const Dashboard = () => {
   const { colors, isDarkMode, toggleTheme, currentTheme, themes, setTheme } = useTheme()
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false  )
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [openSubmenu, setOpenSubmenu] = useState(null)
   // const [currentTime, setCurrentTime] = useState(new Date())
@@ -115,6 +115,17 @@ const Dashboard = () => {
         { name: 'All Subscription', path: '/dashboard/subscriptions' },
         { name: 'Add Subscription', path: '/dashboard/subscriptions/add' },
         { name: 'Enrolled Students', path: '/dashboard/subscriptions/enrolled' }
+      ]
+    },
+    { 
+      name: 'Website', 
+      icon: Globe, 
+      submenu: [
+        { name: 'Courses', path: '/dashboard/website/courses' },
+        { name: 'Categories', path: '/dashboard/website/categories' },
+        { name: 'Student Reviews', path: '/dashboard/website/reviews' },
+        { name: 'Blogs', path: '/dashboard/website/blogs' },
+        { name: 'Subscriptions', path: '/dashboard/website/subscriptions' }
       ]
     },
     { name: 'Slider', icon: Image, path: '/dashboard/slider' },

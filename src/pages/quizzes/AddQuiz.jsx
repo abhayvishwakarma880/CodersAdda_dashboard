@@ -5,6 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { useData } from '../../context/DataContext';
 import { toast } from 'react-toastify';
 import * as XLSX from 'xlsx';
+import ModernSelect from '../../components/ModernSelect';
 
 function AddQuiz() {
   const { colors } = useTheme();
@@ -234,16 +235,16 @@ function AddQuiz() {
                     </div>
                     <div>
                         <label style={labelStyle}>Level</label>
-                        <select
-                            value={formData.level}
-                            onChange={(e) => setFormData({ ...formData, level: e.target.value })}
-                            className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold cursor-pointer"
-                            style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
-                        >
-                            <option value="Beginner">Beginner</option>
-                            <option value="Intermediate">Intermediate</option>
-                            <option value="Advance">Advance</option>
-                        </select>
+                        <ModernSelect
+                          options={[
+                            { value: "Beginner", label: "Beginner" },
+                            { value: "Intermediate", label: "Intermediate" },
+                            { value: "Advance", label: "Advance" }
+                          ]}
+                          value={formData.level}
+                          onChange={(value) => setFormData({ ...formData, level: value })}
+                          placeholder="Select Level"
+                        />
                     </div>
                     <div>
                         <label style={labelStyle}>Points per Question</label>
@@ -258,15 +259,15 @@ function AddQuiz() {
                     </div>
                     <div>
                         <label style={labelStyle}>Status</label>
-                        <select
-                            value={formData.status || 'Active'}
-                            onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                            className="w-full px-4 py-3 rounded border outline-none text-sm font-semibold cursor-pointer"
-                            style={{ backgroundColor: colors.background, borderColor: colors.accent + '30', color: colors.text }}
-                        >
-                            <option value="Active">Active</option>
-                            <option value="Disable">Disable</option>
-                        </select>
+                        <ModernSelect
+                          options={[
+                            { value: "Active", label: "Active" },
+                            { value: "Disable", label: "Disable" }
+                          ]}
+                          value={formData.status || 'Active'}
+                          onChange={(value) => setFormData({ ...formData, status: value })}
+                          placeholder="Select Status"
+                        />
                     </div>
                 </div>
             </div>

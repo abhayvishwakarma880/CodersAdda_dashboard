@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, Trash2, Info, Layout, Building2, User2, Mail, Phone, G
 import { useTheme } from '../../context/ThemeContext';
 import { useData } from '../../context/DataContext';
 import { toast } from 'react-toastify';
+import ModernSelect from '../../components/ModernSelect';
 
 function AddJob() {
   const { colors } = useTheme();
@@ -105,28 +106,30 @@ function AddJob() {
               </div>
               <div className="space-y-1">
                 <label style={labelStyle}>Required Experience</label>
-                <select 
-                  value={formData.experience} onChange={(e) => setFormData({...formData, experience: e.target.value})}
-                  className="w-full px-4 py-2 rounded-md border outline-none cursor-pointer text-sm"
-                  style={inputStyle}
-                >
-                  <option value="Fresher">Fresher</option>
-                  <option value="1-2 Years">1-2 Years</option>
-                  <option value="3-5 Years">3-5 Years</option>
-                  <option value="5+ Years">5+ Years</option>
-                </select>
+                <ModernSelect
+                  options={[
+                    { value: "Fresher", label: "Fresher" },
+                    { value: "1-2 Years", label: "1-2 Years" },
+                    { value: "3-5 Years", label: "3-5 Years" },
+                    { value: "5+ Years", label: "5+ Years" }
+                  ]}
+                  value={formData.experience}
+                  onChange={(value) => setFormData({...formData, experience: value})}
+                  placeholder="Select Experience"
+                />
               </div>
               <div className="space-y-1">
                 <label style={labelStyle}>Work Type</label>
-                <select 
-                  value={formData.workType} onChange={(e) => setFormData({...formData, workType: e.target.value})}
-                  className="w-full px-4 py-2 rounded-md border outline-none cursor-pointer text-sm"
-                  style={inputStyle}
-                >
-                  <option value="Work From Office">Work From Office</option>
-                  <option value="Work From Home">Work From Home</option>
-                  <option value="Hybrid">Hybrid</option>
-                </select>
+                <ModernSelect
+                  options={[
+                    { value: "Work From Office", label: "Work From Office" },
+                    { value: "Work From Home", label: "Work From Home" },
+                    { value: "Hybrid", label: "Hybrid" }
+                  ]}
+                  value={formData.workType}
+                  onChange={(value) => setFormData({...formData, workType: value})}
+                  placeholder="Select Work Type"
+                />
               </div>
               <div className="space-y-1">
                 <label style={labelStyle}>Number of Openings</label>

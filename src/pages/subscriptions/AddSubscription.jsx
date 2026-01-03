@@ -4,6 +4,7 @@ import { ArrowLeft, Save, X, Plus, Trash2, Hash, BookOpen, FileText } from 'luci
 import { useTheme } from '../../context/ThemeContext';
 import { useData } from '../../context/DataContext';
 import { toast } from 'react-toastify';
+import ModernSelect from '../../components/ModernSelect';
 
 function AddSubscription() {
   const { colors } = useTheme();
@@ -16,6 +17,7 @@ function AddSubscription() {
     planType: '',
     duration: '1 Month',
     price: '',
+    freeJobs: '',
     benefits: [''],
     courses: [],
     ebooks: [],
@@ -131,17 +133,17 @@ function AddSubscription() {
             
             <div className="space-y-1">
               <label style={labelStyle}>Duration</label>
-              <select 
+              <ModernSelect
+                options={[
+                  { value: "1 Month", label: "1 Month" },
+                  { value: "3 Months", label: "3 Months" },
+                  { value: "6 Months", label: "6 Months" },
+                  { value: "1 Year", label: "1 Year" }
+                ]}
                 value={formData.duration}
-                onChange={(e) => setFormData({...formData, duration: e.target.value})}
-                className="w-full px-4 py-2.5 rounded border outline-none text-sm font-semibold cursor-pointer"
-                style={inputStyle}
-              >
-                <option value="1 Month">1 Month</option>
-                <option value="3 Months">3 Months</option>
-                <option value="6 Months">6 Months</option>
-                <option value="1 Year">1 Year</option>
-              </select>
+                onChange={(value) => setFormData({...formData, duration: value})}
+                placeholder="Select Duration"
+              />
             </div>
 
             <div className="space-y-1">
@@ -155,6 +157,21 @@ function AddSubscription() {
                   onChange={(e) => setFormData({...formData, price: e.target.value})}
                   placeholder="e.g. 299"
                   className="w-full pl-10 pr-4 py-2.5 rounded border outline-none text-sm font-semibold"
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+            <div className="space-y-1">
+              <label style={labelStyle}>Free Jobs</label>
+              <div className="relative">
+                {/* <Hash className="absolute left-3 top-1/2 -translate-y-1/2 opacity-30" size={18} /> */}
+                <input 
+                  type="number"
+                  required
+                  value={formData.freeJobs}
+                  onChange={(e) => setFormData({...formData, freeJobs: e.target.value})}
+                  placeholder="e.g. 3"
+                  className="w-full pl-5 pr-4 py-2.5 rounded border outline-none text-sm font-semibold"
                   style={inputStyle}
                 />
               </div>

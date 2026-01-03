@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import { useData } from '../../context/DataContext';
 import { ChevronLeft, FileText, Upload, Check } from 'lucide-react';
-
 import { toast } from 'react-toastify';
+import ModernSelect from '../../components/ModernSelect';
 
 function AddEBook() {
   const { colors } = useTheme();
@@ -101,17 +101,13 @@ function AddEBook() {
 
               <div className="space-y-2">
                 <label style={labelStyle}>Category</label>
-                <select 
+                <ModernSelect
+                  options={ebookCategories.map(cat => ({ value: cat.name, label: cat.name }))}
+                  value={formData.category}
+                  onChange={(value) => setFormData({...formData, category: value})}
+                  placeholder="Select Category"
                   required
-                  value={formData.category} onChange={(e) => setFormData({...formData, category: e.target.value})}
-                  className="w-full px-4 py-3 rounded border outline-none font-semibold text-sm transition-all cursor-pointer"
-                  style={inputStyle}
-                >
-                  <option value="">Select Category</option>
-                  {ebookCategories.map(cat => (
-                    <option key={cat.id} value={cat.name}>{cat.name}</option>
-                  ))}
-                </select>
+                />
               </div>
             </div>
 
